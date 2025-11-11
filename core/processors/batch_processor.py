@@ -147,6 +147,12 @@ def show_batch_mode(config):
             with st.spinner("Processing files..."):
                 results = processor.process_batch(uploaded_files, update_progress)
             
+            # Celebrate success with balloons! 🎈
+            success_count = sum(1 for r in results.values() if r['status'] == 'success')
+            if success_count > 0:
+                st.balloons()
+                st.success(f"🎉 Successfully processed {success_count} file(s)!")
+            
             # Show results
             st.markdown("### 📊 Results")
             

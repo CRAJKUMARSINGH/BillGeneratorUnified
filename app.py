@@ -247,8 +247,13 @@ st.markdown(f"""
     <p style='font-size: 1.2rem; font-weight: 700; color: #2d3436; margin: 0.5rem 0;'>
         🎯 BillGenerator Unified v2.0.0
     </p>
+    <p style='color: #636e72; margin: 0.3rem 0; font-size: 0.95rem;'>
+        <strong>Prepared on Initiative of:</strong><br>
+        <span style='color: #00b894; font-weight: 600;'>Mrs. Premlata Jain, AAO</span><br>
+        <span style='font-size: 0.9rem;'>PWD Udaipur</span>
+    </p>
     <p style='color: #636e72; margin: 0.5rem 0; font-size: 1rem;'>
-        Created with ❤️ by <strong style='color: #00b894;'>Rajkumar Singh Chauhan</strong>
+        Developed by <strong style='color: #00b894;'>Rajkumar Singh Chauhan</strong>
     </p>
     <p style='color: #636e72; margin: 0.3rem 0;'>
         Configuration: <span style='color: #00b894; font-weight: 600;'>{config.mode}</span> | 

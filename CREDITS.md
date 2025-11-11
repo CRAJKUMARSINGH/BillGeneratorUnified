@@ -1,11 +1,21 @@
 # Credits & Acknowledgments
 
+## 🎯 Project Initiative
+
+**Mrs. Premlata Jain**
+- Designation: AAO (Assistant Accounts Officer)
+- Department: PWD (Public Works Department)
+- Location: Udaipur
+- Role: Project Initiator & Sponsor
+- Contribution: Conceptualized and initiated the development of this professional bill generation system
+
 ## 👨‍💻 Project Creator
 
 **Rajkumar Singh Chauhan**
 - GitHub: [@CRAJKUMARSINGH](https://github.com/CRAJKUMARSINGH)
 - Project: BillGenerator Unified
 - Role: Lead Developer & Project Owner
+- Contribution: Complete system development and implementation
 
 ## 🤖 AI Development Partner
 
@@ -21,6 +31,7 @@
   - Test Suite Development
   - Git Repository Setup
   - Code Architecture & Optimization
+  - Balloons Animation on Success 🎈
 
 ## 🎯 Key Features Developed
 
@@ -84,6 +95,18 @@
 - WeasyPrint Documentation
 
 ## 🙏 Special Thanks
+
+### Project Sponsor & Initiator
+
+**Mrs. Premlata Jain, AAO, PWD Udaipur**
+
+This project was conceptualized and initiated under the guidance of Mrs. Premlata Jain, Assistant Accounts Officer at the Public Works Department, Udaipur. Her vision for a modern, efficient bill generation system has been instrumental in bringing this project to life.
+
+**Key Contributions:**
+- Identified the need for automated bill generation
+- Provided domain expertise and requirements
+- Supported the development process
+- Ensured alignment with PWD standards and practices
 
 ### Open Source Community
 - **Streamlit Team** - For the amazing web framework

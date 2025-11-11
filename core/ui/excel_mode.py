@@ -69,7 +69,9 @@ def show_excel_mode(config):
                     st.info("📄 Generating documents...")
                     # Add your actual generation logic here
                     
-                    st.success("✅ Documents generated successfully!")
+                    # Celebrate with balloons! 🎈
+                    st.balloons()
+                    st.success("🎉 Documents generated successfully!")
                     
                     # Download buttons
                     st.markdown("### 📥 Download Documents")
