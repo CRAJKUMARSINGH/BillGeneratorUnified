@@ -1,32 +1,6 @@
-# BillGenerator Unified - Streamlit Cloud Compatible
-# Minimal dependencies that work reliably on Streamlit Cloud
-
-# Web Framework
-streamlit>=1.28.0
-
-# Data Processing
-pandas>=2.0.0
-numpy>=1.24.0
-openpyxl>=3.1.0
-xlsxwriter>=3.1.0
-
-# PDF Generation (Cloud-compatible engines only)
-reportlab>=4.0.0
-PyPDF2>=3.0.0
-xhtml2pdf>=0.2.11
-
-# Template Engine
-jinja2>=3.1.0
-
-# Image Processing
-Pillow>=10.0.0
-
-# Utilities
-python-dateutil>=2.8.2
-requests>=2.31.0
-beautifulsoup4>=4.12.2
-lxml>=4.9.0
-
-# Note: weasyprint and playwright are excluded for Streamlit Cloud compatibility
-# They require system-level dependencies that are not available in the cloud environment
-# The app will automatically fall back to xhtml2pdf and reportlab
+streamlit
+pandas
+openpyxl
+jinja2
+reportlab
+Pillow
