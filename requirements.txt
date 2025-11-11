@@ -1,18 +1,32 @@
-# Ultra-minimal requirements for Streamlit Cloud deployment
-# Only the absolute essential packages that work in cloud environments
+# BillGenerator Unified - Requirements
+# Core dependencies for bill generation and PDF processing
 
-streamlit==1.28.0
-pandas==2.0.0
-openpyxl==3.1.0
-xlsxwriter==3.1.0
-reportlab==4.0.0
-PyPDF2==3.0.0
-jinja2==3.1.0
-Pillow==10.0.0
-python-dateutil==2.8.2
-requests==2.31.0
-beautifulsoup4==4.12.2
-numpy==1.26.0
+# Web Framework
+streamlit>=1.28.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.26.0
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# PDF Generation Engines (Multiple options for flexibility)
+reportlab>=4.0.0
+PyPDF2>=3.0.0
+weasyprint>=60.0
+xhtml2pdf>=0.2.11
+playwright>=1.40.0
+
+# Template Engine
+jinja2>=3.1.0
+
+# Image Processing
+Pillow>=10.0.0
+
+# Utilities
+python-dateutil>=2.8.2
+requests>=2.31.0
+beautifulsoup4>=4.12.2
 
 # These are required by Streamlit but explicitly pinned to avoid conflicts
 altair==5.5.0

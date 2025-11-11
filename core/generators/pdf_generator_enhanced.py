@@ -369,13 +369,103 @@ class EnhancedPDFGenerator:
         )
         return pdf_bytes
     
+    def convert_with_chrome_headless(self, html_content: str, zoom: float = 1.0) -> bytes:
+        """
+        Convert HTML to PDF using Chrome Headless
+        PERMANENT FIX: Tables will NOT shrink
+        
+        Uses exact flags: --disable-smart-shrinking --no-margins --disable-gpu
+        
+        Args:
+            html_content: HTML content to convert
+            zoom: Zoom level for content scaling
+            
+        Returns:
+            PDF content as bytes
+        """
+        html_with_zoom = self.add_css_zoom_to_html(html_content, zoom)
+        
+        # Create temporary files
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.html', delete=False, encoding='utf-8') as html_file:
+            html_file.write(html_with_zoom)
+            html_path = html_file.name
+        
+        pdf_file = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
+        pdf_path = pdf_file.name
+        pdf_file.close()
+        
+        try:
+            # Try different Chrome executable names
+            chrome_commands = [
+                'google-chrome',
+                'chrome',
+                'chromium',
+                'chromium-browser',
+                r'C:\Program Files\Google\Chrome\Application\chrome.exe',
+                r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe',
+            ]
+            
+            chrome_cmd = None
+            for cmd in chrome_commands:
+                try:
+                    result = subprocess.run(
+                        [cmd, '--version'],
+                        capture_output=True,
+                        timeout=5
+                    )
+                    if result.returncode == 0:
+                        chrome_cmd = cmd
+                        break
+                except:
+                    continue
+            
+            if not chrome_cmd:
+                raise Exception("Chrome/Chromium not found")
+            
+            # Build Chrome headless command with EXACT flags for no shrinking
+            cmd = [
+                chrome_cmd,
+                '--headless',
+                '--disable-gpu',
+                '--no-margins',
+                '--disable-smart-shrinking',  # CRITICAL: No table shrinking
+                '--run-all-compositor-stages-before-draw',
+                f'--print-to-pdf={pdf_path}',
+                html_path
+            ]
+            
+            # Execute Chrome headless
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            
+            if result.returncode != 0:
+                raise Exception(f"Chrome headless failed: {result.stderr}")
+            
+            # Read PDF content
+            with open(pdf_path, 'rb') as f:
+                pdf_content = f.read()
+            
+            return pdf_content
+            
+        finally:
+            # Cleanup temporary files
+            try:
+                os.unlink(html_path)
+                os.unlink(pdf_path)
+            except:
+                pass
+    
     def auto_convert(self, html_content: str, zoom: float = 1.0, 
                      disable_smart_shrinking: bool = True) -> bytes:
         """
         Automatically select best available PDF engine and convert
         
         Priority:
-        1. Chrome/Chromium Headless (with --disable-smart-shrinking)
+        1. Chrome Headless (with --disable-smart-shrinking --no-margins)
         2. wkhtmltopdf (with --disable-smart-shrinking)
         3. Playwright
         4. WeasyPrint
@@ -388,15 +478,12 @@ class EnhancedPDFGenerator:
         Returns:
             PDF content as bytes
         """
-        # Try Chrome/Chromium headless first (best quality with --disable-smart-shrinking)
+        # Try Chrome Headless first (best quality with --disable-smart-shrinking)
         try:
-            return self.convert_with_chrome_headless(
-                html_content,
-                zoom=zoom,
-                disable_smart_shrinking=disable_smart_shrinking
-            )
+            print("🔄 Trying Chrome Headless...")
+            return self.convert_with_chrome_headless(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ Chrome headless not available: {e}")
+            print(f"⚠️ Chrome Headless not available: {e}")
         
         # Try wkhtmltopdf (also supports --disable-smart-shrinking)
         try:
