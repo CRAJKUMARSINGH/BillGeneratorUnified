@@ -479,13 +479,15 @@ class EnhancedPDFGenerator:
             PDF content as bytes
         """
         # Try Chrome Headless first (best quality with --disable-smart-shrinking)
+        # Note: Not available on Streamlit Cloud
         try:
             print("🔄 Trying Chrome Headless...")
             return self.convert_with_chrome_headless(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ Chrome Headless not available: {e}")
+            print(f"⚠️ Chrome Headless not available (expected on Streamlit Cloud): {e}")
         
         # Try wkhtmltopdf (also supports --disable-smart-shrinking)
+        # Note: Not available on Streamlit Cloud
         try:
             return self.convert_with_wkhtmltopdf(
                 html_content, 
@@ -493,21 +495,36 @@ class EnhancedPDFGenerator:
                 disable_smart_shrinking=disable_smart_shrinking
             )
         except Exception as e:
-            print(f"⚠️ wkhtmltopdf not available: {e}")
+            print(f"⚠️ wkhtmltopdf not available (expected on Streamlit Cloud): {e}")
         
         # Try Playwright
+        # Note: Not available on Streamlit Cloud
         try:
             return self.convert_with_playwright(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ Playwright not available: {e}")
+            print(f"⚠️ Playwright not available (expected on Streamlit Cloud): {e}")
         
         # Try WeasyPrint
+        # Note: Not available on Streamlit Cloud
         try:
             return self.convert_with_weasyprint(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ WeasyPrint not available: {e}")
+            print(f"⚠️ WeasyPrint not available (expected on Streamlit Cloud): {e}")
         
-        raise Exception("No PDF engine available. Install Chrome, wkhtmltopdf, playwright, or weasyprint")
+        # Try xhtml2pdf (works on Streamlit Cloud)
+        try:
+            print("🔄 Using xhtml2pdf (Streamlit Cloud compatible)...")
+            from xhtml2pdf import pisa
+            import io
+            
+            html_with_zoom = self.add_css_zoom_to_html(html_content, zoom)
+            output = io.BytesIO()
+            pisa.CreatePDF(html_with_zoom, dest=output, encoding="utf-8")
+            return output.getvalue()
+        except Exception as e:
+            print(f"⚠️ xhtml2pdf failed: {e}")
+        
+        raise Exception("No PDF engine available. Please check requirements installation.")
     
     def calculate_optimal_zoom(self, content_width_px: int, page_width_mm: float = 210) -> float:
         """

@@ -1,35 +1,13 @@
-# System packages required for BillGenerator Unified
-# This file is used by Streamlit Cloud and similar platforms
+# System packages for Streamlit Cloud
+# Only packages that are available and work reliably on Streamlit Cloud
 
-# Chrome/Chromium for headless PDF generation (RECOMMENDED)
-chromium
-chromium-driver
-
-# WeasyPrint dependencies
-libpango-1.0-0
-libpangoft2-1.0-0
-libpangocairo-1.0-0
-libgdk-pixbuf2.0-0
-libffi-dev
-shared-mime-info
-
-# wkhtmltopdf (alternative PDF engine)
-wkhtmltopdf
-
-# Font support
+# Font support (essential for PDF generation)
 fonts-liberation
 fonts-dejavu-core
-fontconfig
 
-# Image processing
+# Image processing (for reportlab)
 libjpeg-dev
 libpng-dev
-libfreetype6-dev
 
-# SSL/TLS support
-libssl-dev
-ca-certificates
-
-# Additional utilities
-wget
-curl
+# Note: Chrome, wkhtmltopdf, and WeasyPrint dependencies are not available on Streamlit Cloud
+# The app will use xhtml2pdf and reportlab which work without system dependencies
