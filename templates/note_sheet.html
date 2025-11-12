@@ -2,236 +2,165 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Final Bill Scrutiny Sheet</title>
+    <title>FINAL BILL SCRUTINY SHEET</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; font-size: 10pt; }
-        h1 { text-align: center; margin: 5px 0; }
-        table { border-collapse: collapse; width: 198.5mm; margin: 10px auto; }
-        th, td { border: 1px solid black; padding: 3px; text-align: left; vertical-align: top; }
-        th { font-weight: bold; text-align: center; }
-        .header-info { text-align: center; margin: 10px auto; width: 198.5mm; }
-        .notes { margin: 20px auto; width: 198.5mm; text-align: left; }
-        .notes p { margin: 5px 0; }
-        .signature { text-align: right; margin-top: 20px; }
-        pre { white-space: pre-wrap; word-wrap: break-word; }
+        @page { 
+            size: A4 portrait; 
+            margin: 10mm;
+        }
+        @media print {
+            html, body {
+                width: 188mm !important;
+                min-width: 188mm !important;
+                max-width: 188mm !important;
+            }
+            table {
+                width: 188mm !important;
+                min-width: 188mm !important;
+                max-width: 188mm !important;
+            }
+        }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        html {
+            zoom: 1.0 !important;
+            -webkit-text-size-adjust: none !important;
+            -moz-text-size-adjust: none !important;
+            -ms-text-size-adjust: none !important;
+            text-size-adjust: none !important;
+        }
+        body { 
+            font-family: Calibri, sans-serif; 
+            font-size: 9pt; 
+            margin: 0; 
+            line-height: 1.3;
+            width: 188mm !important;
+            max-width: 188mm !important;
+            min-width: 188mm !important;
+            transform: scale(1.0) !important;
+            transform-origin: top left !important;
+            overflow-x: visible !important;
+        }
+        .container { 
+            width: 188mm !important; 
+            max-width: 188mm !important;
+            min-width: 188mm !important;
+            min-height: 277mm; 
+            margin: 0; 
+            padding: 0;
+            transform: scale(1.0) !important;
+        }
+        table { 
+            width: 188mm !important;
+            min-width: 188mm !important;
+            max-width: 188mm !important;
+            border-collapse: collapse; 
+            table-layout: fixed !important; 
+            font-size: 9pt;
+            transform: scale(1.0) !important;
+        }
+        th, td { 
+            border: 1px solid black; 
+            padding: 4px 3px; 
+            text-align: left; 
+            vertical-align: top; 
+            overflow: hidden; 
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        .header { text-align: center; margin-bottom: 10px; }
+        .header h2 { font-size: 12pt; margin-bottom: 5px; }
+        .header p { margin: 2px 0; font-size: 9pt; }
+        .note-cell { white-space: pre-wrap; line-height: 1.4; }
+        .amount-cell { text-align: right; }
+        .total-row { font-weight: bold; background-color: #f0f0f0; }
+        .deduction-row { background-color: #ffebee; }
+        .signature-section { 
+            margin-top: 30px; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+        .signature-box { 
+            width: 45%; 
+            text-align: center; 
+            margin-top: 20px;
+        }
+        .signature-line { 
+            margin: 40px 0 10px 0; 
+            border-top: 1px solid #000; 
+            width: 80%; 
+            display: inline-block; 
+        }
     </style>
 </head>
 <body>
-
-<h1> BILL SCRUTINY SHEET</h1>
-
-<div class="header-info">
-    First & Final Bill Agreement No. {{ data.agreement_no }}
-</div>
-
-<table>
-    <tr>
-        <th width="8mm">S.No.</th>
-        <th width="72mm">Description</th>
-        <th width="118.5mm">Details</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>Chargeable Head</td>
-        <td>8443-00-108-00-00</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Agreement No.</td>
-        <td>{{ data.agreement_no }}</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>Adm. Section</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>Tech. Section</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>5</td>
-        <td>M.B No.</td>
-        <td>887/Pg. No. 04-20</td>
-    </tr>
-    <tr>
-        <td>6</td>
-        <td>Name of Sub Dn</td>
-        <td>Rajsamand</td>
-    </tr>
-    <tr>
-        <td>7</td>
-        <td>Name of Work</td>
-        <td>{{ data.name_of_work }}</td>
-    </tr>
-    <tr>
-        <td>8</td>
-        <td>Name of Firm</td>
-        <td>{{ data.name_of_firm }}</td>
-    </tr>
-    <tr>
-        <td>9</td>
-        <td>Original/Deposit</td>
-        <td>Deposit</td>
-    </tr>
-    <tr>
-        <td>11</td>
-        <td>Date of Commencement</td>
-        <td>{{ data.date_commencement }}</td>
-    </tr>
-    <tr>
-        <td>12</td>
-        <td>Date of Completion</td>
-        <td>{{ data.date_completion }}</td>
-    </tr>
-    <tr>
-        <td>13</td>
-        <td>Actual Date of Completion</td>
-        <td>{{ data.actual_completion }}</td>
-    </tr>
-    <tr>
-        <td>14</td>
-        <td>In case of delay weather, Provisional Extension Granted</td>
-        <td>{% if data.actual_completion > data.date_completion %}Yes. Time Extension sanctioned is enclosed proposing {{ data.delay_days }} days delay on part of the contractor and remaining on Govt. The case is to be approved by this office.{% else %}Work completed within stipulated time{% endif %}</td>
-    </tr>
-    <tr>
-        <td>15</td>
-        <td>Whether any notice issued</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>16</td>
-        <td>Amount of Work Order Rs.</td>
-        <td>{{ data.work_order_amount | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td>17</td>
-        <td>Actual Expenditure up to this Bill Rs.</td>
-        <td>{{ data.bill_grand_total | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td>18</td>
-        <td>Balance to be done Rs.</td>
-        <td>NIL</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Net Amount of This Bill Rs.</td>
-        <td>{{ data.bill_grand_total | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td>19</td>
-        <td>Prorata Progress on the Work maintained by the Firm</td>
-        <td>Till date {{ (data.bill_grand_total / data.work_order_amount * 100) | round(2) }}% Work is executed</td>
-    </tr>
-    <tr>
-        <td>20</td>
-        <td>Date on Which record Measurement taken by JEN AC</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>21</td>
-        <td>Date of Checking and % on the Checked By AEN</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>22</td>
-        <td>No. Of selection item checked by the EE</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>23</td>
-        <td>Other Inputs</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(A) Is It a Repair / Maintenance Work</td>
-        <td>No</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(B) Extra Item</td>
-        <td>{% if data.extra_items_sum > 0 %}Yes{% else %}No{% endif %}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Amount of Extra Items Rs.</td>
-        <td>{{ data.extra_items_sum | round(0) | int if data.extra_items_sum > 0 else '' }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(C) Any Excess Item Executed?</td>
-        <td>No</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(D) Any Inadvertent Delay in Bill Submission?</td>
-        <td>No</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Deductions:-</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>S.D.II</td>
-        <td>{{ data.totals.sd_amount | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>I.T.</td>
-        <td>{{ data.totals.it_amount | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>GST</td>
-        <td>{{ data.totals.gst_amount | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>L.C.</td>
-        <td>{{ data.totals.lc_amount | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Liquidated Damages (Recovery)</td>
-        <td>{{ data.totals.liquidated_damages | round(0) | int if data.totals.liquidated_damages else 'NIL' }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Cheque</td>
-        <td>{{ data.totals.net_payable | round(0) | int }}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Total</td>
-        <td>{{ data.bill_grand_total | round(0) | int }}</td>
-    </tr>
-</table>
-
-<div class="notes">
-    {% set progress = (data.bill_grand_total / data.work_order_amount * 100) | round(2) %}
-    {% set deviation = ((data.bill_grand_total - data.work_order_amount) / data.work_order_amount * 100) | round(2) %}
-    {% set extra_percent = (data.extra_items_sum / data.work_order_amount * 100) | round(2) if data.extra_items_sum > 0 else 0 %}
-    <p>1. The work has been completed {{ progress }}% of the Work Order Amount.</p>
-    {% if deviation != 0 %}
-    <p>2. Requisite Deviation Statement is enclosed. The Overall {{ 'Excess' if deviation > 0 else 'Saving' }} is {{ abs(deviation) }}% {{ 'more than 5% and Approval of the Deviation Case is required from the Superintending Engineer, PWD Electrical Circle, Udaipur' if abs(deviation) > 5 else 'under 5%, approval of the same is to be granted by this office' }}.</p>
-    {% endif %}
-    <p>3. {% if data.actual_completion > data.date_completion %}Work was completed with delay of {{ data.delay_days }} days.{% else %}Work was completed in time.{% endif %}</p>
-    {% if data.extra_items_sum > 0 %}
-    <p>4. The amount of Extra items is Rs. {{ data.extra_items_sum | round(0) | int }} which is {{ extra_percent }}% of the Work Order Amount; {{ 'under 5%, approval of the same is to be granted by this office' if extra_percent <= 5 else 'more than 5%, approval from Superintending Engineer required' }}.</p>
-    {% endif %}
-    <p>5. Quality Control (QC) test reports attached.</p>
-    <p>6. Please peruse above details for necessary decision-making.</p>
-</div>
-
-<div class="signature">
-    Premlata Jain<br>
-    AAO- As Auditor
-</div>
-
+    <div class="container">
+        <div class="header">
+            <h2>FINAL BILL SCRUTINY SHEET</h2>
+            <p>First & Final Bill Agreement No. {{ data.agreement_no }}</p>
+        </div>
+        <table>
+            <tbody>
+                <tr><td width="10%">1</td><td width="45%">Chargeable Head</td><td width="45%">8443-00-108-00-00</td></tr>
+                <tr><td>2</td><td>Agreement No.</td><td>{{ data.agreement_no }}</td></tr>
+                <tr><td>3</td><td>Adm. Section</td><td></td></tr>
+                <tr><td>4</td><td>Tech. Section</td><td></td></tr>
+                <tr><td>5</td><td>M.B No.</td><td>887/Pg. No. 04-20</td></tr>
+                <tr><td>6</td><td>Name of Sub Dn</td><td>Rajsamand</td></tr>
+                <tr><td>7</td><td>Name of Work</td><td>{{ data.name_of_work }}</td></tr>
+                <tr><td>8</td><td>Name of Firm</td><td>{{ data.name_of_firm }}</td></tr>
+                <tr><td>9</td><td>Original/Deposit</td><td>Deposit</td></tr>
+                <tr><td>11</td><td>Date of Commencement</td><td>{{ data.date_commencement }}</td></tr>
+                <tr><td>12</td><td>Date of Completion</td><td>{{ data.date_completion }}</td></tr>
+                <tr><td>13</td><td>Actual Date of Completion</td><td>{{ data.actual_completion }}</td></tr>
+                <tr><td>14</td><td>In case of delay weather, Provisional Extension Granted</td><td>Yes. Time Extension sanctioned is enclosed proposing 18 days delay on part of the contractor and remaining on Govt. The case is to be approved by this office.</td></tr>
+                <tr><td>15</td><td>Whether any notice issued</td><td></td></tr>
+                <tr><td>16</td><td>Amount of Work Order Rs.</td><td class="amount-cell">{{ "{:,}".format(data.work_order_amount | int) if data.work_order_amount else "0" }}</td></tr>
+                <tr><td>17</td><td>Actual Expenditure up to this Bill Rs.</td><td class="amount-cell">{{ "{:,}".format(data['totals']['payable'] | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr><td>18</td><td>Balance to be done Rs.</td><td class="amount-cell">{{ "{:,}".format((data.work_order_amount | int - data['totals']['payable'] | int) if data.get('totals') and data['totals']['payable'] | int < data.work_order_amount | int else 0) }}</td></tr>
+                <tr><td></td><td>Net Amount of This Bill Rs.</td><td class="amount-cell">{{ "{:,}".format(data['totals']['payable'] | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr><td>19</td><td>Prorata Progress on the Work maintained by the Firm</td><td>Till date {{ "%.2f" % ((data['totals']['payable']|float / data.work_order_amount|float * 100) if data.get('totals') and data.work_order_amount and data.work_order_amount|float > 0 else 0) }}% Work is executed</td></tr>
+                <tr><td>20</td><td>Date on Which record Measurement taken by JEN AC</td><td></td></tr>
+                <tr><td>21</td><td>Date of Checking and % on the Checked By AEN</td><td></td></tr>
+                <tr><td>22</td><td>No. Of selection item checked by the EE</td><td></td></tr>
+                <tr><td>23</td><td>Other Inputs</td><td></td></tr>
+                <tr><td></td><td>(A) Is It a Repair / Maintenance Work</td><td>No</td></tr>
+                <tr><td></td><td>(B) Extra Item</td><td>{% if data.get('extra_item_amount', 0) > 0 %}Yes{% else %}No{% endif %}</td></tr>
+                <tr><td></td><td>Amount of Extra Items Rs.</td><td class="amount-cell">{{ "{:,}".format(data.get('extra_item_amount', 0) | int) if data.get('extra_item_amount', 0) > 0 else "0" }}</td></tr>
+                <tr><td></td><td>(C) Any Excess Item Executed?</td><td>No</td></tr>
+                <tr><td></td><td>(D) Any Inadvertent Delay in Bill Submission?</td><td>No</td></tr>
+                <tr><td></td><td>Deductions:-</td><td></td></tr>
+                <tr class="deduction-row"><td></td><td>S.D.II @ 10%</td><td class="amount-cell">{{ "{:,}".format((data['totals']['payable'] | int * 0.10) | round(0) | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr class="deduction-row"><td></td><td>I.T. @ 2%</td><td class="amount-cell">{{ "{:,}".format((data['totals']['payable'] | int * 0.02) | round(0) | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr class="deduction-row"><td></td><td>GST @ 2%</td><td class="amount-cell">{{ "{:,}".format((data['totals']['payable'] | int * 0.02) | round(0, "ceil") | int // 2 * 2) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr class="deduction-row"><td></td><td>L.C. @ 1%</td><td class="amount-cell">{{ "{:,}".format((data['totals']['payable'] | int * 0.01) | round(0) | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr class="deduction-row"><td></td><td>Liquidated Damages (Recovery)</td><td class="amount-cell">0</td></tr>
+                <tr class="total-row"><td></td><td>Total Deductions</td><td class="amount-cell">{{ "{:,}".format(((data['totals']['payable'] | int * 0.10) | round(0) + (data['totals']['payable'] | int * 0.02) | round(0) + (data['totals']['payable'] | int * 0.02) | round(0, "ceil") | int // 2 * 2 + (data['totals']['payable'] | int * 0.01) | round(0)) | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr class="total-row"><td></td><td>Net Payable Amount</td><td class="amount-cell">{{ "{:,}".format((data['totals']['payable'] | int - ((data['totals']['payable'] | int * 0.10) | round(0) + (data['totals']['payable'] | int * 0.02) | round(0) + (data['totals']['payable'] | int * 0.02) | round(0, "ceil") | int // 2 * 2 + (data['totals']['payable'] | int * 0.01) | round(0))) | int) if data.get('totals') and data['totals']['payable'] else "0" }}</td></tr>
+                <tr><td colspan="3" class="note-cell">{{ data.get('notes', []) | join('\n') if data.get('notes') else 'Note not available' }}</td></tr>
+            </tbody>
+        </table>
+        
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <p>Prepared By<br>Name: _____________________<br>Designation: _____________________</p>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <p>Checked By<br>Name: _____________________<br>Designation: _____________________</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <div class="signature-line"></div>
+            <p>Authorized Officer<br>Name: _____________________<br>Designation: _____________________</p>
+        </div>
+    </div>
 </body>
 </html>

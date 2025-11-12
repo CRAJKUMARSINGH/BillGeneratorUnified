@@ -21,7 +21,8 @@ class DocumentGenerator:
         self.extra_items_data = data.get('extra_items_data', pd.DataFrame())
         
         # Set up Jinja2 environment for templates
-        template_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates')
+        # template_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates')
+        template_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'templates')
         self.jinja_env = Environment(loader=FileSystemLoader(template_dir))
         
         # Prepare data for templates
@@ -198,10 +199,88 @@ class DocumentGenerator:
             'saving_amount': 0,
             'saving_premium': 0,
             'saving_total': 0,
-            'net_difference': 0
+            'net_difference': 0,
+            'premium': {
+                'percent': tender_premium_percent / 100 if tender_premium_percent > 0 else 0,
+                'amount': premium_amount
+            },
+            'payable': grand_total,
+            'last_bill_amount': 0
         }
         
-        return {
+        # Prepare items data structure for templates
+        items = []
+        for item in work_items:
+            items.append({
+                'unit': item['unit'],
+                'quantity_since_last': item['quantity_since'],
+                'quantity_upto_date': item['quantity_upto'],
+                'serial_no': item['item_no'],
+                'description': item['description'],
+                'rate': item['rate'],
+                'amount': item['amount_upto'],
+                'amount_previous': item['amount_since'],
+                'remark': item['remark']
+            })
+        
+        # Add extra items to the items list
+        for item in extra_items:
+            items.append({
+                'unit': item['unit'],
+                'quantity_since_last': item['quantity'],
+                'quantity_upto_date': item['quantity'],
+                'serial_no': item['item_no'],
+                'description': item['description'],
+                'rate': item['rate'],
+                'amount': item['amount'],
+                'amount_previous': item['amount'],
+                'remark': item['remark']
+            })
+        
+        # Prepare deviation data
+        deviation_items = []
+        for item in work_items:
+            deviation_items.append({
+                'serial_no': item['item_no'],
+                'description': item['description'],
+                'unit': item['unit'],
+                'qty_wo': item['quantity_since'],
+                'rate': item['rate'],
+                'amt_wo': item['amount_since'],
+                'qty_bill': item['quantity_upto'],
+                'amt_bill': item['amount_upto'],
+                'excess_qty': max(0, item['quantity_upto'] - item['quantity_since']),
+                'excess_amt': max(0, item['amount_upto'] - item['amount_since']),
+                'saving_qty': max(0, item['quantity_since'] - item['quantity_upto']),
+                'saving_amt': max(0, item['amount_since'] - item['amount_upto']),
+                'remark': item['remark']
+            })
+        
+        # Prepare summary data
+        summary = {
+            'work_order_total': total_amount,
+            'executed_total': total_amount,
+            'overall_excess': 0,
+            'overall_saving': 0,
+            'tender_premium_f': premium_amount,
+            'tender_premium_h': premium_amount,
+            'tender_premium_j': 0,
+            'tender_premium_l': 0,
+            'grand_total_f': grand_total,
+            'grand_total_h': grand_total,
+            'grand_total_j': 0,
+            'grand_total_l': 0,
+            'net_difference': 0,
+            'percentage_deviation': 0,
+            'is_saving': False,
+            'premium': {
+                'percent': tender_premium_percent / 100 if tender_premium_percent > 0 else 0,
+                'amount': premium_amount
+            }
+        }
+        
+        # Ensure all data is available for templates
+        template_data = {
             'title_data': self.title_data,
             'work_items': work_items,
             'extra_items': extra_items,
@@ -216,8 +295,40 @@ class DocumentGenerator:
             'extra_grand_total': extra_grand_total,
             'final_total': grand_total + extra_grand_total,
             'payable_words': self._number_to_words(int(net_payable)),
-            'notes': ['Work completed as per schedule', 'All measurements verified', 'Quality as per specifications']
+            'notes': ['Work completed as per schedule', 'All measurements verified', 'Quality as per specifications'],
+            'items': items,
+            'deviation_items': deviation_items,
+            'summary': summary,
+            'agreement_no': self.title_data.get('Work Order No', ''),
+            'name_of_work': self.title_data.get('Project Name', ''),
+            'name_of_firm': self.title_data.get('Contractor Name', ''),
+            'date_commencement': self.title_data.get('Date of Commencement', ''),
+            'date_completion': self.title_data.get('Date of Completion', ''),
+            'actual_completion': self.title_data.get('Actual Date of Completion', ''),
+            'work_order_amount': total_amount,
+            'bill_grand_total': grand_total,
+            'extra_items_sum': extra_grand_total,
+            'delay_days': 0,
+            'header': [],
+            'measurement_officer': self.title_data.get('Measurement Officer', 'Junior Engineer'),
+            'measurement_date': self.title_data.get('Measurement Date', datetime.now().strftime('%d/%m/%Y')),
+            'measurement_book_page': self.title_data.get('Measurement Book Page', '04-20'),
+            'measurement_book_no': self.title_data.get('Measurement Book No', '887'),
+            'officer_name': self.title_data.get('Officer Name', 'Name of Officer'),
+            'officer_designation': self.title_data.get('Officer Designation', 'Assistant Engineer'),
+            'bill_date': self.title_data.get('Bill Date', '__/__/____'),
+            'authorising_officer_name': self.title_data.get('Authorising Officer Name', 'Name of Authorising Officer'),
+            'authorising_officer_designation': self.title_data.get('Authorising Officer Designation', 'Executive Engineer'),
+            'authorisation_date': self.title_data.get('Authorisation Date', '__/__/____'),
+            'payable_amount': net_payable,
+            'amount_words': self._number_to_words(int(net_payable))
         }
+        
+        # Add header data if available
+        if 'header' in self.title_data:
+            template_data['header'] = self.title_data['header']
+        
+        return template_data
     
     def generate_all_documents(self) -> Dict[str, str]:
         """
@@ -260,7 +371,11 @@ class DocumentGenerator:
         """Render a Jinja2 template with the prepared data"""
         try:
             template = self.jinja_env.get_template(template_name)
-            return template.render(**self.template_data)
+            # Wrap template data in 'data' variable for template compatibility
+            render_data = {'data': self.template_data}
+            # Also pass individual variables for backward compatibility
+            render_data.update(self.template_data)
+            return template.render(**render_data)
         except Exception as e:
             print(f"Failed to render template {template_name}: {e}")
             raise
@@ -750,6 +865,26 @@ class DocumentGenerator:
                     </tr>
                 </tbody>
             </table>
+            
+            <!-- Closure Lines -->
+            <div style="margin-top: 40px; width: 100%; display: table;">
+                <div style="display: table-row;">
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Prepared by</strong><br>
+                            <span style="font-size: 9pt;">Assistant Engineer</span><br>
+                            <span style="font-size: 9pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Checked & Approved by</strong><br>
+                            <span style="font-size: 9pt;">Executive Engineer</span><br>
+                            <span style="font-size: 9pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </body>
         </html>
         """
@@ -894,9 +1029,29 @@ class DocumentGenerator:
                     </tr>
             """
         
-        html_content += """
+        html_content += f"""
                 </tbody>
             </table>
+            
+            <!-- Closure Lines -->
+            <div style="margin-top: 40px; width: 100%; display: table;">
+                <div style="display: table-row;">
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Prepared by</strong><br>
+                            <span style="font-size: 8pt;">Assistant Engineer</span><br>
+                            <span style="font-size: 8pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Checked & Approved by</strong><br>
+                            <span style="font-size: 8pt;">Executive Engineer</span><br>
+                            <span style="font-size: 8pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </body>
         </html>
         """

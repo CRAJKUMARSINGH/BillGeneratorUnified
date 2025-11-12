@@ -252,9 +252,6 @@ st.markdown(f"""
         <span style='color: #00b894; font-weight: 600;'>Mrs. Premlata Jain, AAO</span><br>
         <span style='font-size: 0.9rem;'>PWD Udaipur</span>
     </p>
-    <p style='color: #636e72; margin: 0.5rem 0; font-size: 1rem;'>
-        Developed by <strong style='color: #00b894;'>Rajkumar Singh Chauhan</strong>
-    </p>
     <p style='color: #636e72; margin: 0.3rem 0;'>
         Configuration: <span style='color: #00b894; font-weight: 600;'>{config.mode}</span> | 
         Features: <span style='color: #00b894; font-weight: 600;'>{sum(features_status.values())}/{len(features_status)}</span> enabled

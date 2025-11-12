@@ -4,222 +4,340 @@
     <meta charset="UTF-8">
     <title>III. Memorandum of Payments</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; font-size: 10pt; }
-        h1 { text-align: center; margin: 5px 0; }
-        table { border-collapse: collapse; width: 180.06mm; margin: 10px auto; }
-        th, td { border: 1px solid black; padding: 3px; text-align: left; vertical-align: top; }
-        th { font-weight: bold; text-align: center; }
-        .header-info { text-align: center; margin: 10px auto; width: 180.06mm; }
-        .payment-details { margin: 20px auto; width: 180.06mm; text-align: center; }
-        .signature { text-align: right; margin-top: 20px; }
+        @page { 
+            size: A4 portrait; 
+            margin: 15mm;
+        }
+        @media print {
+            html, body {
+                width: 180mm !important;
+                min-width: 180mm !important;
+                max-width: 180mm !important;
+            }
+            table {
+                width: 180mm !important;
+                min-width: 180mm !important;
+                max-width: 180mm !important;
+            }
+        }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        html {
+            zoom: 1.0 !important;
+            -webkit-text-size-adjust: none !important;
+            -moz-text-size-adjust: none !important;
+            -ms-text-size-adjust: none !important;
+            text-size-adjust: none !important;
+        }
+        body { 
+            font-family: Calibri, Arial, sans-serif; 
+            margin: 0; 
+            font-size: 10pt; 
+            color: #1a1a1a;
+            width: 180mm !important;
+            max-width: 180mm !important;
+            min-width: 180mm !important;
+            transform: scale(1.0) !important;
+            transform-origin: top left !important;
+            overflow-x: visible !important;
+        }
+        .container {
+            width: 180mm !important;
+            max-width: 180mm !important;
+            min-width: 180mm !important;
+            min-height: 267mm;
+            margin: 0;
+            padding: 0;
+            transform: scale(1.0) !important;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 3px double #2c3e50;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            font-size: 18pt;
+            font-weight: 700;
+            margin: 0;
+            color: #2c3e50;
+        }
+        .header h2 {
+            font-size: 14pt;
+            font-weight: 600;
+            margin: 8px 0 0 0;
+            color: #2c3e50;
+        }
+        table { 
+            border-collapse: collapse; 
+            width: 180mm !important;
+            min-width: 180mm !important;
+            max-width: 180mm !important;
+            margin: 15px 0; 
+            table-layout: fixed !important;
+            transform: scale(1.0) !important;
+        }
+        th, td { 
+            border: 1px solid #2c3e50; 
+            padding: 6px 4px; 
+            text-align: left; 
+            vertical-align: top; 
+            overflow: hidden;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        th { 
+            font-weight: 600; 
+            text-align: center; 
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+        .amount-cell {
+            text-align: right;
+            font-weight: 600;
+            color: #1565c0;
+        }
+        .description-cell {
+            padding-left: 8px;
+        }
+        .indent-1 {
+            padding-left: 15px;
+        }
+        .indent-2 {
+            padding-left: 25px;
+        }
+        .total-row {
+            background-color: #fff3e0;
+            font-weight: 700;
+        }
+        .deduction-row {
+            background-color: #ffebee;
+        }
+        .final-row {
+            background-color: #e8f5e8;
+            font-weight: 700;
+        }
+        .payment-details { 
+            margin: 30px 0; 
+            text-align: center; 
+            line-height: 2.0;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .payment-details p {
+            margin: 10px 0;
+            font-size: 11pt;
+        }
+        .amount-words {
+            font-weight: 700;
+            text-decoration: underline;
+        }
+        .signature-section {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+        .signature-line {
+            margin: 50px 0 15px 0;
+            border-top: 1px solid #000;
+            width: 80%;
+            display: inline-block;
+        }
+        .signature-text {
+            margin: 5px 0;
+        }
+        .footer-note {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 9pt;
+            color: #666;
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>III. MEMORANDUM OF PAYMENTS</h1>
+            <h2>DETAILS OF PAYMENT CALCULATIONS AND DEDUCTIONS</h2>
+        </div>
 
-<h1>III. MEMORANDUM OF PAYMENTS</h1>
+        <table>
+            <colgroup>
+                <col style="width: 8%;">
+                <col style="width: 52%;">
+                <col style="width: 15%;">
+                <col style="width: 25%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Description</th>
+                    <th>Entry No.</th>
+                    <th>Amount Rs.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>Total value of work actually measured, as per Account I, Col. 5, Entry [A]</td>
+                    <td>[A]</td>
+                    <td class="amount-cell">{{ "{:,}".format(data.totals.grand_total | round(0) | int) if data.totals.grand_total else "0" }}</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Total up-to-date advance payments for work not yet measured as per details given below:</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="indent-1">(a) Total as per previous bill</td>
+                    <td>[B]</td>
+                    <td class="amount-cell">Nil</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="indent-1">(b) Since previous bill</td>
+                    <td>[D]</td>
+                    <td class="amount-cell">Nil</td>
+                </tr>
+                <tr>
+                    <td>3.</td>
+                    <td>Total up-to-date secured advances on security of materials</td>
+                    <td>[C]</td>
+                    <td class="amount-cell">Nil</td>
+                </tr>
+                <tr class="total-row">
+                    <td>4.</td>
+                    <td><strong>Total (Items 1 + 2 + 3) A+B+C</strong></td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format(data.totals.grand_total | round(0) | int) if data.totals.grand_total else "0" }}</td>
+                </tr>
+                <tr>
+                    <td>5.</td>
+                    <td>Deduct: Amount withheld</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="indent-1">(a) From previous bill as per last Running Account Bill</td>
+                    <td>[5]</td>
+                    <td class="amount-cell">Nil</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="indent-1">(b) From this bill</td>
+                    <td></td>
+                    <td class="amount-cell">Nil</td>
+                </tr>
+                <tr class="total-row">
+                    <td>6.</td>
+                    <td><strong>Balance i.e. "up-to-date" payments (Item 4-5)</strong></td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format(data.totals.grand_total | round(0) | int) if data.totals.grand_total else "0" }}</td>
+                </tr>
+                <tr>
+                    <td>7.</td>
+                    <td>Total amount of payments already made as per Entry (K)</td>
+                    <td>[K]</td>
+                    <td class="amount-cell">0</td>
+                </tr>
+                <tr class="total-row">
+                    <td>8.</td>
+                    <td><strong>Payments now to be made, as detailed below:</strong></td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format(data.totals.payable | round(0) | int) if data.totals.payable else "0" }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="indent-1">(a) By recovery of amounts creditable to this work</td>
+                    <td>[a]</td>
+                    <td></td>
+                </tr>
+                <tr class="deduction-row">
+                    <td></td>
+                    <td class="indent-2">SD @ 10%</td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format((data.totals.payable | int * 0.10) | round(0) | int) if data.totals.payable else "0" }}</td>
+                </tr>
+                <tr class="deduction-row">
+                    <td></td>
+                    <td class="indent-2">IT @ 2%</td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format((data.totals.payable | int * 0.02) | round(0) | int) if data.totals.payable else "0" }}</td>
+                </tr>
+                <tr class="deduction-row">
+                    <td></td>
+                    <td class="indent-2">GST @ 2%</td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format((data.totals.payable | int * 0.02) | round(0, "ceil") | int // 2 * 2) if data.totals.payable else "0" }}</td>
+                </tr>
+                <tr class="deduction-row">
+                    <td></td>
+                    <td class="indent-2">LC @ 1%</td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format((data.totals.payable | int * 0.01) | round(0) | int) if data.totals.payable else "0" }}</td>
+                </tr>
+                <tr class="deduction-row">
+                    <td></td>
+                    <td class="indent-1"><strong>Total recovery</strong></td>
+                    <td></td>
+                    <td class="amount-cell">{{ "{:,}".format(((data.totals.payable | int * 0.10) | round(0) + (data.totals.payable | int * 0.02) | round(0) + (data.totals.payable | int * 0.02) | round(0, "ceil") | int // 2 * 2 + (data.totals.payable | int * 0.01) | round(0)) | int) if data.totals.payable else "0" }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="indent-1">(b) By recovery of amount creditable to other works</td>
+                    <td>[b]</td>
+                    <td class="amount-cell">Nil</td>
+                </tr>
+                <tr class="final-row">
+                    <td></td>
+                    <td class="indent-1"><strong>(c) By cheque</strong></td>
+                    <td>[c]</td>
+                    <td class="amount-cell">{{ "{:,}".format((data.totals.payable | int - ((data.totals.payable | int * 0.10) | round(0) + (data.totals.payable | int * 0.02) | round(0) + (data.totals.payable | int * 0.02) | round(0, "ceil") | int // 2 * 2 + (data.totals.payable | int * 0.01) | round(0))) | int) if data.totals.payable else "0" }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-<table>
-    <tr>
-        <th width="1.82mm">S.No.</th>
-        <th width="17.12mm">Description</th>
-        <th width="121.87mm">Entry No.</th>
-        <th width="4.03mm"></th>
-        <th width="17.72mm">Amount Rs.</th>
-        <th width="4.03mm"></th>
-        <th width="13.49mm"></th>
-    </tr>
-    <tr>
-        <td>1.</td>
-        <td>Total value of work actually measured, as per Account I, Col. 5, Entry [A]</td>
-        <td>[A]</td>
-        <td></td>
-        <td>{{ data.totals.grand_total | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>2.</td>
-        <td>Total up-to-date advance payments for work not yet measured as per details given below:</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(a) Total as per previous bill</td>
-        <td>[B]</td>
-        <td></td>
-        <td>Nil</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(b) Since previous bill</td>
-        <td>[D]</td>
-        <td></td>
-        <td>Nil</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>3.</td>
-        <td>Total up-to-date secured advances on security of materials</td>
-        <td>[C]</td>
-        <td></td>
-        <td>Nil</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>4.</td>
-        <td>Total (Items 1 + 2 + 3) A+B+C</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.grand_total | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>5.</td>
-        <td>Deduct: Amount withheld</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(a) From previous bill as per last Running Account Bill</td>
-        <td>[5]</td>
-        <td></td>
-        <td>Nil</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(b) From this bill</td>
-        <td></td>
-        <td></td>
-        <td>Nil</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>6.</td>
-        <td>Balance i.e. "up-to-date" payments (Item 4-5)</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.grand_total | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>7.</td>
-        <td>Total amount of payments already made as per Entry (K)</td>
-        <td>[K]</td>
-        <td></td>
-        <td>0</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>8.</td>
-        <td>Payments now to be made, as detailed below:</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.net_payable | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(a) By recovery of amounts creditable to this work</td>
-        <td>[a]</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>SD @ 10%</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.sd_amount | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>IT @ 2%</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.it_amount | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>GST @ 2%</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.gst_amount | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>LC @ 1%</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.lc_amount | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>Total recovery</td>
-        <td></td>
-        <td></td>
-        <td>{{ data.totals.total_deductions | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(b) By recovery of amount creditable to other works</td>
-        <td>[b]</td>
-        <td></td>
-        <td>Nil</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>(c) By cheque</td>
-        <td>[c]</td>
-        <td></td>
-        <td>{{ data.totals.net_payable | round(0) | int }}</td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+        <div class="payment-details">
+            <p><strong>Pay Rs. {{ "{:,}".format((data.totals.payable | int - ((data.totals.payable | int * 0.10) | round(0) + (data.totals.payable | int * 0.02) | round(0) + (data.totals.payable | int * 0.02) | round(0, "ceil") | int // 2 * 2 + (data.totals.payable | int * 0.01) | round(0))) | int) if data.totals.payable else "0" }}</strong></p>
+            <p><strong>Pay Rupees <span class="amount-words">{{ data.payable_words | default("Zero") }}</span> (by cheque)</strong></p>
+            <p>Dated the ____ / ____ / ________</p>
+        </div>
 
-<div class="payment-details">
-    <p>Pay Rs. {{ data.totals.net_payable | round(0) | int }}</p>
-    <p>Pay Rupees {{ data.payable_words }} (by cheque)</p>
-    <p>Dated the {{ current_date.strftime('%d %m %Y') | replace(' ', ' / ') }}</p>
-    <p>Dated initials of Disbursing Officer</p>
-    <p>Received Rupees {{ data.payable_words }} (by cheque) as per above memorandum, on account of this bill</p>
-    <p>Signature of Contractor</p>
-    <p>Paid by me, vide cheque No. _______ dated {{ current_date.strftime('%d %m %Y') | replace(' ', ' / ') }}</p>
-    <p>Dated initials of person actually making the payment</p>
-</div>
-
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <p class="signature-text">Received Rupees {{ data.payable_words | default("Zero") }}<br>(by cheque) as per above memorandum,<br>on account of this bill</p>
+                <p class="signature-text"><strong>Signature of Contractor:</strong> _______________</p>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <p class="signature-text">Paid by me, vide cheque No. _______<br>dated ____ / ____ / ________</p>
+                <p class="signature-text"><strong>Dated initials of Disbursing Officer:</strong> _______________</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <div class="signature-line"></div>
+            <p class="signature-text"><strong>Authorised Officer</strong><br>Name: _____________________<br>Designation: _____________________</p>
+        </div>
+        
+        <div class="footer-note">
+            <p>This memorandum is prepared in accordance with government accounting rules and regulations.</p>
+        </div>
+    </div>
 </body>
 </html>
