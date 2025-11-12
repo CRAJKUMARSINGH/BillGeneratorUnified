@@ -53,54 +53,60 @@ def show_excel_mode(config):
         if st.button("🚀 Generate Documents", type="primary"):
             with st.spinner("Processing..."):
                 try:
-                    # Import generator
+                    # Import processors and generator
+                    from core.processors.excel_processor import ExcelProcessor
                     from core.generators.document_generator import DocumentGenerator
                     
-                    # Process file
-                    generator = DocumentGenerator()
-                    
-                    # Save uploaded file temporarily
-                    import tempfile
-                    with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp:
-                        tmp.write(uploaded_file.getvalue())
-                        tmp_path = tmp.name
+                    # Process Excel file
+                    excel_processor = ExcelProcessor()
+                    processed_data = excel_processor.process_excel(uploaded_file)
                     
                     # Generate documents
                     st.info("📄 Generating documents...")
-                    # Add your actual generation logic here
+                    doc_generator = DocumentGenerator(processed_data)
+                    html_documents = doc_generator.generate_all_documents()
+                    
+                    # Generate PDFs if requested
+                    if generate_pdf:
+                        pdf_documents = doc_generator.create_pdf_documents(html_documents)
+                    else:
+                        pdf_documents = {}
                     
                     # Celebrate with balloons! 🎈
                     st.balloons()
-                    st.success("🎉 Documents generated successfully!")
+                    st.success(f"🎉 Generated {len(html_documents)} HTML documents and {len(pdf_documents)} PDF documents!")
                     
                     # Download buttons
                     st.markdown("### 📥 Download Documents")
                     
-                    col1, col2, col3 = st.columns(3)
+                    # Create columns for download buttons
+                    cols = st.columns(min(3, len(html_documents)))
                     
-                    with col1:
-                        st.download_button(
-                            "📄 First Page",
-                            data="Sample content",
-                            file_name="first_page.html",
-                            mime="text/html"
-                        )
+                    # HTML Downloads
+                    for idx, (doc_name, html_content) in enumerate(html_documents.items()):
+                        with cols[idx % 3]:
+                            st.download_button(
+                                f"📄 {doc_name}",
+                                data=html_content,
+                                file_name=f"{doc_name}.html",
+                                mime="text/html",
+                                key=f"html_{idx}"
+                            )
                     
-                    with col2:
-                        st.download_button(
-                            "📊 Deviation Statement",
-                            data="Sample content",
-                            file_name="deviation.html",
-                            mime="text/html"
-                        )
-                    
-                    with col3:
-                        st.download_button(
-                            "📋 Certificate",
-                            data="Sample content",
-                            file_name="certificate.html",
-                            mime="text/html"
-                        )
+                    # PDF Downloads (if generated)
+                    if pdf_documents:
+                        st.markdown("### 📕 Download PDFs")
+                        cols_pdf = st.columns(min(3, len(pdf_documents)))
+                        
+                        for idx, (doc_name, pdf_content) in enumerate(pdf_documents.items()):
+                            with cols_pdf[idx % 3]:
+                                st.download_button(
+                                    f"📕 {doc_name}",
+                                    data=pdf_content,
+                                    file_name=doc_name,
+                                    mime="application/pdf",
+                                    key=f"pdf_{idx}"
+                                )
                     
                 except Exception as e:
                     st.error(f"❌ Error: {str(e)}")
