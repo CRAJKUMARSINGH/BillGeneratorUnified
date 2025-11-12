@@ -177,7 +177,11 @@ class DocumentGenerator:
         gst_amount = grand_total * 0.02  # GST 2%
         lc_amount = grand_total * 0.01  # Labour Cess 1%
         total_deductions = sd_amount + it_amount + gst_amount + lc_amount
-        net_payable = grand_total - total_deductions
+        
+        # Get last bill amount
+        last_bill_amount = self._safe_float(self.title_data.get('Amount Paid Vide Last Bill', 
+                                                                 self.title_data.get('amount_paid_last_bill', 0)))
+        net_payable = grand_total - last_bill_amount
         
         # Calculate totals data structure
         totals = {
@@ -192,7 +196,9 @@ class DocumentGenerator:
             'gst_amount': gst_amount,
             'lc_amount': lc_amount,
             'total_deductions': total_deductions,
+            'last_bill_amount': last_bill_amount,
             'net_payable': net_payable,
+            'payable': grand_total,  # For compatibility
             'excess_amount': 0,  # Will be calculated from deviation data
             'excess_premium': 0,
             'excess_total': 0,
