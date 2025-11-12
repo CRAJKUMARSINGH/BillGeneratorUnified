@@ -269,27 +269,32 @@ class DocumentGenerator:
         """
         Convert HTML to PDF using Playwright for pixel-perfect rendering
         PERMANENT FIX: Tables will NOT shrink
+        Deviation Statement uses LANDSCAPE orientation
         """
         from playwright.async_api import async_playwright
         
+        # Determine page orientation based on document name
+        is_landscape = 'Deviation' in doc_name
+        page_size = 'A4 landscape' if is_landscape else 'A4'
+        
         # Add CSS to prevent table shrinking
-        no_shrink_css = """
+        no_shrink_css = f"""
         <style>
             /* CRITICAL: Prevent table shrinking */
-            table {
+            table {{
                 table-layout: fixed !important;
                 width: 100% !important;
                 border-collapse: collapse !important;
-            }
-            th, td {
+            }}
+            th, td {{
                 white-space: normal !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
-            }
-            @page {
-                size: A4;
+            }}
+            @page {{
+                size: {page_size};
                 margin: 0;
-            }
+            }}
         </style>
         """
         
@@ -316,8 +321,10 @@ class DocumentGenerator:
             await page.wait_for_timeout(500)
             
             # Generate PDF with NO SHRINKING settings
+            # Use landscape for Deviation Statement
             pdf_bytes = await page.pdf(
                 format='A4',
+                landscape=is_landscape,  # Landscape for Deviation Statement
                 print_background=True,
                 margin={'top': '0mm', 'right': '0mm', 'bottom': '0mm', 'left': '0mm'},
                 prefer_css_page_size=True,

@@ -272,7 +272,7 @@ class EnhancedPDFGenerator:
             except:
                 pass
     
-    def convert_with_playwright(self, html_content: str, zoom: float = 1.0) -> bytes:
+    def convert_with_playwright(self, html_content: str, zoom: float = 1.0, landscape: bool = False) -> bytes:
         """
         Convert HTML to PDF using Playwright with CSS zoom
         PERMANENT FIX: Tables will NOT shrink
@@ -280,6 +280,7 @@ class EnhancedPDFGenerator:
         Args:
             html_content: HTML content to convert
             zoom: Zoom level for content scaling
+            landscape: Use landscape orientation (for Deviation Statement)
             
         Returns:
             PDF content as bytes
@@ -300,8 +301,12 @@ class EnhancedPDFGenerator:
                 )
                 page = await browser.new_page()
                 
-                # Set viewport for consistent rendering (A4 at 96 DPI)
-                await page.set_viewport_size({'width': 794, 'height': 1123})
+                # Set viewport for consistent rendering
+                # Landscape: 1123x794, Portrait: 794x1123 (A4 at 96 DPI)
+                if landscape:
+                    await page.set_viewport_size({'width': 1123, 'height': 794})
+                else:
+                    await page.set_viewport_size({'width': 794, 'height': 1123})
                 
                 # Set content
                 await page.set_content(html_with_zoom, wait_until='networkidle')
@@ -312,6 +317,7 @@ class EnhancedPDFGenerator:
                 # Generate PDF with pixel-perfect settings (NO SHRINKING)
                 pdf_bytes = await page.pdf(
                     format='A4',
+                    landscape=landscape,  # Support landscape orientation
                     print_background=True,
                     margin={'top': '0mm', 'right': '0mm', 'bottom': '0mm', 'left': '0mm'},
                     prefer_css_page_size=True,
