@@ -172,11 +172,12 @@ class DocumentGenerator:
         extra_grand_total = extra_total + extra_premium
         
         # Calculate deductions and final amounts
+        liquidated_damages = self._safe_float(self.title_data.get('Liquidated Damages', 0))
         sd_amount = grand_total * 0.10  # Security Deposit 10%
         it_amount = grand_total * 0.02  # Income Tax 2%
         gst_amount = grand_total * 0.02  # GST 2%
         lc_amount = grand_total * 0.01  # Labour Cess 1%
-        total_deductions = sd_amount + it_amount + gst_amount + lc_amount
+        total_deductions = sd_amount + it_amount + gst_amount + lc_amount + liquidated_damages
         
         # Get last bill amount
         last_bill_amount = self._safe_float(self.title_data.get('Amount Paid Vide Last Bill', 
@@ -195,6 +196,7 @@ class DocumentGenerator:
             'it_amount': it_amount,
             'gst_amount': gst_amount,
             'lc_amount': lc_amount,
+            'liquidated_damages': liquidated_damages,
             'total_deductions': total_deductions,
             'last_bill_amount': last_bill_amount,
             'net_payable': net_payable,
@@ -211,7 +213,7 @@ class DocumentGenerator:
                 'amount': premium_amount
             },
             'payable': grand_total,
-            'last_bill_amount': 0
+            'liquidated_damages': self._safe_float(self.title_data.get('Liquidated Damages', 0))
         }
         
         # Prepare items data structure for templates
@@ -398,20 +400,38 @@ class DocumentGenerator:
         is_landscape = 'Deviation' in doc_name
         page_size = 'A4 landscape' if is_landscape else 'A4'
         
-        # Add CSS to prevent table shrinking
+        # Add CSS to prevent table shrinking + CSS zoom for pixel-perfect rendering
         no_shrink_css = f"""
         <style>
+            /* CRITICAL: CSS Zoom for pixel-perfect scaling */
+            body {{
+                zoom: 1.0;
+                -moz-transform: scale(1.0);
+                -moz-transform-origin: 0 0;
+            }}
+            
             /* CRITICAL: Prevent table shrinking */
             table {{
                 table-layout: fixed !important;
                 width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
                 border-collapse: collapse !important;
             }}
             th, td {{
                 white-space: normal !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
+                box-sizing: border-box !important;
             }}
+            
+            /* Disable text rendering optimizations */
+            * {{
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: geometricPrecision;
+            }}
+            
             @page {{
                 size: {page_size};
                 margin: 0;
@@ -428,7 +448,13 @@ class DocumentGenerator:
         async with async_playwright() as p:
             browser = await p.chromium.launch(
                 headless=True,
-                args=['--disable-web-security']
+                args=[
+                    '--disable-web-security',
+                    '--disable-smart-shrinking',  # CRITICAL: Disable intelligent shrinking for pixel-perfect output
+                    '--no-margins',  # No default margins
+                    '--disable-gpu',  # Disable GPU acceleration
+                    '--run-all-compositor-stages-before-draw',  # Complete rendering
+                ]
             )
             page = await browser.new_page()
             

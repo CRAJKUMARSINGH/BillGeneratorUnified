@@ -24,11 +24,31 @@ class ExcelProcessor:
         """
         # Read Excel file
         if hasattr(file, 'read'):
-            # It's a file-like object
-            excel_data = pd.ExcelFile(io.BytesIO(file.read()))
+            # It's a file-like object (BytesIO or file object)
+            if isinstance(file, io.BytesIO):
+                # It's already a BytesIO object
+                excel_data = pd.ExcelFile(file, engine='openpyxl')
+            else:
+                # It's a file object
+                file_bytes = file.read()
+                # Reset file pointer if possible
+                if hasattr(file, 'seek') and hasattr(file, 'tell'):
+                    file.seek(0)
+                
+                # Try to determine the file type from the first bytes
+                if file_bytes.startswith(b'PK'):
+                    # Likely an .xlsx file
+                    excel_data = pd.ExcelFile(io.BytesIO(file_bytes), engine='openpyxl')
+                else:
+                    # Likely an .xls file
+                    excel_data = pd.ExcelFile(io.BytesIO(file_bytes), engine='xlrd')
         else:
             # It's a file path
-            excel_data = pd.ExcelFile(file)
+            # Determine engine based on file extension
+            if str(file).endswith('.xlsx'):
+                excel_data = pd.ExcelFile(file, engine='openpyxl')
+            else:
+                excel_data = pd.ExcelFile(file, engine='xlrd')
         
         processed_data = {}
         

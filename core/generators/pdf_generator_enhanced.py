@@ -297,6 +297,10 @@ class EnhancedPDFGenerator:
                     args=[
                         '--disable-web-security',
                         '--disable-features=IsolateOrigins,site-per-process',
+                        '--disable-smart-shrinking',  # CRITICAL: Disable intelligent shrinking
+                        '--no-margins',  # No default margins
+                        '--disable-gpu',  # Disable GPU acceleration
+                        '--run-all-compositor-stages-before-draw',  # Complete rendering
                     ]
                 )
                 page = await browser.new_page()

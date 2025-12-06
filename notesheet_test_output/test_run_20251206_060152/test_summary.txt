@@ -1,0 +1,73 @@
+======================================================================
+NOTE SHEET GENERATION - TEST SUMMARY
+======================================================================
+
+Test Run: 20251206_060152
+Total Files Processed: 8
+
+Success: 4
+Errors: 4
+
+----------------------------------------------------------------------
+DETAILED RESULTS
+----------------------------------------------------------------------
+
+1. 0511-N-extra.xlsx
+   Status: ERROR
+   Error: Unknown format code 'f' for object of type 'str'
+
+2. 0511Wextra.xlsx
+   Status: ERROR
+   Error: Unknown format code 'f' for object of type 'str'
+
+3. 3rdFinalNoExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdFinalNoExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 265,077.46
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+4. 3rdFinalVidExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdFinalVidExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 265,077.46
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+5. 3rdRunningNoExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdRunningNoExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 226,159.92
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+6. 3rdRunningVidExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdRunningVidExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 226,159.92
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+7. FirstFINALnoExtra.xlsx
+   Status: ERROR
+   Error: Unknown format code 'f' for object of type 'str'
+
+8. FirstFINALvidExtra.xlsx
+   Status: ERROR
+   Error: Unknown format code 'f' for object of type 'str'
+
+----------------------------------------------------------------------
+STATISTICS
+----------------------------------------------------------------------
+
+Average Notes per File: 8.0
+Total Work Order Amount: Rs. 1,354,292.00
+Total This Bill Amount: Rs. 982,474.76

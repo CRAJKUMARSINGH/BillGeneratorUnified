@@ -103,127 +103,127 @@
                 <tr>
                     <td>2. Agreement No.</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Agreement No', data.title_data.get('Work Order No', '')) }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 4: A&F Sanction -->
                 <tr>
                     <td>3. A&F Sanction</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('A&F Sanction', 'Refer Agreement') }}</td>
+                    <td colspan="2">Refer Agreement</td>
                 </tr>
                 
                 <!-- Row 5: Technical Section -->
                 <tr>
                     <td>4. Technical Section</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Technical Section', 'Refer Agreement') }}</td>
+                    <td colspan="2">Refer Agreement</td>
                 </tr>
                 
                 <!-- Row 6: MB No. & Page -->
                 <tr>
                     <td>5. MB No. & Page</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Measurement Book No', '887') }}/Page No. {{ data.title_data.get('Measurement Book Page', '04-20') }}</td>
+                    <td colspan="2">887/Page No. 04-20</td>
                 </tr>
                 
                 <!-- Row 7: Name of Sub Division -->
                 <tr>
                     <td>6. Name of Sub Division</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Sub Division', 'Rajsamand') }}</td>
+                    <td colspan="2">Rajsamand</td>
                 </tr>
                 
                 <!-- Row 8: Name of Work -->
                 <tr>
                     <td>7. Name of Work</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Name of Work', data.title_data.get('Project Name', '')) }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 9: Name of Contractor -->
                 <tr>
                     <td>8. Name of Contractor</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Name of Firm', data.title_data.get('Contractor Name', '')) }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 10: Original/Deposit -->
                 <tr>
                     <td>9. Original/Deposit</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Original/Deposit', 'Deposit') }}</td>
+                    <td colspan="2">Deposit</td>
                 </tr>
                 
                 <!-- Row 11: Budget Provision -->
                 <tr>
                     <td>10. Budget Provision</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Budget Provision', 'Adequate') }}</td>
+                    <td colspan="2">Adequate</td>
                 </tr>
                 
                 <!-- Row 12: Date of Commencement -->
                 <tr>
                     <td>11. Date of Commencement</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Date of Commencement', '') }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 13: Date of Completion -->
                 <tr>
                     <td>12. Date of Completion</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Date of Completion', '') }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 14: Actual date of completion -->
                 <tr>
                     <td>13. Actual date of completion</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Actual Date of Completion', '') }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 15: Delay case -->
                 <tr>
                     <td colspan="2">14. In case Delay whether Provisional Extension Granted</td>
-                    <td colspan="2">{{ data.title_data.get('Delay Extension', 'No.') }}</td>
+                    <td colspan="2">No.</td>
                 </tr>
                 
                 <!-- Row 16: Notice issued -->
                 <tr>
                     <td>15. Whether any notice issued</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Notice Issued', 'No.') }}</td>
+                    <td colspan="2">No.</td>
                 </tr>
                 
                 <!-- Row 17: Work Order Amount -->
                 <tr>
                     <td colspan="2">16. Total Amount of work order Rs.</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.work_order_amount) if data.totals.work_order_amount else '' }}</td>
+                    <td colspan="2">338,573.00</td>
                 </tr>
                 
                 <!-- Row 18: 17.A - Upto Last Bill -->
                 <tr>
                     <td colspan="2">17.A. Sum of payment upto last bill Rs.</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.last_bill_amount) if data.totals.last_bill_amount else '0.00' }}</td>
+                    <td colspan="2">125,956.00</td>
                 </tr>
                 
                 <!-- Row 19: 17.B - This Bill -->
                 <tr>
                     <td colspan="2">B. Amount of this bill</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.net_payable) if data.totals.net_payable else (data.totals.grand_total if data.totals.grand_total else '') }}</td>
+                    <td colspan="2">226,159.92</td>
                 </tr>
                 
                 <!-- Row 20: 17.C - Total -->
                 <tr>
                     <td colspan="2">C. Actual expenditure upto this bill = (A + B)</td>
-                    <td colspan="2">{% set last_bill = data.totals.last_bill_amount or 0 %}{% set this_bill = data.totals.net_payable if data.totals.net_payable else (data.totals.grand_total or 0) %}{{ "{:,.2f}".format(last_bill + this_bill) }}</td>
+                    <td colspan="2">352,115.92</td>
                 </tr>
                 
                 <!-- Row 21: Balance -->
                 <tr>
                     <td colspan="2">18. Balance to be done = (16 - 17.C)</td>
-                    <td colspan="2">{% if data.totals.work_order_amount and data.totals.last_bill_amount %}{{ "{:,.2f}".format(data.totals.work_order_amount - (data.totals.last_bill_amount + (data.totals.net_payable if data.totals.net_payable else data.totals.grand_total))) }}{% endif %}</td>
+                    <td colspan="2">-13,542.92</td>
                 </tr>
                 
                 <!-- Row 22: Prorata Progress -->
@@ -235,7 +235,7 @@
                 <!-- Row 23: Date of Measurement -->
                 <tr>
                     <td colspan="2">20. Date on Which record Measurement taken by JEN AC</td>
-                    <td colspan="2">{{ data.title_data.get('Measurement Date', '') }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 24: Date of Checking -->
@@ -259,31 +259,31 @@
                 <!-- Row 27: Repair Work -->
                 <tr>
                     <td colspan="2">(A) Is It a Repair / Maintenance Work</td>
-                    <td colspan="2">{{ data.title_data.get('Repair Work', 'No') }}</td>
+                    <td colspan="2">No</td>
                 </tr>
                 
                 <!-- Row 28: Extra Item -->
                 <tr>
                     <td colspan="2">(B) Extra Item</td>
-                    <td colspan="2">{% if data.totals.extra_items_sum and data.totals.extra_items_sum > 0 %}Yes{% else %}No{% endif %}</td>
+                    <td colspan="2">No</td>
                 </tr>
                 
                 <!-- Row 29: Extra Item Amount -->
                 <tr>
                     <td colspan="2">Amount of Extra Items Rs.</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.extra_items_sum) if data.totals.extra_items_sum and data.totals.extra_items_sum > 0 else '' }}</td>
+                    <td colspan="2"></td>
                 </tr>
                 
                 <!-- Row 30: Excess Quantity -->
                 <tr>
                     <td colspan="2">(C) Any Excess Item</td>
-                    <td colspan="2">{{ data.title_data.get('Excess Quantity', 'No') }}</td>
+                    <td colspan="2">No</td>
                 </tr>
                 
                 <!-- Row 31: Delay Comment -->
                 <tr>
                     <td colspan="2">(D) Any Inadvertent Delay in Bill Submission?</td>
-                    <td colspan="2">{{ data.title_data.get('Delay Comment', 'No') }}</td>
+                    <td colspan="2">No</td>
                 </tr>
                 
                 <!-- Row 32: Deductions header -->
@@ -297,54 +297,54 @@
                 <tr>
                     <td colspan="2">SD @ 10%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.sd_amount) if data.totals.sd_amount else '0' }}</td>
+                    <td>35,212</td>
                 </tr>
                 
                 <!-- Row 34: IT -->
                 <tr>
                     <td colspan="2">IT @ 2%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.it_amount) if data.totals.it_amount else '0' }}</td>
+                    <td>7,042</td>
                 </tr>
                 
                 <!-- Row 35: GST -->
                 <tr>
                     <td colspan="2">GST @ 2%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.gst_amount) if data.totals.gst_amount else '0' }}</td>
+                    <td>7,042</td>
                 </tr>
                 
                 <!-- Row 36: LC -->
                 <tr>
                     <td colspan="2">LC @ 1%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.lc_amount) if data.totals.lc_amount else '0' }}</td>
+                    <td>3,521</td>
                 </tr>
                 
                 <!-- Row 37: Dep-V -->
                 <tr>
                     <td colspan="2">Dep-V</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.liquidated_damages) if data.totals.liquidated_damages else '0' }}</td>
+                    <td>0</td>
                 </tr>
                 
                 <!-- Row 38: Cheque Amount -->
                 <tr>
                     <td colspan="2">Cheque/Amount</td>
                     <td></td>
-                    <td>{% set bill_amt = data.totals.net_payable if data.totals.net_payable else (data.totals.grand_total or 0) %}{% set deductions = data.totals.total_deductions or 0 %}{{ "{:,.0f}".format(bill_amt - deductions) }}</td>
+                    <td>173,343</td>
                 </tr>
                 
                 <!-- Row 39: Total -->
                 <tr>
                     <td colspan="2">Total</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.net_payable if data.totals.net_payable else data.totals.grand_total) if data.totals.grand_total else '' }}</td>
+                    <td>226,160</td>
                 </tr>
                 
                 <!-- Row 40: Note starts -->
                 <tr>
-                    <td colspan="4" class="note-cell">1. The work has been completed {{ "%.2f" % ((data.totals.grand_total / data.totals.work_order_amount * 100) if data.totals.work_order_amount and data.totals.work_order_amount > 0 else 0) }}% of the Work Order Amount.</td>
+                    <td colspan="4" class="note-cell">1. The work has been completed 104.00% of the Work Order Amount.</td>
                 </tr>
                 
                 <!-- Row 41: Empty or continuation -->
@@ -354,7 +354,14 @@
                 
                 <!-- Row 42: Generated Notes (merged A42:D42) -->
                 <tr>
-                    <td colspan="4" class="note-cell">{{ data.notes | join('\n') if data.notes else 'Note not available' }}</td>
+                    <td colspan="4" class="note-cell">1. The work has been completed 104.00% of the Work Order Amount.
+2. Requisite Deviation Statement is enclosed. The Overall Excess is less than or equal to 5% and is having approval jurisdiction under this office.
+3. Quality Control (QC) test reports attached.
+4. A copy of Hand Over statement duly signed by client department representative is attached.
+5. Please peruse above details for necessary decision-making.
+ 
+                      Premlata Jain
+                     AAO- As Auditor</td>
                 </tr>
             </tbody>
         </table>

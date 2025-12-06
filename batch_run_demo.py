@@ -65,7 +65,11 @@ def main():
             
             # Process file
             with open(file_path, 'rb') as f:
-                result = processor._process_single_file(f, output_folder)
+                # Pass the file content directly instead of the file object
+                file_content = f.read()
+                from io import BytesIO
+                file_obj = BytesIO(file_content)
+                result = processor._process_single_file(file_obj, output_folder)
             
             results[file_path.name] = {
                 'status': 'success',

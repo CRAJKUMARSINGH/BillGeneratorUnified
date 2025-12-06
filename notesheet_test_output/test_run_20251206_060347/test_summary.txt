@@ -1,0 +1,93 @@
+======================================================================
+NOTE SHEET GENERATION - TEST SUMMARY
+======================================================================
+
+Test Run: 20251206_060347
+Total Files Processed: 8
+
+Success: 8
+Errors: 0
+
+----------------------------------------------------------------------
+DETAILED RESULTS
+----------------------------------------------------------------------
+
+1. 0511-N-extra.xlsx
+   Status: SUCCESS
+   Output: 0511-N-extra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 83,330.00
+   This Bill Amount: Rs. 87,588.16
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+2. 0511Wextra.xlsx
+   Status: SUCCESS
+   Output: 0511Wextra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 83,330.00
+   This Bill Amount: Rs. 87,588.16
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+3. 3rdFinalNoExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdFinalNoExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 265,077.46
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+4. 3rdFinalVidExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdFinalVidExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 265,077.46
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+5. 3rdRunningNoExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdRunningNoExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 226,159.92
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+6. 3rdRunningVidExtra.xlsx
+   Status: SUCCESS
+   Output: 3rdRunningVidExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 226,159.92
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+7. FirstFINALnoExtra.xlsx
+   Status: SUCCESS
+   Output: FirstFINALnoExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 376,560.89
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+8. FirstFINALvidExtra.xlsx
+   Status: SUCCESS
+   Output: FirstFINALvidExtra_notesheet.html
+   Notes Generated: 8
+   Work Order Amount: Rs. 338,573.00
+   This Bill Amount: Rs. 355,874.08
+   Extra Items: Rs. 0.00
+   Key Fields:
+
+----------------------------------------------------------------------
+STATISTICS
+----------------------------------------------------------------------
+
+Average Notes per File: 8.0
+Total Work Order Amount: Rs. 2,198,098.00
+Total This Bill Amount: Rs. 1,890,086.06
