@@ -38,13 +38,16 @@ def show_excel_mode(config):
         
         # Options
         with st.expander("⚙️ Generation Options"):
-            col1, col2 = st.columns(2)
-            
+            col1, col2, col3 = st.columns(3)
+                                
             with col1:
                 generate_pdf = st.checkbox("Generate PDF", value=True)
                 generate_html = st.checkbox("Generate HTML", value=True)
-            
+                                
             with col2:
+                generate_doc = st.checkbox("Generate DOC", value=False)
+                                    
+            with col3:
                 if config.features.advanced_pdf:
                     add_watermark = st.checkbox("Add Watermark", value=False)
                     compress_pdf = st.checkbox("Compress PDF", value=False)
@@ -72,41 +75,99 @@ def show_excel_mode(config):
                     else:
                         pdf_documents = {}
                     
+                    # Generate DOCs if requested
+                    if generate_doc:
+                        doc_documents = doc_generator.generate_doc_documents()
+                    else:
+                        doc_documents = {}
+                    
                     # Celebrate with balloons! 🎈
                     st.balloons()
-                    st.success(f"🎉 Generated {len(html_documents)} HTML documents and {len(pdf_documents)} PDF documents!")
+                    st.success(f"🎉 Generated {len(html_documents)} HTML documents, {len(pdf_documents)} PDF documents, and {len(doc_documents)} DOC documents!")
+                    
+                    # Create zip file for all documents
+                    import zipfile
+                    import io
+                    
+                    # Create in-memory zip file
+                    zip_buffer = io.BytesIO()
+                    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                        # Add HTML files to zip
+                        for doc_name, html_content in html_documents.items():
+                            zip_file.writestr(f"{doc_name}.html", html_content)
+                        
+                        # Add PDF files to zip (if generated)
+                        for doc_name, pdf_content in pdf_documents.items():
+                            zip_file.writestr(doc_name, pdf_content)
+                        
+                        # Add DOC files to zip (if generated)
+                        for doc_name, doc_content in doc_documents.items():
+                            zip_file.writestr(doc_name, doc_content)
+                    
+                    zip_buffer.seek(0)
                     
                     # Download buttons
                     st.markdown("### 📥 Download Documents")
                     
-                    # Create columns for download buttons
-                    cols = st.columns(min(3, len(html_documents)))
+                    # Zip download button (always shown)
+                    st.download_button(
+                        "📦 Download All Documents (ZIP)",
+                        data=zip_buffer,
+                        file_name="bill_documents.zip",
+                        mime="application/zip",
+                        key="zip_download"
+                    )
                     
-                    # HTML Downloads
-                    for idx, (doc_name, html_content) in enumerate(html_documents.items()):
-                        with cols[idx % 3]:
-                            st.download_button(
-                                f"📄 {doc_name}",
-                                data=html_content,
-                                file_name=f"{doc_name}.html",
-                                mime="text/html",
-                                key=f"html_{idx}"
-                            )
+                    # Individual downloads
+                    col1, col2, col3 = st.columns(3)
+                    
+                    with col1:
+                        st.markdown("#### 📄 HTML Documents")
+                        # Create columns for HTML download buttons
+                        cols = st.columns(min(3, len(html_documents)))
+                        
+                        # HTML Downloads
+                        for idx, (doc_name, html_content) in enumerate(html_documents.items()):
+                            with cols[idx % 3]:
+                                st.download_button(
+                                    f"📄 {doc_name}",
+                                    data=html_content,
+                                    file_name=f"{doc_name}.html",
+                                    mime="text/html",
+                                    key=f"html_{idx}"
+                                )
                     
                     # PDF Downloads (if generated)
                     if pdf_documents:
-                        st.markdown("### 📕 Download PDFs")
-                        cols_pdf = st.columns(min(3, len(pdf_documents)))
-                        
-                        for idx, (doc_name, pdf_content) in enumerate(pdf_documents.items()):
-                            with cols_pdf[idx % 3]:
-                                st.download_button(
-                                    f"📕 {doc_name}",
-                                    data=pdf_content,
-                                    file_name=doc_name,
-                                    mime="application/pdf",
-                                    key=f"pdf_{idx}"
-                                )
+                        with col2:
+                            st.markdown("#### 📕 PDF Documents")
+                            cols_pdf = st.columns(min(3, len(pdf_documents)))
+                            
+                            for idx, (doc_name, pdf_content) in enumerate(pdf_documents.items()):
+                                with cols_pdf[idx % 3]:
+                                    st.download_button(
+                                        f"📕 {doc_name}",
+                                        data=pdf_content,
+                                        file_name=doc_name,
+                                        mime="application/pdf",
+                                        key=f"pdf_{idx}"
+                                    )
+                    
+                    # DOC Downloads (if generated)
+                    if doc_documents:
+                        with col3:
+                            st.markdown("#### 📝 DOC Documents")
+                            cols_doc = st.columns(min(3, len(doc_documents)))
+                            
+                            for idx, (doc_name, doc_content) in enumerate(doc_documents.items()):
+                                with cols_doc[idx % 3]:
+                                    st.download_button(
+                                        f"📝 {doc_name}",
+                                        data=doc_content,
+                                        file_name=doc_name,
+                                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                        key=f"doc_{idx}"
+                                    )
                     
                 except Exception as e:
                     st.error(f"❌ Error: {str(e)}")

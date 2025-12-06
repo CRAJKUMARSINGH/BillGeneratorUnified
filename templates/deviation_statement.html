@@ -124,22 +124,36 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in data["items"] %}
+                {% for item in data["deviation_items"] %}
                     <tr {% if item.get('is_divider') %}style="font-weight: bold; background-color: #f0f0f0;"{% endif %}>
                         <td>{{ item.serial_no | default("") }}</td>
                         <td {% if item.get('is_divider') %}colspan="12" style="text-align: center;"{% endif %}>{{ item.description | default("") }}</td>
                         {% if not item.get('is_divider') %}
-                        <td>{{ item.unit | default("") }}</td>
-                        <td>{{ item.qty_wo | default("") }}</td>
-                        <td>{{ item.rate | default("") }}</td>
-                        <td>{{ item.amt_wo | default("") }}</td>
-                        <td>{{ item.qty_bill | default("") }}</td>
-                        <td>{{ item.amt_bill | default("") }}</td>
-                        <td>{{ item.excess_qty | default("") }}</td>
-                        <td>{{ item.excess_amt | default("") }}</td>
-                        <td>{{ item.saving_qty | default("") }}</td>
-                        <td>{{ item.saving_amt | default("") }}</td>
-                        <td>{{ item.remark | default("") }}</td>
+                            {% if item.rate == 0 or item.rate == '' or item.rate is none %}
+                                <!-- Leave columns 3 to 12 blank when rate is zero or blank -->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            {% else %}
+                                <td>{{ item.unit | default("") }}</td>
+                                <td>{{ item.qty_wo | default("") }}</td>
+                                <td>{{ item.rate | default("") }}</td>
+                                <td>{{ item.amt_wo | default("") }}</td>
+                                <td>{{ item.qty_bill | default("") }}</td>
+                                <td>{{ item.amt_bill | default("") }}</td>
+                                <td>{{ item.excess_qty | default("") }}</td>
+                                <td>{{ item.excess_amt | default("") }}</td>
+                                <td>{{ item.saving_qty | default("") }}</td>
+                                <td>{{ item.saving_amt | default("") }}</td>
+                            {% endif %}
+                            <td>{{ item.remark | default("") }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -228,28 +242,6 @@
                 </tr>
             </tbody>
         </table>
-        
-        <!-- Closure Lines - Two Column Format -->
-        <div style="margin-top: 50px; width: 100%; display: table;">
-            <div style="display: table-row;">
-                <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                    <div style="border-top: 2px solid #000; padding-top: 10px; text-align: center; margin-top: 40px;">
-                        <strong style="font-size: 10pt;">Prepared by</strong><br><br>
-                        <span style="font-size: 8pt;">Assistant Engineer</span><br>
-                        <span style="font-size: 8pt;">PWD, Udaipur</span><br>
-                        <span style="font-size: 8pt;">Date: {{ data.current_date }}</span>
-                    </div>
-                </div>
-                <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                    <div style="border-top: 2px solid #000; padding-top: 10px; text-align: center; margin-top: 40px;">
-                        <strong style="font-size: 10pt;">Checked & Approved by</strong><br><br>
-                        <span style="font-size: 8pt;">Executive Engineer</span><br>
-                        <span style="font-size: 8pt;">PWD, Udaipur</span><br>
-                        <span style="font-size: 8pt;">Date: {{ data.current_date }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 </html>

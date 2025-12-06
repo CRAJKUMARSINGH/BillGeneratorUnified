@@ -98,6 +98,18 @@
 </head>
 <body>
     <div class="container">
+        <!-- Title Information from Excel Title sheet data -->
+        <div style="border: 2px solid #333; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9;">
+            <h2 style="text-align: center; margin: 0 0 10px 0; color: #333;">{{ data.title_data.get('Project Name', 'Project Name Not Available') }}</h2>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <div><strong>Work Order No:</strong> {{ data.title_data.get('Work Order No', 'N/A') }}</div>
+                <div><strong>Contract No:</strong> {{ data.title_data.get('Agreement No.', 'N/A') }}</div>
+                <div><strong>Date:</strong> {{ data.title_data.get('Bill Date', 'N/A') }}</div>
+            </div>
+            <div style="margin-top: 8px;">
+                <div><strong>Contractor:</strong> {{ data.title_data.get('Contractor Name', 'N/A') }}</div>
+            </div>
+        </div>
         <div class="header">
             <h2>CONTRACTOR BILL</h2>
             {% for row in data.header %}
@@ -144,40 +156,59 @@
             </thead>
             <tbody>
                 {% for item in data["items"] %}
+                    {% set qty_since = item.quantity_since_last if item.quantity_since_last is not none else 0 %}
+                    {% set qty_upto = item.quantity_upto_date if item.quantity_upto_date is not none else (item.quantity if item.quantity is not none else 0) %}
+                    {% set rate = item.rate if item.rate is not none else 0 %}
+                    {% set amount = item.amount if item.amount is not none else 0 %}
+                    {% set amount_prev = item.amount_previous if item.amount_previous is not none else 0 %}
+                    {% if qty_since != 0 or qty_upto != 0 or rate != 0 or amount != 0 or amount_prev != 0 or (item.description and item.description|trim) %}
                     <tr>
-                        <td>{{ item.unit | default("") }}</td>
-                        <td>{{ item.quantity_since_last if item.quantity_since_last|trim else "" }}</td>
-                        <td>{{ item.quantity_upto_date if item.quantity_upto_date|trim else item.quantity if item.quantity|trim else "" }}</td>
-                        <td>{{ item.serial_no | default("") }}</td>
-                        <td class="{% if item.bold %}bold{% endif %} {% if item.underline %}underline{% endif %}">{{ item.description | default("") }}</td>
-                        <td>{{ item.rate if item.rate|trim else "" }}</td>
-                        <td>{{ item.amount | default("") }}</td>
-                        <td>{{ item.amount_previous | default("") }}</td>
+                        {% if rate == 0 or rate == '' or rate is none %}
+                            <!-- Leave columns 1 to 3 and 6 to 8 blank when rate is zero or blank -->
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ item.serial_no | default("") }}</td>
+                            <td class="{% if item.bold %}bold{% endif %} {% if item.underline %}underline{% endif %}">{{ item.description | default("") }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        {% else %}
+                            <td>{{ item.unit | default("") }}</td>
+                            <td>{{ "{:.2f}".format(qty_since) if qty_since != 0 else "" }}</td>
+                            <td>{{ "{:.2f}".format(qty_upto) if qty_upto != 0 else "" }}</td>
+                            <td>{{ item.serial_no | default("") }}</td>
+                            <td class="{% if item.bold %}bold{% endif %} {% if item.underline %}underline{% endif %}">{{ item.description | default("") }}</td>
+                            <td>{{ "{:.2f}".format(rate) if rate != 0 else "" }}</td>
+                            <td>{{ "{:.2f}".format(amount) if amount != 0 else "" }}</td>
+                            <td>{{ "{:.2f}".format(amount_prev) if amount_prev != 0 else "" }}</td>
+                        {% endif %}
                         <td>{{ item.remark | default("") }}</td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 <tr>
                     <td colspan="4"></td>
                     <td>Grand Total Rs.</td>
                     <td></td>
-                    <td>{{ data.totals.grand_total | default("") }}</td>
-                    <td>{{ data.totals.grand_total | default("") }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.grand_total) if data.totals.grand_total and data.totals.grand_total != 0 else "" }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.grand_total) if data.totals.grand_total and data.totals.grand_total != 0 else "" }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
-                    <td>Tender Premium @ {{ "%.2f%%" % (data.totals.premium.percent * 100) if data.totals.premium.percent is not none else "" }}</td>
-                    <td>{{ "%.2f%%" % (data.totals.premium.percent * 100) if data.totals.premium.percent is not none else "" }}</td>
-                    <td>{{ data.totals.premium.amount | default("") }}</td>
-                    <td>{{ data.totals.premium.amount | default("") }}</td>
+                    <td>Tender Premium @ {{ "{:.2f}%".format(data.totals.premium.percent * 100) if data.totals.premium.percent is not none and data.totals.premium.percent != 0 else "" }}</td>
+                    <td>{{ "{:.2f}%".format(data.totals.premium.percent * 100) if data.totals.premium.percent is not none and data.totals.premium.percent != 0 else "" }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.premium.amount) if data.totals.premium.amount and data.totals.premium.amount != 0 else "" }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.premium.amount) if data.totals.premium.amount and data.totals.premium.amount != 0 else "" }}</td>
                     <td></td>
                 </tr>               
                 <tr>
                     <td colspan="9" style="text-align: left; padding-left: 10px;">
                         Sum of Extra Items (including Tender Premium): 
                         {% if data.totals.get('extra_items_sum') and data.totals.get('extra_items_sum') > 0 %}
-                            Rs. {{ data.totals.extra_items_sum }}
-                        {% else %}
+                            Rs. {{ "{:.2f}".format(data.totals.extra_items_sum) }}
+                        {% elif data.totals.get('extra_items_sum') == 0 %}
                             NIL
                         {% endif %}
                     </td>
@@ -186,50 +217,31 @@
                     <td colspan="4"></td>
                     <td>Payable Amount Rs.</td>
                     <td></td>
-                    <td>{{ data.totals.payable | default("") }}</td>
-                    <td>{{ data.totals.payable | default("") }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.payable) if data.totals.payable and data.totals.payable != 0 else "" }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.payable) if data.totals.payable and data.totals.payable != 0 else "" }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
                     <td>Less Amount Paid vide Last Bill Rs.</td>
                     <td></td>
-                    <td>{{ data.totals.last_bill_amount | round(2) if data.totals.last_bill_amount else "0.00" }}</td>
-                    <td>{{ data.totals.last_bill_amount | round(2) if data.totals.last_bill_amount else "0.00" }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.last_bill_amount) if data.totals.last_bill_amount and data.totals.last_bill_amount != 0 else "" }}</td>
+                    <td>{{ "{:.2f}".format(data.totals.last_bill_amount) if data.totals.last_bill_amount and data.totals.last_bill_amount != 0 else "" }}</td>
                     <td></td>
                 </tr>
                 <tr style="background-color: #f0f0f0;">
                     <td colspan="4"></td>
                     <td style="font-weight: bold;">Net Payable Amount Rs.</td>
                     <td></td>
-                    <td style="font-weight: bold;">{{ data.totals.net_payable | default(data.totals.payable) | round(2) }}</td>
-                    <td style="font-weight: bold;">{{ data.totals.net_payable | default(data.totals.payable) | round(2) }}</td>
+                    <td style="font-weight: bold;">{{ "{:.2f}".format(data.totals.net_payable if data.totals.net_payable and data.totals.net_payable != 0 else (data.totals.payable if data.totals.payable and data.totals.payable != 0 else "")) }}</td>
+                    <td style="font-weight: bold;">{{ "{:.2f}".format(data.totals.net_payable if data.totals.net_payable and data.totals.net_payable != 0 else (data.totals.payable if data.totals.payable and data.totals.payable != 0 else "")) }}</td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
         
-        <!-- Closure Lines - Two Column Format -->
-        <div style="margin-top: 50px; width: 100%; display: table;">
-            <div style="display: table-row;">
-                <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                    <div style="border-top: 2px solid #000; padding-top: 10px; text-align: center; margin-top: 40px;">
-                        <strong style="font-size: 11pt;">Prepared by</strong><br><br>
-                        <span style="font-size: 9pt;">Assistant Engineer</span><br>
-                        <span style="font-size: 9pt;">PWD, Udaipur</span><br>
-                        <span style="font-size: 9pt;">Date: {{ data.current_date }}</span>
-                    </div>
-                </div>
-                <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                    <div style="border-top: 2px solid #000; padding-top: 10px; text-align: center; margin-top: 40px;">
-                        <strong style="font-size: 11pt;">Checked & Approved by</strong><br><br>
-                        <span style="font-size: 9pt;">Executive Engineer</span><br>
-                        <span style="font-size: 9pt;">PWD, Udaipur</span><br>
-                        <span style="font-size: 9pt;">Date: {{ data.current_date }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Removed Prepared by and Checked & Approved by sections as per user request -->
+        
     </div>
 </body>
 </html>

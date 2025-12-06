@@ -75,6 +75,9 @@ class BatchProcessor:
         doc_generator = DocumentGenerator(processed_data)
         html_documents = doc_generator.generate_all_documents()
         
+        # Generate DOC documents
+        doc_documents = doc_generator.generate_doc_documents()
+        
         # Generate PDFs with enhanced generator if available
         if use_enhanced_pdf:
             try:
@@ -113,9 +116,18 @@ class BatchProcessor:
             pdf_file = pdf_folder / doc_name
             pdf_file.write_bytes(pdf_content)
         
+        # Save DOC files
+        doc_folder = output_folder / "doc"
+        doc_folder.mkdir(exist_ok=True)
+        
+        for doc_name, doc_content in doc_documents.items():
+            doc_file = doc_folder / doc_name
+            doc_file.write_bytes(doc_content)
+        
         return {
             'html_files': list(html_documents.keys()),
             'pdf_files': list(pdf_documents.keys()),
+            'doc_files': list(doc_documents.keys()),
             'output_folder': str(output_folder)
         }
 
@@ -174,6 +186,8 @@ def show_batch_mode(config):
                         data = result['data']
                         col1, col2 = st.columns(2)
                         
+                        col1, col2, col3 = st.columns(3)
+                        
                         with col1:
                             st.markdown("**📄 HTML Files:**")
                             for html_file in data.get('html_files', []):
@@ -183,6 +197,11 @@ def show_batch_mode(config):
                             st.markdown("**📕 PDF Files:**")
                             for pdf_file in data.get('pdf_files', []):
                                 st.text(f"  • {pdf_file}")
+                        
+                        with col3:
+                            st.markdown("**📝 DOC Files:**")
+                            for doc_file in data.get('doc_files', []):
+                                st.text(f"  • {doc_file}")
                         
                         st.info(f"📂 All files saved to: {result['output_folder']}")
                 else:
@@ -194,3 +213,36 @@ def show_batch_mode(config):
             output_folders = [r['output_folder'] for r in results.values() if r['status'] == 'success']
             if output_folders:
                 st.code('\n'.join(output_folders), language='text')
+            
+            # Add ZIP download functionality for all processed files
+            if output_folders:
+                st.markdown("### 📦 Download All as ZIP")
+                st.info("Creating ZIP archive of all generated documents...")
+                
+                # Create zip of all output folders
+                import zipfile
+                import io
+                import shutil
+                
+                # Create temporary zip file
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                    for folder in output_folders:
+                        folder_path = Path(folder)
+                        if folder_path.exists():
+                            # Add all files in the folder to the zip
+                            for file_path in folder_path.rglob('*'):
+                                if file_path.is_file():
+                                    # Add file to zip with relative path
+                                    arc_name = f"{folder_path.name}/{file_path.relative_to(folder_path)}"
+                                    zip_file.write(file_path, arc_name)
+                
+                zip_buffer.seek(0)
+                
+                st.download_button(
+                    "📥 Download All Documents as ZIP",
+                    data=zip_buffer,
+                    file_name="all_bill_documents.zip",
+                    mime="application/zip",
+                    key="batch_zip_download"
+                )

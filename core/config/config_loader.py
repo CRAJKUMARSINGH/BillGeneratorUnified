@@ -72,6 +72,7 @@ class Processing:
         self.max_file_size_mb = processing_dict.get('max_file_size_mb', 50)
         self.enable_caching = processing_dict.get('enable_caching', True)
         self.pdf_engine = processing_dict.get('pdf_engine', 'reportlab')
+        self.auto_clean_cache = processing_dict.get('auto_clean_cache', False)
 
 
 class ConfigLoader:
@@ -123,7 +124,8 @@ class ConfigLoader:
             'processing': {
                 'max_file_size_mb': 50,
                 'enable_caching': True,
-                'pdf_engine': 'reportlab'
+                'pdf_engine': 'reportlab',
+                'auto_clean_cache': False
             }
         }
         return Config(default_config)

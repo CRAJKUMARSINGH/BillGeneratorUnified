@@ -2,50 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Running and FINAL BILL SCRUTINY SHEET</title>
+    <title>BILL SCRUTINY SHEET</title>
     <style>
         @page {
             size: A4 portrait;
             margin: 10mm 15mm 0mm 15mm; /* top right bottom left */
         }
+        
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+        
         body { 
-            font-family: Calibri, sans-serif; 
+            font-family: 'Calibri', 'Segoe UI', 'Arial', sans-serif; 
             font-size: 9pt; 
             margin: 0; 
             padding: 0;
+            line-height: 1.4;
+            color: #2c3e50;
+            background: #ffffff;
         }
+        
         .container { 
             width: 100%; 
             max-width: 188mm; 
             margin: 0 auto; 
             padding: 0; 
             box-sizing: border-box; 
+            background: #ffffff;
         }
+        
+        .header { 
+            text-align: center; 
+            margin-bottom: 8px; 
+            font-weight: 700;
+            font-size: 12pt;
+            color: #1a1a1a;
+            letter-spacing: 0.5px;
+            padding: 6px 0;
+            border-bottom: 2px solid #34495e;
+            text-transform: uppercase;
+        }
+        
         table { 
             width: 100%; 
             max-width: 188mm; 
             border-collapse: collapse; 
             table-layout: fixed; 
             margin: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        
         th, td { 
-            padding: 4px 5px; 
+            padding: 6px 8px; 
             text-align: left; 
             vertical-align: top; 
             overflow: hidden; 
-            border: 1px solid black; 
+            border: 1px solid #bdc3c7; 
             font-size: 9pt;
+            line-height: 1.4;
         }
-        .header { 
-            text-align: center; 
-            margin-bottom: 5px; 
-            font-weight: bold;
-            font-size: 11pt;
+        
+        /* Elegant row styling */
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
         }
+        
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        
+        /* Style for first column (labels) */
+        td:first-child {
+            font-weight: 500;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+        }
+        
+        /* Style for amount cells */
+        .amount-cell {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #155724;
+            background-color: #f0f8f4 !important;
+        }
+        
+        /* Financial section rows */
+        .financial-row {
+            background-color: #e8f4f8 !important;
+            font-weight: 500;
+        }
+        
+        /* Deductions section */
+        .deductions-header {
+            background-color: #fff3cd !important;
+            font-weight: 600;
+            border-top: 2px solid #ffc107;
+        }
+        
+        .deduction-row {
+            background-color: #fff9e6 !important;
+        }
+        
+        /* Total and cheque rows */
+        .total-row {
+            background-color: #d4edda !important;
+            font-weight: 600;
+            border-top: 2px solid #28a745;
+            font-size: 10pt;
+        }
+        
+        .cheque-row {
+            background-color: #d1ecf1 !important;
+            font-weight: 600;
+            border-top: 2px solid #17a2b8;
+        }
+        
+        /* Section separator */
+        .section-separator {
+            border-top: 2px solid #95a5a6;
+        }
+        
         .note-cell { 
             white-space: pre-wrap; 
             word-wrap: break-word;
-            line-height: 1.3;
+            line-height: 1.5;
+            padding: 8px 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            font-size: 9pt;
+            color: #495057;
+        }
+        
+        /* Empty cells styling */
+        td:empty {
+            background-color: #ffffff;
+        }
+        
+        /* Better borders */
+        table {
+            border: 2px solid #34495e;
+        }
+        
+        td, th {
+            border-left: 1px solid #dee2e6;
+            border-right: 1px solid #dee2e6;
+            border-top: 1px solid #dee2e6;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        /* Notes section styling */
+        .note-section {
+            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 2px;
+        }
+        
+        /* Better typography */
+        body {
+            font-smooth: always;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Print optimizations */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
         
         /* Column widths matching workbook: A=36.4mm, B=17.6mm, C=18.9mm, D=34.9mm */
@@ -87,7 +215,7 @@
     <div class="container">
         <!-- Row 1: Header -->
         <div class="header">
-            Running and FINAL BILL SCRUTINY SHEET
+            BILL SCRUTINY SHEET - {{ data.title_data.get('Bill Number', 'Bill Number Not Available') }}
         </div>
         
         <table class="specific-table">
@@ -186,7 +314,7 @@
                 <!-- Row 15: Delay case -->
                 <tr>
                     <td colspan="2">14. In case Delay whether Provisional Extension Granted</td>
-                    <td colspan="2">{{ data.title_data.get('Delay Extension', 'No.') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Delay Extension', '315') }}</td>
                 </tr>
                 
                 <!-- Row 16: Notice issued -->
@@ -197,33 +325,33 @@
                 </tr>
                 
                 <!-- Row 17: Work Order Amount -->
-                <tr>
+                <tr class="financial-row">
                     <td colspan="2">16. Total Amount of work order Rs.</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.work_order_amount) if data.totals.work_order_amount else '' }}</td>
+                    <td colspan="2" class="amount-cell">{{ "{:,.2f}".format(data.totals.work_order_amount) if data.totals.work_order_amount else '' }}</td>
                 </tr>
                 
                 <!-- Row 18: 17.A - Upto Last Bill -->
-                <tr>
+                <tr class="financial-row">
                     <td colspan="2">17.A. Sum of payment upto last bill Rs.</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.last_bill_amount) if data.totals.last_bill_amount else '0.00' }}</td>
+                    <td colspan="2" class="amount-cell">{{ "{:,.2f}".format(data.totals.last_bill_amount) if data.totals.last_bill_amount else '0.00' }}</td>
                 </tr>
                 
                 <!-- Row 19: 17.B - This Bill -->
-                <tr>
+                <tr class="financial-row">
                     <td colspan="2">B. Amount of this bill</td>
-                    <td colspan="2">{{ "{:,.2f}".format(data.totals.net_payable) if data.totals.net_payable else (data.totals.grand_total if data.totals.grand_total else '') }}</td>
+                    <td colspan="2" class="amount-cell">{{ "{:,.2f}".format(data.totals.net_payable) if data.totals.net_payable else (data.totals.grand_total if data.totals.grand_total else '') }}</td>
                 </tr>
                 
                 <!-- Row 20: 17.C - Total -->
-                <tr>
+                <tr class="financial-row">
                     <td colspan="2">C. Actual expenditure upto this bill = (A + B)</td>
-                    <td colspan="2">{% set last_bill = data.totals.last_bill_amount or 0 %}{% set this_bill = data.totals.net_payable if data.totals.net_payable else (data.totals.grand_total or 0) %}{{ "{:,.2f}".format(last_bill + this_bill) }}</td>
+                    <td colspan="2" class="amount-cell">{% set last_bill = data.totals.last_bill_amount or 0 %}{% set this_bill = data.totals.net_payable if data.totals.net_payable else (data.totals.grand_total or 0) %}{{ "{:,.2f}".format(last_bill + this_bill) }}</td>
                 </tr>
                 
                 <!-- Row 21: Balance -->
-                <tr>
+                <tr class="financial-row">
                     <td colspan="2">18. Balance to be done = (16 - 17.C)</td>
-                    <td colspan="2">{% if data.totals.work_order_amount and data.totals.last_bill_amount %}{{ "{:,.2f}".format(data.totals.work_order_amount - (data.totals.last_bill_amount + (data.totals.net_payable if data.totals.net_payable else data.totals.grand_total))) }}{% endif %}</td>
+                    <td colspan="2" class="amount-cell">{% if data.totals.work_order_amount and data.totals.last_bill_amount %}{{ "{:,.2f}".format(data.totals.work_order_amount - (data.totals.last_bill_amount + (data.totals.net_payable if data.totals.net_payable else data.totals.grand_total))) }}{% endif %}</td>
                 </tr>
                 
                 <!-- Row 22: Prorata Progress -->
@@ -251,7 +379,7 @@
                 </tr>
                 
                 <!-- Row 26: Other Inputs -->
-                <tr>
+                <tr class="section-separator">
                     <td colspan="2">23. Other Inputs</td>
                     <td colspan="2">-------------------</td>
                 </tr>
@@ -287,74 +415,64 @@
                 </tr>
                 
                 <!-- Row 32: Deductions header -->
-                <tr>
+                <tr class="deductions-header section-separator">
                     <td colspan="2">Deductions:-</td>
                     <td>Rs.</td>
                     <td></td>
                 </tr>
                 
                 <!-- Row 33: SD -->
-                <tr>
+                <tr class="deduction-row">
                     <td colspan="2">SD @ 10%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.sd_amount) if data.totals.sd_amount else '0' }}</td>
+                    <td class="amount-cell">{{ "{:,.0f}".format(data.totals.sd_amount) if data.totals.sd_amount else '0' }}</td>
                 </tr>
                 
                 <!-- Row 34: IT -->
-                <tr>
+                <tr class="deduction-row">
                     <td colspan="2">IT @ 2%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.it_amount) if data.totals.it_amount else '0' }}</td>
+                    <td class="amount-cell">{{ "{:,.0f}".format(data.totals.it_amount) if data.totals.it_amount else '0' }}</td>
                 </tr>
                 
                 <!-- Row 35: GST -->
-                <tr>
+                <tr class="deduction-row">
                     <td colspan="2">GST @ 2%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.gst_amount) if data.totals.gst_amount else '0' }}</td>
+                    <td class="amount-cell">{{ "{:,.0f}".format(data.totals.gst_amount) if data.totals.gst_amount else '0' }}</td>
                 </tr>
                 
                 <!-- Row 36: LC -->
-                <tr>
+                <tr class="deduction-row">
                     <td colspan="2">LC @ 1%</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.lc_amount) if data.totals.lc_amount else '0' }}</td>
+                    <td class="amount-cell">{{ "{:,.0f}".format(data.totals.lc_amount) if data.totals.lc_amount else '0' }}</td>
                 </tr>
                 
                 <!-- Row 37: Dep-V -->
-                <tr>
+                <tr class="deduction-row">
                     <td colspan="2">Dep-V</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.liquidated_damages) if data.totals.liquidated_damages else '0' }}</td>
+                    <td class="amount-cell">{{ "{:,.0f}".format(data.totals.liquidated_damages) if data.totals.liquidated_damages else '0' }}</td>
                 </tr>
                 
                 <!-- Row 38: Cheque Amount -->
-                <tr>
+                <tr class="cheque-row">
                     <td colspan="2">Cheque/Amount</td>
                     <td></td>
-                    <td>{% set bill_amt = data.totals.net_payable if data.totals.net_payable else (data.totals.grand_total or 0) %}{% set deductions = data.totals.total_deductions or 0 %}{{ "{:,.0f}".format(bill_amt - deductions) }}</td>
+                    <td class="amount-cell">{% set bill_amt = data.totals.net_payable if data.totals.net_payable else (data.totals.grand_total or 0) %}{% set deductions = data.totals.total_deductions or 0 %}{{ "{:,.0f}".format(bill_amt - deductions) }}</td>
                 </tr>
                 
                 <!-- Row 39: Total -->
-                <tr>
+                <tr class="total-row">
                     <td colspan="2">Total</td>
                     <td></td>
-                    <td>{{ "{:,.0f}".format(data.totals.net_payable if data.totals.net_payable else data.totals.grand_total) if data.totals.grand_total else '' }}</td>
+                    <td class="amount-cell">{{ "{:,.0f}".format(data.totals.net_payable if data.totals.net_payable else data.totals.grand_total) if data.totals.grand_total else '' }}</td>
                 </tr>
                 
                 <!-- Row 40: Note starts -->
-                <tr>
+                <tr class="note-section">
                     <td colspan="4" class="note-cell">1. The work has been completed {{ "%.2f" % ((data.totals.grand_total / data.totals.work_order_amount * 100) if data.totals.work_order_amount and data.totals.work_order_amount > 0 else 0) }}% of the Work Order Amount.</td>
-                </tr>
-                
-                <!-- Row 41: Empty or continuation -->
-                <tr>
-                    <td colspan="4"></td>
-                </tr>
-                
-                <!-- Row 42: Generated Notes (merged A42:D42) -->
-                <tr>
-                    <td colspan="4" class="note-cell">{{ data.notes | join('\n') if data.notes else 'Note not available' }}</td>
                 </tr>
             </tbody>
         </table>

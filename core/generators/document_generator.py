@@ -9,6 +9,10 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import tempfile
 from pathlib import Path
+from docx import Document
+from docx.shared import Inches
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.shared import qn
 
 class DocumentGenerator:
     """Generates various billing documents from processed Excel data using Jinja2 templates"""
@@ -219,31 +223,48 @@ class DocumentGenerator:
         # Prepare items data structure for templates
         items = []
         for item in work_items:
-            items.append({
-                'unit': item['unit'],
-                'quantity_since_last': item['quantity_since'],
-                'quantity_upto_date': item['quantity_upto'],
-                'serial_no': item['item_no'],
-                'description': item['description'],
-                'rate': item['rate'],
-                'amount': item['amount_upto'],
-                'amount_previous': item['amount_since'],
-                'remark': item['remark']
-            })
+            # Skip rows with all zeros (empty rows)
+            qty_since = item.get('quantity_since', 0) or 0
+            qty_upto = item.get('quantity_upto', 0) or 0
+            rate = item.get('rate', 0) or 0
+            amount_upto = item.get('amount_upto', 0) or 0
+            amount_since = item.get('amount_since', 0) or 0
+            description = str(item.get('description', '')).strip()
+            
+            # Only add if there's actual data (non-zero values or description)
+            if qty_since != 0 or qty_upto != 0 or rate != 0 or amount_upto != 0 or amount_since != 0 or description:
+                items.append({
+                    'unit': item['unit'],
+                    'quantity_since_last': qty_since,
+                    'quantity_upto_date': qty_upto,
+                    'serial_no': item['item_no'],
+                    'description': description,
+                    'rate': rate,
+                    'amount': amount_upto,
+                    'amount_previous': amount_since,
+                    'remark': item['remark']
+                })
         
         # Add extra items to the items list
         for item in extra_items:
-            items.append({
-                'unit': item['unit'],
-                'quantity_since_last': item['quantity'],
-                'quantity_upto_date': item['quantity'],
-                'serial_no': item['item_no'],
-                'description': item['description'],
-                'rate': item['rate'],
-                'amount': item['amount'],
-                'amount_previous': item['amount'],
-                'remark': item['remark']
-            })
+            qty = item.get('quantity', 0) or 0
+            rate = item.get('rate', 0) or 0
+            amount = item.get('amount', 0) or 0
+            description = str(item.get('description', '')).strip()
+            
+            # Only add if there's actual data
+            if qty != 0 or rate != 0 or amount != 0 or description:
+                items.append({
+                    'unit': item['unit'],
+                    'quantity_since_last': qty,
+                    'quantity_upto_date': qty,
+                    'serial_no': item['item_no'],
+                    'description': description,
+                    'rate': rate,
+                    'amount': amount,
+                    'amount_previous': amount,
+                    'remark': item['remark']
+                })
         
         # Prepare deviation data
         deviation_items = []
@@ -332,6 +353,8 @@ class DocumentGenerator:
             'amount_words': self._number_to_words(int(net_payable))
         }
         
+        # No title image data URI needed - using direct HTML title instead
+        
         # Add header data if available
         if 'header' in self.title_data:
             template_data['header'] = self.title_data['header']
@@ -351,7 +374,7 @@ class DocumentGenerator:
             # Generate individual documents using templates
             documents['First Page Summary'] = self._render_template('first_page.html')
             documents['Deviation Statement'] = self._render_template('deviation_statement.html') 
-            documents['Final Bill Scrutiny Sheet'] = self._render_template('note_sheet.html')
+            documents['BILL SCRUTINY SHEET'] = self._render_template('note_sheet.html')
             
             # Only generate Extra Items document if there are extra items
             if self._has_extra_items():
@@ -364,7 +387,7 @@ class DocumentGenerator:
             # Fallback to programmatic generation if templates fail
             documents['First Page Summary'] = self._generate_first_page()
             documents['Deviation Statement'] = self._generate_deviation_statement()
-            documents['Final Bill Scrutiny Sheet'] = self._generate_final_bill_scrutiny()
+            documents['BILL SCRUTINY SHEET'] = self._generate_final_bill_scrutiny()
             
             # Only generate Extra Items document if there are extra items
             if self._has_extra_items():
@@ -374,6 +397,210 @@ class DocumentGenerator:
             documents['Certificate III'] = self._generate_certificate_iii()
         
         return documents
+    
+    def generate_doc_documents(self) -> Dict[str, bytes]:
+        """
+        Generate all required documents in DOC format
+        
+        Returns:
+            Dictionary containing all generated documents in DOC format (bytes)
+        """
+        doc_documents = {}
+        
+        # Generate DOC versions of all documents
+        doc_documents['First Page Summary.docx'] = self._generate_doc_first_page()
+        doc_documents['Deviation Statement.docx'] = self._generate_doc_deviation_statement()
+        doc_documents['BILL SCRUTINY SHEET.docx'] = self._generate_doc_note_sheet()
+        
+        # Only generate Extra Items document if there are extra items
+        if self._has_extra_items():
+            doc_documents['Extra Items Statement.docx'] = self._generate_doc_extra_items()
+        
+        doc_documents['Certificate II.docx'] = self._generate_doc_certificate_ii()
+        doc_documents['Certificate III.docx'] = self._generate_doc_certificate_iii()
+        
+        return doc_documents
+    
+    def _generate_doc_first_page(self) -> bytes:
+        """Generate First Page Summary document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('First Page Summary', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add project information
+        doc.add_heading('Project Information', level=1)
+        
+        table = doc.add_table(rows=3, cols=2)
+        table.style = 'Table Grid'
+        
+        # Populate project info
+        table.cell(0, 0).text = 'Project Name:'
+        table.cell(0, 1).text = str(self.title_data.get('Project Name', 'N/A'))
+        table.cell(1, 0).text = 'Contract No:'
+        table.cell(1, 1).text = str(self.title_data.get('Contract No', 'N/A'))
+        table.cell(2, 0).text = 'Work Order No:'
+        table.cell(2, 1).text = str(self.title_data.get('Work Order No', 'N/A'))
+        
+        # Add work items summary
+        doc.add_heading('Work Items Summary', level=1)
+        
+        # Create work items table
+        if not self.work_order_data.empty:
+            # Add header row
+            table = doc.add_table(rows=1, cols=9)
+            table.style = 'Table Grid'
+            hdr_cells = table.rows[0].cells
+            hdr_cells[0].text = 'Unit'
+            hdr_cells[1].text = 'Quantity executed (or supplied) since last certificate'
+            hdr_cells[2].text = 'Quantity executed (or supplied) upto date as per MB'
+            hdr_cells[3].text = 'S. No.'
+            hdr_cells[4].text = 'Item of Work supplies'
+            hdr_cells[5].text = 'Rate'
+            hdr_cells[6].text = 'Upto date Amount'
+            hdr_cells[7].text = 'Amount Since previous bill'
+            hdr_cells[8].text = 'Remarks'
+            
+            # Add data rows
+            for index, row in self.work_order_data.iterrows():
+                row_cells = table.add_row().cells
+                row_cells[0].text = str(row.get('Unit', ''))
+                row_cells[1].text = str(row.get('Quantity Since', ''))
+                row_cells[2].text = str(row.get('Quantity Upto', ''))
+                row_cells[3].text = str(row.get('Item No.', ''))
+                row_cells[4].text = str(row.get('Description', ''))
+                row_cells[5].text = str(row.get('Rate', ''))
+                row_cells[6].text = str(row.get('Amount', ''))
+                row_cells[7].text = str(row.get('Amount', ''))
+                row_cells[8].text = str(row.get('Remark', ''))
+        
+        # Add totals section
+        doc.add_heading('Totals', level=1)
+        
+        totals_para = doc.add_paragraph()
+        totals_para.add_run(f'Grand Total: ₹{self.template_data.get("grand_total", 0):.2f}').bold = True
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_deviation_statement(self) -> bytes:
+        """Generate Deviation Statement document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Deviation Statement', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a deviation statement document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_note_sheet(self) -> bytes:
+        """Generate Final Bill Scrutiny Sheet document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Final Bill Scrutiny Sheet', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a final bill scrutiny sheet document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_extra_items(self) -> bytes:
+        """Generate Extra Items Statement document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Extra Items Statement', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is an extra items statement document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_certificate_ii(self) -> bytes:
+        """Generate Certificate II document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Certificate II - Work Completion Certificate', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a certificate II document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_certificate_iii(self) -> bytes:
+        """Generate Certificate III document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Certificate III - Measurement Certificate', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a certificate III document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
     
     def _render_template(self, template_name: str) -> str:
         """Render a Jinja2 template with the prepared data"""
@@ -498,10 +725,10 @@ class DocumentGenerator:
         try:
             from playwright.async_api import async_playwright
             use_playwright = True
-            print("✅ Using Playwright for high-quality PDF generation")
+            print("[OK] Using Playwright for high-quality PDF generation")
         except ImportError:
             use_playwright = False
-            print("⚠️ Playwright not available, falling back to alternative PDF engines")
+            print("[WARNING] Playwright not available, falling back to alternative PDF engines")
         
         if use_playwright:
             # Use Playwright for pixel-perfect PDF generation
@@ -897,26 +1124,6 @@ class DocumentGenerator:
                     </tr>
                 </tbody>
             </table>
-            
-            <!-- Closure Lines -->
-            <div style="margin-top: 40px; width: 100%; display: table;">
-                <div style="display: table-row;">
-                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
-                            <strong>Prepared by</strong><br>
-                            <span style="font-size: 9pt;">Assistant Engineer</span><br>
-                            <span style="font-size: 9pt;">Date: {current_date}</span>
-                        </div>
-                    </div>
-                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
-                            <strong>Checked & Approved by</strong><br>
-                            <span style="font-size: 9pt;">Executive Engineer</span><br>
-                            <span style="font-size: 9pt;">Date: {current_date}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </body>
         </html>
         """
@@ -1064,26 +1271,6 @@ class DocumentGenerator:
         html_content += f"""
                 </tbody>
             </table>
-            
-            <!-- Closure Lines -->
-            <div style="margin-top: 40px; width: 100%; display: table;">
-                <div style="display: table-row;">
-                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
-                            <strong>Prepared by</strong><br>
-                            <span style="font-size: 8pt;">Assistant Engineer</span><br>
-                            <span style="font-size: 8pt;">Date: {current_date}</span>
-                        </div>
-                    </div>
-                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
-                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
-                            <strong>Checked & Approved by</strong><br>
-                            <span style="font-size: 8pt;">Executive Engineer</span><br>
-                            <span style="font-size: 8pt;">Date: {current_date}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </body>
         </html>
         """
@@ -1093,13 +1280,14 @@ class DocumentGenerator:
     def _generate_final_bill_scrutiny(self) -> str:
         """Generate Final Bill Scrutiny Sheet"""
         current_date = datetime.now().strftime('%d/%m/%Y')
+        bill_number = self.title_data.get('Bill Number', 'Bill Number Not Available')
         
         html_content = f"""
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Final Bill Scrutiny Sheet</title>
+            <title>BILL SCRUTINY SHEET</title>
             <style>
                 @page {{ 
                     size: A4; 
@@ -1135,7 +1323,7 @@ class DocumentGenerator:
         </head>
         <body>
             <div class="header">
-                <div class="subtitle">Final Bill Scrutiny Sheet</div>
+                <div class="subtitle">BILL SCRUTINY SHEET - {bill_number}</div>
                 <div class="subtitle">Date: {current_date}</div>
             </div>
             

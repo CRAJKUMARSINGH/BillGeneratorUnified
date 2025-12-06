@@ -7,12 +7,35 @@ import os
 import sys
 from pathlib import Path
 import streamlit as st
+import shutil
 
 # Add core to path
 sys.path.insert(0, str(Path(__file__).parent))
 
 # Load configuration
 from core.config.config_loader import ConfigLoader
+
+# Automatic cache cleaning on startup (optional)
+# This can be controlled by configuration or environment variable
+auto_clean_env = os.getenv('CLEAN_CACHE_ON_STARTUP', 'false').lower() == 'true'
+
+if auto_clean_env or (config and config.processing.auto_clean_cache):
+    cache_dirs = [
+        "__pycache__",
+        ".pytest_cache",
+        ".mypy_cache"
+    ]
+    
+    for cache_dir in cache_dirs:
+        cache_path = Path(cache_dir)
+        if cache_path.exists():
+            try:
+                if cache_path.is_dir():
+                    shutil.rmtree(cache_path)
+                else:
+                    cache_path.unlink()
+            except Exception:
+                pass  # Silent fail on startup
 
 # Get config from environment or use default
 config = ConfigLoader.load_from_env('BILL_CONFIG', 'config/v01.json')
@@ -183,6 +206,57 @@ with st.sidebar:
         modes.append("📈 Analytics")
     
     selected_mode = st.radio("Select Mode", modes)
+    
+    st.markdown("---")
+    
+    # Cache cleaning feature
+    st.markdown("### 🧹 Maintenance")
+    
+    # Function to clean cache directories
+    def clean_cache():
+        cache_dirs = [
+            "__pycache__",
+            ".pytest_cache",
+            ".mypy_cache",
+            "output",  # Output directory from batch processing
+        ]
+        
+        cleaned_dirs = []
+        for cache_dir in cache_dirs:
+            cache_path = Path(cache_dir)
+            if cache_path.exists():
+                try:
+                    if cache_path.is_dir():
+                        shutil.rmtree(cache_path)
+                    else:
+                        cache_path.unlink()
+                    cleaned_dirs.append(cache_dir)
+                except Exception as e:
+                    st.warning(f"Could not clean {cache_dir}: {str(e)}")
+        
+        # Also clean any temporary files
+        temp_patterns = ["*.tmp", "*.temp", "temp_*"]
+        for pattern in temp_patterns:
+            for temp_file in Path(".").glob(pattern):
+                try:
+                    if temp_file.is_dir():
+                        shutil.rmtree(temp_file)
+                    else:
+                        temp_file.unlink()
+                except Exception as e:
+                    st.warning(f"Could not clean {temp_file}: {str(e)}")
+        
+        return cleaned_dirs
+    
+    # Button to clean cache
+    if st.button("🧹 Clean Cache & Temp Files"):
+        with st.spinner("Cleaning cache and temporary files..."):
+            cleaned_dirs = clean_cache()
+            if cleaned_dirs:
+                st.success(f"✅ Cleaned cache directories: {', '.join(cleaned_dirs)}")
+            else:
+                st.info("ℹ️ No cache directories found to clean")
+        st.info("💡 Cache will be refreshed on next run")
     
     st.markdown("---")
     

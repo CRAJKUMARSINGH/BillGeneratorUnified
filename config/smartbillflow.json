@@ -27,7 +27,8 @@
     "max_file_size_mb": 50,
     "enable_caching": true,
     "pdf_engine": "weasyprint",
-    "smart_features_enabled": true
+    "smart_features_enabled": true,
+    "auto_clean_cache": true
   },
   "smart_features": {
     "auto_validation": true,
