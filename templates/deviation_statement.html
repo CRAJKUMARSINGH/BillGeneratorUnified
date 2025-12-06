@@ -130,7 +130,8 @@
                         <td {% if item.get('is_divider') %}colspan="12" style="text-align: center;"{% endif %}>{{ item.description | default("") }}</td>
                         {% if not item.get('is_divider') %}
                             {% if item.rate == 0 or item.rate == '' or item.rate is none %}
-                                <!-- Leave columns 3 to 12 blank when rate is zero or blank -->
+                                <!-- Leave columns 3 to 13 blank when rate is zero or blank -->
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
