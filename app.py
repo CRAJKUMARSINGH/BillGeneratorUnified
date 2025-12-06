@@ -15,17 +15,25 @@ sys.path.insert(0, str(Path(__file__).parent))
 # Load configuration
 from core.config.config_loader import ConfigLoader
 
+# Get config from environment or use default
+config = ConfigLoader.load_from_env('BILL_CONFIG', 'config/v01.json')
+
 # Automatic cache cleaning on startup (optional)
 # This can be controlled by configuration or environment variable
 auto_clean_env = os.getenv('CLEAN_CACHE_ON_STARTUP', 'false').lower() == 'true'
 
-if auto_clean_env or (config and config.processing.auto_clean_cache):
+# Only clean cache once per session to avoid repeated cleaning
+if 'cache_cleaned' not in st.session_state:
+    st.session_state.cache_cleaned = False
+
+if (auto_clean_env or (config and config.processing.auto_clean_cache)) and not st.session_state.cache_cleaned:
     cache_dirs = [
         "__pycache__",
         ".pytest_cache",
         ".mypy_cache"
     ]
     
+    cleaned_any = False
     for cache_dir in cache_dirs:
         cache_path = Path(cache_dir)
         if cache_path.exists():
@@ -34,11 +42,13 @@ if auto_clean_env or (config and config.processing.auto_clean_cache):
                     shutil.rmtree(cache_path)
                 else:
                     cache_path.unlink()
+                cleaned_any = True
             except Exception:
                 pass  # Silent fail on startup
-
-# Get config from environment or use default
-config = ConfigLoader.load_from_env('BILL_CONFIG', 'config/v01.json')
+    
+    # Mark cache as cleaned for this session
+    if cleaned_any:
+        st.session_state.cache_cleaned = True
 
 # Page config
 st.set_page_config(
@@ -256,7 +266,9 @@ with st.sidebar:
                 st.success(f"✅ Cleaned cache directories: {', '.join(cleaned_dirs)}")
             else:
                 st.info("ℹ️ No cache directories found to clean")
-        st.info("💡 Cache will be refreshed on next run")
+        st.info("💡 Cache has been cleaned. Next run will start with a fresh state.")
+        # Reset the cache cleaned flag so it can run again on next startup
+        st.session_state.cache_cleaned = False
     
     st.markdown("---")
     
