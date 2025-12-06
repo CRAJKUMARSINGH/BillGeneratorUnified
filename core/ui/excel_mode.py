@@ -26,12 +26,26 @@ def show_excel_mode(config):
         **Caching:** {'Enabled' if config.processing.enable_caching else 'Disabled'}
         """)
     
-    # File upload
+    # File upload with magenta background to highlight the required action
+    st.markdown("""
+    <div style='background-color: #ffccff; padding: 20px; border-radius: 10px; border: 2px solid #ff66ff;'>
+        <h3 style='color: #cc00cc; margin-top: 0;'>📤 Excel File Required</h3>
+        <p style='color: #990099; margin-bottom: 0;'>Please upload your Excel bill file below to continue.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
     uploaded_file = st.file_uploader(
         "Choose Excel File",
         type=['xlsx', 'xls'],
         help="Upload your bill Excel file"
     )
+    
+    if not uploaded_file:
+        st.markdown("""
+        <div style='background-color: #ffe6ff; padding: 15px; border-radius: 8px; border-left: 5px solid #ff66ff; margin-top: 10px;'>
+            <p style='color: #cc00cc; font-weight: bold; margin: 0;'>⚠️ Please upload an Excel file to proceed with document generation.</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     if uploaded_file:
         st.success(f"✅ File uploaded: {uploaded_file.name}")

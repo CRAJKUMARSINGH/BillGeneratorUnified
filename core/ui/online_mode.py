@@ -8,6 +8,14 @@ def show_online_mode(config):
     """Show online entry interface"""
     st.markdown("## 💻 Online Entry Mode")
     
+    # Highlight data entry requirements with magenta theme
+    st.markdown("""
+    <div style='background-color: #ffe6ff; padding: 15px; border-radius: 8px; border-left: 5px solid #ff66ff; margin-bottom: 20px;'>
+        <h3 style='color: #cc00cc; margin-top: 0;'>✏️ Manual Data Entry Required</h3>
+        <p style='color: #990099; margin-bottom: 0;'>Please fill in all the required bill details in the forms below to generate documents.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.info("📝 Enter bill details manually through web forms")
     
     # Project Details
