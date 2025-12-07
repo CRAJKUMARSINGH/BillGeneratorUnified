@@ -275,11 +275,11 @@ class DownloadItem:
     file_type: str
     description: str = ""
     category: str = "General"
-    size: int = 0
+    size_bytes: int = 0
     
     def __post_init__(self):
-        if self.size == 0:
-            self.size = len(self.content) if isinstance(self.content, (str, bytes)) else len(str(self.content))
+        if self.size_bytes == 0:
+            self.size_bytes = len(self.content) if isinstance(self.content, (str, bytes)) else len(str(self.content))
 
 class EnhancedDownloadManager:
     """Enhanced download manager with categorization and statistics"""
@@ -323,7 +323,7 @@ class EnhancedDownloadManager:
         
     def get_total_size(self) -> int:
         """Get total size of all items"""
-        return sum(item.size for item in self.download_items)
+        return sum(item.size_bytes for item in self.download_items)
         
     def get_statistics(self) -> Dict:
         """Get download statistics"""
@@ -387,7 +387,7 @@ class EnhancedDownloadUI:
                         )
                         
                         # Show file info
-                        size_kb = item.size / 1024
+                        size_kb = item.size_bytes / 1024
                         st.caption(f"{size_kb:.1f} KB")
                         
         # ZIP download options

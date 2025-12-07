@@ -254,7 +254,7 @@ def _create_summary_report(processed_data: Dict[str, Any], download_items) -> st
             categories[item.category] = 0
         categories[item.category] += 1
     
-    total_size = sum(item.size for item in download_items)
+    total_size = sum(item.size_bytes for item in download_items)
     
     report = f"""
 BILL GENERATION SUMMARY REPORT
