@@ -145,7 +145,7 @@ def show_online_mode(config):
         col1, col2 = st.columns(2)
         
         with col1:
-            project_name = st.text_input("Project Name", value=default_project_name, placeholder="Enter project name")
+            project_name = st.text_input("Name of Work", value=default_project_name, placeholder="Enter name of work")
             contractor = st.text_input("Contractor Name", value=default_contractor, placeholder="Enter contractor name")
         
         with col2:
@@ -260,7 +260,7 @@ def show_online_mode(config):
                 
                 processed_data = {
                     "title_data": {
-                        "Project Name": project_name,
+                        "Name of Work": project_name,
                         "Contractor": contractor,
                         "Bill Date": bill_date_str,
                         "Tender Premium %": tender_premium
