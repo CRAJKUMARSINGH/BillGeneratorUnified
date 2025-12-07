@@ -231,84 +231,84 @@
                 <tr>
                     <td>2. Agreement No.</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Agreement No', data.title_data.get('Work Order No', '')) }}</td>
+                    <td colspan="2">{{ data.title_data.get('Agreement No.', data.title_data.get('Work Order No', '')) }}</td>
                 </tr>
                 
                 <!-- Row 4: A&F Sanction -->
                 <tr>
                     <td>3. A&F Sanction</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('A&F Sanction', 'Refer Agreement') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Reference to work order or Agreement :', 'Refer Agreement') }}</td>
                 </tr>
                 
                 <!-- Row 5: Technical Section -->
                 <tr>
                     <td>4. Technical Section</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Technical Section', 'Refer Agreement') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Reference to work order or Agreement :', 'Refer Agreement') }}</td>
                 </tr>
                 
                 <!-- Row 6: MB No. & Page -->
                 <tr>
                     <td>5. MB No. & Page</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Measurement Book No', '887') }}/Page No. {{ data.title_data.get('Measurement Book Page', '04-20') }}</td>
+                    <td colspan="2">{{ data.title_data.get('No. and date of the last bill-', 'Not Applicable') }}</td>
                 </tr>
                 
                 <!-- Row 7: Name of Sub Division -->
                 <tr>
                     <td>6. Name of Sub Division</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Sub Division', 'Rajsamand') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Name of Work ;-') }}</td>
                 </tr>
                 
                 <!-- Row 8: Name of Work -->
                 <tr>
                     <td>7. Name of Work</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Name of Work', data.title_data.get('Project Name', '')) }}</td>
+                    <td colspan="2">{{ data.title_data.get('Name of Work ;-', data.title_data.get('Project Name', '')) }}</td>
                 </tr>
                 
                 <!-- Row 9: Name of Contractor -->
                 <tr>
                     <td>8. Name of Contractor</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Name of Firm', data.title_data.get('Contractor Name', '')) }}</td>
+                    <td colspan="2">{{ data.title_data.get('Name of Contractor or supplier :', data.title_data.get('Contractor Name', '')) }}</td>
                 </tr>
                 
                 <!-- Row 10: Original/Deposit -->
                 <tr>
                     <td>9. Original/Deposit</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Original/Deposit', 'Deposit') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Serial No. of this bill :', 'Deposit') }}</td>
                 </tr>
                 
                 <!-- Row 11: Budget Provision -->
                 <tr>
                     <td>10. Budget Provision</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Budget Provision', 'Adequate') }}</td>
+                    <td colspan="2">{{ data.title_data.get('WORK ORDER AMOUNT RS.', 'Adequate') }}</td>
                 </tr>
                 
                 <!-- Row 12: Date of Commencement -->
                 <tr>
                     <td>11. Date of Commencement</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Date of Commencement', '') }}</td>
+                    <td colspan="2">{{ data.title_data.get('St. date of Start :', '') }}</td>
                 </tr>
                 
                 <!-- Row 13: Date of Completion -->
                 <tr>
                     <td>12. Date of Completion</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Date of Completion', '') }}</td>
+                    <td colspan="2">{{ data.title_data.get('St. date of completion :', '') }}</td>
                 </tr>
                 
                 <!-- Row 14: Actual date of completion -->
                 <tr>
                     <td>13. Actual date of completion</td>
                     <td></td>
-                    <td colspan="2">{{ data.title_data.get('Actual Date of Completion', '') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Date of actual completion of work :', '') }}</td>
                 </tr>
                 
                 <!-- Row 15: Delay case -->
@@ -363,7 +363,7 @@
                 <!-- Row 23: Date of Measurement -->
                 <tr>
                     <td colspan="2">20. Date on Which record Measurement taken by JEN AC</td>
-                    <td colspan="2">{{ data.title_data.get('Measurement Date', '') }}</td>
+                    <td colspan="2">{{ data.title_data.get('Date of measurement :', '') }}</td>
                 </tr>
                 
                 <!-- Row 24: Date of Checking -->

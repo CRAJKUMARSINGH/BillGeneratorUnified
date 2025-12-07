@@ -1,6 +1,3 @@
-"""
-Excel Processor - Process Excel files for bill generation
-"""
 import pandas as pd
 from typing import Dict, Any
 import io
@@ -99,6 +96,9 @@ class ExcelProcessor:
         """
         title_data = {}
         
+        # Process all rows but specifically track first 20 for validation
+        first_20_rows = {}
+        
         for index, row in df.iterrows():
             if len(row) >= 2:
                 key = str(row[0]).strip() if pd.notna(row[0]) else None
@@ -106,5 +106,13 @@ class ExcelProcessor:
                 
                 if key and key != 'nan':
                     title_data[key] = value
+                    
+                    # Track first 20 rows for validation purposes
+                    if index < 20:
+                        first_20_rows[key] = value
+        
+        # Add metadata about first 20 rows processing
+        title_data['_first_20_rows_processed'] = True
+        title_data['_first_20_rows_count'] = len(first_20_rows)
         
         return title_data
