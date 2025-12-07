@@ -1,0 +1,186 @@
+[
+  {
+    "file_path": "TEST_INPUT_FILES\\0511-N-extra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\0511Wextra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdFinalNoExtra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdFinalVidExtra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdRunningNoExtra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdRunningVidExtra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\FirstFINALnoExtra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\FirstFINALvidExtra.xlsx",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "actual_title_rows": 19,
+    "processing_status": "SUCCESS",
+    "details": {
+      "metadata_present": true,
+      "rows_processed": 19,
+      "rows_expected": 19,
+      "processing_complete": true,
+      "required_fields_found": [],
+      "required_fields_missing": [
+        "Project Name",
+        "Work Order No",
+        "Contract No",
+        "Contractor Name",
+        "Date of Commencement",
+        "Date of Completion"
+      ],
+      "required_fields_coverage": "0/6"
+    }
+  }
+]

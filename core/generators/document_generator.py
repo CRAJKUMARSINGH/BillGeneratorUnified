@@ -1,6 +1,7 @@
+"""
+Document Generator - Generate billing documents from processed Excel data
+"""
 import pandas as pd
-import gc
-from datetime import datetime
 from typing import Dict, Any
 import io
 import asyncio
@@ -9,10 +10,11 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import tempfile
 from pathlib import Path
+from datetime import datetime
 from docx import Document
-from docx.shared import Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml.shared import qn
+from docx.shared import Inches
+import re
 
 class DocumentGenerator:
     """Generates various billing documents from processed Excel data using Jinja2 templates"""
@@ -32,97 +34,63 @@ class DocumentGenerator:
         # Prepare data for templates
         self.template_data = self._prepare_template_data()
     
-    def _number_to_words(self, num):
-        """Convert number to words (simplified version)"""
-        if num == 0:
-            return "Zero"
-        
-        ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
-        teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
-        tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
-        
-        def convert_hundreds(n):
-            result = ''
-            if n >= 100:
-                result += ones[n // 100] + ' Hundred '
-                n %= 100
-            if n >= 20:
-                result += tens[n // 10] + ' '
-                n %= 10
-            elif n >= 10:
-                result += teens[n - 10] + ' '
-                n = 0
-            if n > 0:
-                result += ones[n] + ' '
-            return result.strip()
-        
-        if num < 1000:
-            return convert_hundreds(num)
-        elif num < 100000:
-            thousands = num // 1000
-            remainder = num % 1000
-            result = convert_hundreds(thousands) + ' Thousand '
-            if remainder > 0:
-                result += convert_hundreds(remainder)
-            return result.strip()
-        else:
-            lakhs = num // 100000
-            remainder = num % 100000
-            result = convert_hundreds(lakhs) + ' Lakh '
-            if remainder > 0:
-                if remainder >= 1000:
-                    result += convert_hundreds(remainder // 1000) + ' Thousand '
-                    remainder %= 1000
-                if remainder > 0:
-                    result += convert_hundreds(remainder)
-            return result.strip()
-    
-    def _safe_float(self, value):
-        """Safely convert value to float, return 0 if conversion fails"""
+    def _safe_float(self, value) -> float:
+        """Safely convert value to float"""
+        if pd.isna(value) or value is None or value == '':
+            return 0.0
         try:
-            if pd.isna(value) or value == '' or value is None:
-                return 0.0
             return float(value)
         except (ValueError, TypeError):
             return 0.0
     
-    def _format_number(self, value, show_zero=False):
-        """Format number with conditional display for zero values"""
-        num_value = self._safe_float(value)
-        if num_value == 0 and not show_zero:
-            return ""
-        return f"{num_value:.2f}"
-    
-    def _format_unit_or_text(self, value):
-        """Format unit or text field, return empty string for NaN/None"""
-        if pd.isna(value) or value is None or str(value).lower() in ['nan', 'none']:
-            return ""
-        return str(value).strip()
-    
-    def _safe_serial_no(self, value):
-        """Safely convert serial number, return empty string if NaN or None"""
-        if pd.isna(value) or value is None or str(value).lower() == 'nan':
+    def _safe_serial_no(self, value) -> str:
+        """Safely convert serial number to string"""
+        if pd.isna(value) or value is None:
             return ''
-        return str(value).strip()
+        return str(value)
     
-    def _find_column(self, df, possible_names):
-        """Find column by trying multiple possible names"""
-        for name in possible_names:
-            if name in df.columns:
-                return name
-        return None
+    def _format_unit_or_text(self, value) -> str:
+        """Format unit or text value"""
+        if pd.isna(value) or value is None:
+            return ''
+        return str(value)
     
-    def _has_extra_items(self):
-        """Check if there are any extra items"""
-        if isinstance(self.extra_items_data, pd.DataFrame):
-            return not self.extra_items_data.empty and len(self.extra_items_data) > 0
-        elif isinstance(self.extra_items_data, (list, tuple)):
-            return len(self.extra_items_data) > 0
+    def _format_number(self, value) -> str:
+        """Format number for display"""
+        if value == 0:
+            return ''
+        return f"{value:.2f}"
+    
+    def _number_to_words(self, num: int) -> str:
+        """Convert number to words (simplified version)"""
+        ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+        teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
+        tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
+        
+        if num == 0:
+            return 'Zero'
+        
+        if num < 10:
+            return ones[num]
+        elif num < 20:
+            return teens[num - 10]
+        elif num < 100:
+            return tens[num // 10] + ('' if num % 10 == 0 else ' ' + ones[num % 10])
+        elif num < 1000:
+            return ones[num // 100] + ' Hundred' + ('' if num % 100 == 0 else ' ' + self._number_to_words(num % 100))
+        elif num < 100000:
+            return self._number_to_words(num // 1000) + ' Thousand' + ('' if num % 1000 == 0 else ' ' + self._number_to_words(num % 1000))
         else:
-            return False
+            return str(num)  # For very large numbers, just return as string
+    
+    def _has_extra_items(self) -> bool:
+        """Check if there are extra items to include"""
+        if isinstance(self.extra_items_data, pd.DataFrame):
+            return not self.extra_items_data.empty
+        return False
     
     def _prepare_template_data(self) -> Dict[str, Any]:
-        """Prepare data structure for Jinja2 templates"""
+        """Prepare data structure for Jinja2 templates with enhanced first 20 rows handling"""
         # Calculate totals and prepare structured data
         work_items = []
         total_amount = 0
@@ -308,7 +276,7 @@ class DocumentGenerator:
             }
         }
         
-        # Ensure all data is available for templates
+        # Ensure all data is available for templates with enhanced first 20 rows handling
         template_data = {
             'title_data': self.title_data,
             'work_items': work_items,
@@ -350,7 +318,10 @@ class DocumentGenerator:
             'authorising_officer_designation': self.title_data.get('Authorising Officer Designation', 'Executive Engineer'),
             'authorisation_date': self.title_data.get('Authorisation Date', '__/__/____'),
             'payable_amount': net_payable,
-            'amount_words': self._number_to_words(int(net_payable))
+            'amount_words': self._number_to_words(int(net_payable)),
+            # Enhanced first 20 rows data for validation
+            'first_20_rows_processed': self.title_data.get('_first_20_rows_processed', False),
+            'first_20_rows_count': self.title_data.get('_first_20_rows_count', 0)
         }
         
         # No title image data URI needed - using direct HTML title instead
@@ -421,194 +392,12 @@ class DocumentGenerator:
         
         return doc_documents
     
-    def _generate_doc_first_page(self) -> bytes:
-        """Generate First Page Summary document in DOC format"""
-        doc = Document()
-        
-        # Add title
-        title = doc.add_heading('First Page Summary', 0)
-        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add date
-        current_date = datetime.now().strftime('%d/%m/%Y')
-        date_para = doc.add_paragraph(f'Date: {current_date}')
-        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add project information
-        doc.add_heading('Project Information', level=1)
-        
-        table = doc.add_table(rows=3, cols=2)
-        table.style = 'Table Grid'
-        
-        # Populate project info
-        table.cell(0, 0).text = 'Project Name:'
-        table.cell(0, 1).text = str(self.title_data.get('Project Name', 'N/A'))
-        table.cell(1, 0).text = 'Contract No:'
-        table.cell(1, 1).text = str(self.title_data.get('Contract No', 'N/A'))
-        table.cell(2, 0).text = 'Work Order No:'
-        table.cell(2, 1).text = str(self.title_data.get('Work Order No', 'N/A'))
-        
-        # Add work items summary
-        doc.add_heading('Work Items Summary', level=1)
-        
-        # Create work items table
-        if not self.work_order_data.empty:
-            # Add header row
-            table = doc.add_table(rows=1, cols=9)
-            table.style = 'Table Grid'
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = 'Unit'
-            hdr_cells[1].text = 'Quantity executed (or supplied) since last certificate'
-            hdr_cells[2].text = 'Quantity executed (or supplied) upto date as per MB'
-            hdr_cells[3].text = 'S. No.'
-            hdr_cells[4].text = 'Item of Work supplies'
-            hdr_cells[5].text = 'Rate'
-            hdr_cells[6].text = 'Upto date Amount'
-            hdr_cells[7].text = 'Amount Since previous bill'
-            hdr_cells[8].text = 'Remarks'
-            
-            # Add data rows
-            for index, row in self.work_order_data.iterrows():
-                row_cells = table.add_row().cells
-                row_cells[0].text = str(row.get('Unit', ''))
-                row_cells[1].text = str(row.get('Quantity Since', ''))
-                row_cells[2].text = str(row.get('Quantity Upto', ''))
-                row_cells[3].text = str(row.get('Item No.', ''))
-                row_cells[4].text = str(row.get('Description', ''))
-                row_cells[5].text = str(row.get('Rate', ''))
-                row_cells[6].text = str(row.get('Amount', ''))
-                row_cells[7].text = str(row.get('Amount', ''))
-                row_cells[8].text = str(row.get('Remark', ''))
-        
-        # Add totals section
-        doc.add_heading('Totals', level=1)
-        
-        totals_para = doc.add_paragraph()
-        totals_para.add_run(f'Grand Total: ₹{self.template_data.get("grand_total", 0):.2f}').bold = True
-        
-        # Save to bytes
-        doc_bytes = io.BytesIO()
-        doc.save(doc_bytes)
-        doc_bytes.seek(0)
-        return doc_bytes.getvalue()
-    
-    def _generate_doc_deviation_statement(self) -> bytes:
-        """Generate Deviation Statement document in DOC format"""
-        doc = Document()
-        
-        # Add title
-        title = doc.add_heading('Deviation Statement', 0)
-        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add date
-        current_date = datetime.now().strftime('%d/%m/%Y')
-        date_para = doc.add_paragraph(f'Date: {current_date}')
-        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add content
-        doc.add_paragraph('This is a deviation statement document.')
-        
-        # Save to bytes
-        doc_bytes = io.BytesIO()
-        doc.save(doc_bytes)
-        doc_bytes.seek(0)
-        return doc_bytes.getvalue()
-    
-    def _generate_doc_note_sheet(self) -> bytes:
-        """Generate Final Bill Scrutiny Sheet document in DOC format"""
-        doc = Document()
-        
-        # Add title
-        title = doc.add_heading('Final Bill Scrutiny Sheet', 0)
-        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add date
-        current_date = datetime.now().strftime('%d/%m/%Y')
-        date_para = doc.add_paragraph(f'Date: {current_date}')
-        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add content
-        doc.add_paragraph('This is a final bill scrutiny sheet document.')
-        
-        # Save to bytes
-        doc_bytes = io.BytesIO()
-        doc.save(doc_bytes)
-        doc_bytes.seek(0)
-        return doc_bytes.getvalue()
-    
-    def _generate_doc_extra_items(self) -> bytes:
-        """Generate Extra Items Statement document in DOC format"""
-        doc = Document()
-        
-        # Add title
-        title = doc.add_heading('Extra Items Statement', 0)
-        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add date
-        current_date = datetime.now().strftime('%d/%m/%Y')
-        date_para = doc.add_paragraph(f'Date: {current_date}')
-        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add content
-        doc.add_paragraph('This is an extra items statement document.')
-        
-        # Save to bytes
-        doc_bytes = io.BytesIO()
-        doc.save(doc_bytes)
-        doc_bytes.seek(0)
-        return doc_bytes.getvalue()
-    
-    def _generate_doc_certificate_ii(self) -> bytes:
-        """Generate Certificate II document in DOC format"""
-        doc = Document()
-        
-        # Add title
-        title = doc.add_heading('Certificate II - Work Completion Certificate', 0)
-        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add date
-        current_date = datetime.now().strftime('%d/%m/%Y')
-        date_para = doc.add_paragraph(f'Date: {current_date}')
-        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add content
-        doc.add_paragraph('This is a certificate II document.')
-        
-        # Save to bytes
-        doc_bytes = io.BytesIO()
-        doc.save(doc_bytes)
-        doc_bytes.seek(0)
-        return doc_bytes.getvalue()
-    
-    def _generate_doc_certificate_iii(self) -> bytes:
-        """Generate Certificate III document in DOC format"""
-        doc = Document()
-        
-        # Add title
-        title = doc.add_heading('Certificate III - Measurement Certificate', 0)
-        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add date
-        current_date = datetime.now().strftime('%d/%m/%Y')
-        date_para = doc.add_paragraph(f'Date: {current_date}')
-        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        
-        # Add content
-        doc.add_paragraph('This is a certificate III document.')
-        
-        # Save to bytes
-        doc_bytes = io.BytesIO()
-        doc.save(doc_bytes)
-        doc_bytes.seek(0)
-        return doc_bytes.getvalue()
-    
     def _render_template(self, template_name: str) -> str:
         """Render a Jinja2 template with the prepared data"""
         try:
             template = self.jinja_env.get_template(template_name)
-            # Wrap template data in 'data' variable for template compatibility
+            # Pass both the template data and the original data to the template
             render_data = {'data': self.template_data}
-            # Also pass individual variables for backward compatibility
             render_data.update(self.template_data)
             return template.render(**render_data)
         except Exception as e:
@@ -654,33 +443,31 @@ class DocumentGenerator:
             
             /* Disable text rendering optimizations */
             * {{
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                text-rendering: geometricPrecision;
-            }}
-            
-            @page {{
-                size: {page_size};
-                margin: 0;
+                -webkit-font-smoothing: antialiased !important;
+                -moz-osx-font-smoothing: grayscale !important;
+                text-rendering: optimizeLegibility !important;
             }}
         </style>
         """
         
-        # Inject CSS before closing head tag
-        if '</head>' in html_content:
-            html_content = html_content.replace('</head>', f'{no_shrink_css}</head>')
+        # Inject CSS into HTML
+        if '<head>' in html_content:
+            html_content = html_content.replace('<head>', f'<head>\n{no_shrink_css}', 1)
         else:
-            html_content = f'<html><head>{no_shrink_css}</head><body>{html_content}</body></html>'
+            html_content = html_content.replace('<html>', f'<html>\n<head>\n{no_shrink_css}\n</head>', 1)
         
+        # Launch Playwright and convert to PDF
         async with async_playwright() as p:
+            # Use Chromium browser
             browser = await p.chromium.launch(
-                headless=True,
                 args=[
-                    '--disable-web-security',
-                    '--disable-smart-shrinking',  # CRITICAL: Disable intelligent shrinking for pixel-perfect output
-                    '--no-margins',  # No default margins
-                    '--disable-gpu',  # Disable GPU acceleration
-                    '--run-all-compositor-stages-before-draw',  # Complete rendering
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--single-process'  # Critical for Streamlit Cloud compatibility
                 ]
             )
             page = await browser.new_page()
@@ -719,224 +506,131 @@ class DocumentGenerator:
         Returns:
             Dictionary of PDF documents as bytes
         """
-        pdf_files = {}
+        pdf_documents = {}
         
-        # Check if Playwright is available
-        try:
-            from playwright.async_api import async_playwright
-            use_playwright = True
-            print("[OK] Using Playwright for high-quality PDF generation")
-        except ImportError:
-            use_playwright = False
-            print("[WARNING] Playwright not available, falling back to alternative PDF engines")
-        
-        if use_playwright:
-            # Use Playwright for pixel-perfect PDF generation
+        # Convert each document to PDF asynchronously
+        async def convert_all():
+            tasks = []
             for doc_name, html_content in documents.items():
-                try:
-                    print(f"🔄 Converting {doc_name} to PDF with Playwright...")
-                    
-                    # Run async function in sync context
-                    pdf_bytes = asyncio.run(self._convert_html_to_pdf_async(html_content, doc_name))
-                    
-                    pdf_files[f"{doc_name}.pdf"] = pdf_bytes
-                    print(f"✅ Successfully generated {doc_name}.pdf ({len(pdf_bytes)} bytes)")
-                    
-                except Exception as e:
-                    print(f"❌ Playwright conversion failed for {doc_name}: {str(e)}")
-                    # Fall back to alternative methods for this document
-                    pdf_bytes = self._fallback_pdf_conversion(doc_name, html_content)
-                    pdf_files[f"{doc_name}.pdf"] = pdf_bytes
-        else:
-            # Fallback to xhtml2pdf/WeasyPrint
-            for doc_name, html_content in documents.items():
-                pdf_bytes = self._fallback_pdf_conversion(doc_name, html_content)
-                pdf_files[f"{doc_name}.pdf"] = pdf_bytes
+                task = self._convert_html_to_pdf_async(html_content, doc_name)
+                tasks.append(task)
+            
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            
+            for i, (doc_name, result) in enumerate(zip(documents.keys(), results)):
+                if isinstance(result, Exception):
+                    print(f"Failed to convert {doc_name} to PDF: {result}")
+                    # Fallback to xhtml2pdf if Playwright fails
+                    try:
+                        pdf_documents[doc_name] = self._convert_html_to_pdf_fallback(documents[doc_name], doc_name)
+                    except Exception as fallback_error:
+                        print(f"Fallback PDF conversion also failed for {doc_name}: {fallback_error}")
+                else:
+                    pdf_documents[doc_name] = result
         
-        # Memory cleanup
-        gc.collect()
-        return pdf_files
+        # Run the async conversion
+        asyncio.run(convert_all())
+        
+        return pdf_documents
     
-    def _fallback_pdf_conversion(self, doc_name: str, html_content: str) -> bytes:
+    def _convert_html_to_pdf_fallback(self, html_content: str, doc_name: str) -> bytes:
         """
-        Fallback PDF conversion using xhtml2pdf, WeasyPrint, or ReportLab
-        PERMANENT FIX: Tables will NOT shrink
+        Fallback PDF conversion using xhtml2pdf (works on Streamlit Cloud)
         """
-        from concurrent.futures import ThreadPoolExecutor
-        
-        # Add CSS to prevent table shrinking
-        no_shrink_css = """
+        try:
+            print("[INFO] Using xhtml2pdf (Streamlit Cloud compatible)...")
+            from xhtml2pdf import pisa
+            import io
+            
+            # Add CSS zoom to HTML for better rendering
+            zoom = 1.0
+            html_with_zoom = self.add_css_zoom_to_html(html_content, zoom)
+            
+            output = io.BytesIO()
+            pisa.CreatePDF(html_with_zoom, dest=output, encoding="utf-8")
+            return output.getvalue()
+        except Exception as e:
+            print(f"[WARNING] xhtml2pdf failed: {e}")
+            raise Exception("No PDF engine available. Please check requirements installation.")
+    
+    def add_css_zoom_to_html(self, html_content: str, zoom: float = 1.0) -> str:
+        """
+        Add CSS zoom to HTML content for better rendering
+        """
+        zoom_style = f"""
         <style>
-            /* CRITICAL: Prevent table shrinking */
-            table {
-                table-layout: fixed !important;
-                width: 100% !important;
-                border-collapse: collapse !important;
-            }
-            th, td {
-                white-space: normal !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-            @page {
-                size: A4;
-                margin: 0;
-            }
+            body {{
+                zoom: {zoom};
+                -moz-transform: scale({zoom});
+                -moz-transform-origin: 0 0;
+            }}
         </style>
         """
         
-        # Inject CSS
-        if '</head>' in html_content:
-            html_content = html_content.replace('</head>', f'{no_shrink_css}</head>')
+        if '<head>' in html_content:
+            return html_content.replace('<head>', f'<head>\n{zoom_style}', 1)
         else:
-            html_content = f'<html><head>{no_shrink_css}</head><body>{html_content}</body></html>'
-        
-        # Initialize PDF engines
-        render_with_weasy = None
-        render_with_xhtml2pdf = None
-        
-        # Try WeasyPrint
-        try:
-            from weasyprint import HTML, CSS
-            def render_with_weasy(html_str: str) -> bytes:
-                try:
-                    extra_css = CSS(string='''
-                        table { table-layout: fixed !important; width: 100% !important; }
-                        th, td { word-wrap: break-word !important; }
-                    ''')
-                    with ThreadPoolExecutor(max_workers=1) as executor:
-                        future = executor.submit(
-                            lambda: HTML(string=html_str, base_url=".").write_pdf(
-                                stylesheets=[extra_css],
-                                presentational_hints=True
-                            )
-                        )
-                        return future.result(timeout=30)
-                except Exception as e:
-                    raise Exception(f"WeasyPrint timeout or error: {str(e)}")
-        except Exception:
-            render_with_weasy = None
-        
-        # Try xhtml2pdf
-        try:
-            from xhtml2pdf import pisa
-            def render_with_xhtml2pdf(html_str: str) -> bytes:
-                import re
-                # Clean HTML for better compatibility
-                clean_html = html_str
-                clean_html = re.sub(r'(\d+(?:\.\d+)?)mm', lambda m: f"{float(m.group(1)) * 3.78:.0f}px", clean_html)
-                clean_html = clean_html.replace('box-sizing: border-box;', '')
-                clean_html = clean_html.replace('break-inside: avoid;', '')
-                
-                output = io.BytesIO()
-                result = pisa.CreatePDF(
-                    src=clean_html,
-                    dest=output,
-                    encoding="utf-8",
-                    default_css=None,
-                    link_callback=None
-                )
-                if hasattr(result, 'err') and result.err:
-                    raise Exception(f"xhtml2pdf error: {result.err}")
-                return output.getvalue()
-        except Exception:
-            render_with_xhtml2pdf = None
-        
-        # Try conversion with available engines
-        print(f"🔄 Converting {doc_name} with fallback engines...")
-        
-        # First try xhtml2pdf
-        if render_with_xhtml2pdf is not None:
-            try:
-                print(f"  📄 Using xhtml2pdf for {doc_name}...")
-                pdf_bytes = render_with_xhtml2pdf(html_content)
-                print(f"  ✅ xhtml2pdf successful for {doc_name} ({len(pdf_bytes)} bytes)")
-                return pdf_bytes
-            except Exception as e:
-                print(f"  ❌ xhtml2pdf failed: {str(e)}")
-        
-        # Then try WeasyPrint
-        if render_with_weasy is not None:
-            try:
-                print(f"  📄 Using WeasyPrint for {doc_name}...")
-                pdf_bytes = render_with_weasy(html_content)
-                print(f"  ✅ WeasyPrint successful for {doc_name} ({len(pdf_bytes)} bytes)")
-                return pdf_bytes
-            except Exception as e:
-                print(f"  ❌ WeasyPrint failed: {str(e)}")
-        
-        # Last resort: ReportLab fallback
-        print(f"  ⚠️ Using ReportLab fallback for {doc_name}")
-        return self._create_simple_pdf_fallback(doc_name, html_content)
+            return html_content.replace('<html>', f'<html>\n<head>\n{zoom_style}\n</head>', 1)
     
-    def _create_simple_pdf_fallback(self, doc_name: str, html_content: str) -> bytes:
-        """Create a simple PDF using ReportLab as a last resort fallback"""
-        try:
-            from reportlab.lib.pagesizes import A4
-            from reportlab.lib.styles import getSampleStyleSheet
-            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
-            from reportlab.lib import colors
-            from bs4 import BeautifulSoup
+    def calculate_optimal_zoom(self, content_width_px: int, page_width_mm: float = 210) -> float:
+        """
+        Calculate optimal zoom level for pixel-perfect fit
+        
+        Args:
+            content_width_px: Content width in pixels
+            page_width_mm: Page width in millimeters (default A4 = 210mm)
             
-            buffer = io.BytesIO()
-            doc = SimpleDocTemplate(buffer, pagesize=A4)
-            styles = getSampleStyleSheet()
-            story = []
+        Returns:
+            Optimal zoom level
+        """
+        # Convert mm to pixels at 96 DPI
+        page_width_px = (page_width_mm / 25.4) * 96
+        
+        # Calculate zoom to fit content
+        zoom = page_width_px / content_width_px
+        
+        # Round to 2 decimal places
+        return round(zoom, 2)
+    
+    def batch_convert(self, html_documents: Dict[str, str], 
+                     output_dir: str = "output_pdfs",
+                     enable_fallback: bool = True) -> Dict[str, str]:
+        """
+        Batch convert HTML documents to PDFs
+        
+        Args:
+            html_documents: Dictionary mapping document names to HTML content
+            output_dir: Directory to save PDFs
+            enable_fallback: Enable fallback to xhtml2pdf if Playwright fails
             
-            # Parse HTML
-            soup = BeautifulSoup(html_content, 'html.parser')
+        Returns:
+            Dictionary mapping document names to PDF file paths
+        """
+        # Create output directory
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Convert documents to PDFs
+        pdf_paths = {}
+        pdf_documents = self.create_pdf_documents(html_documents)
+        
+        # Save PDFs to files
+        for doc_name, pdf_content in pdf_documents.items():
+            # Generate safe filename
+            safe_name = re.sub(r'[<>:"/\\|?*\x00-\x1F]', '_', doc_name)
+            if not safe_name.endswith('.pdf'):
+                safe_name += '.pdf'
             
-            # Add title
-            title = Paragraph(f"<b>{doc_name}</b>", styles['Title'])
-            story.append(title)
-            story.append(Spacer(1, 12))
+            pdf_path = os.path.join(output_dir, safe_name)
             
-            # Try to extract tables
-            tables = soup.find_all('table')
-            if tables:
-                for table in tables:
-                    # Extract table data
-                    table_data = []
-                    for row in table.find_all('tr'):
-                        row_data = []
-                        for cell in row.find_all(['th', 'td']):
-                            row_data.append(cell.get_text(strip=True))
-                        if row_data:
-                            table_data.append(row_data)
-                    
-                    if table_data:
-                        # Create ReportLab table
-                        t = Table(table_data)
-                        t.setStyle(TableStyle([
-                            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                            ('FONTSIZE', (0, 0), (-1, 0), 10),
-                            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                            ('GRID', (0, 0), (-1, -1), 1, colors.black)
-                        ]))
-                        story.append(t)
-                        story.append(Spacer(1, 12))
-            else:
-                # Extract text if no tables
-                text_content = soup.get_text(separator='\n')
-                lines = text_content.split('\n')
-                for line in lines:
-                    line = line.strip()
-                    if line:
-                        para = Paragraph(line, styles['Normal'])
-                        story.append(para)
-                        story.append(Spacer(1, 6))
-            
-            doc.build(story)
-            buffer.seek(0)
-            return buffer.getvalue()
-            
-        except Exception as e:
-            print(f"⚠️ ReportLab fallback also failed for {doc_name}: {str(e)}")
-            return f"PDF generation completely failed for {doc_name}: All engines failed".encode()
+            try:
+                with open(pdf_path, 'wb') as f:
+                    f.write(pdf_content)
+                pdf_paths[doc_name] = pdf_path
+                print(f"Saved {doc_name} to {pdf_path}")
+            except Exception as e:
+                print(f"Failed to save {doc_name}: {e}")
+        
+        return pdf_paths
     
     def _generate_first_page(self) -> str:
         """Generate First Page Summary document"""
@@ -981,18 +675,6 @@ class DocumentGenerator:
                 th {{ background-color: #f0f0f0; font-weight: bold; }}
                 .amount {{ text-align: right; }}
                 .total-row {{ font-weight: bold; }}
-                .highlight-row {{ background-color: #f0f0f0; font-weight: bold; }}
-                
-                /* Column-specific widths for PDF compatibility (percentages) */
-                th:nth-child(1), td:nth-child(1) {{ width: 5.89%; }}   /* Unit */
-                th:nth-child(2), td:nth-child(2) {{ width: 8.06%; }}   /* Qty Since */
-                th:nth-child(3), td:nth-child(3) {{ width: 8.06%; }}   /* Qty Upto */
-                th:nth-child(4), td:nth-child(4) {{ width: 5.59%; }}   /* S.No */
-                th:nth-child(5), td:nth-child(5) {{ width: 37.38%; }}  /* Description */
-                th:nth-child(6), td:nth-child(6) {{ width: 7.71%; }}   /* Rate */
-                th:nth-child(7), td:nth-child(7) {{ width: 11.44%; }}  /* Amt Upto */
-                th:nth-child(8), td:nth-child(8) {{ width: 8.87%; }}   /* Amt Since */
-                th:nth-child(9), td:nth-child(9) {{ width: 7.00%; }}   /* Remarks */
             </style>
         </head>
         <body>
@@ -1050,40 +732,41 @@ class DocumentGenerator:
                 amt_upto_display = f"{running_total:.2f}"
                 amt_since_display = f"{running_total:.2f}"
                 total_amount = running_total
-                
             elif is_premium_row:
-                # This is the Add Tender Premium row - calculate and show premium
-                premium_amount = total_amount * (tender_premium_percent / 100)
-                qty_since_display = f"{tender_premium_percent:.2f}" if tender_premium_percent > 0 else ""
-                qty_upto_display = f"{tender_premium_percent:.2f}" if tender_premium_percent > 0 else ""
-                rate_display = ""
+                # This is the TENDER PREMIUM row
+                premium_amount = running_total * (tender_premium_percent / 100)
+                qty_since_display = ""
+                qty_upto_display = ""
+                rate_display = f"{tender_premium_percent:.2f}%"
                 amt_upto_display = f"{premium_amount:.2f}"
                 amt_since_display = f"{premium_amount:.2f}"
-                
+                total_amount += premium_amount
+                running_total += premium_amount
             elif is_grand_total_row:
-                # This is the Grand Total row - show total + premium
-                premium_amount = total_amount * (tender_premium_percent / 100)
-                grand_total = total_amount + premium_amount
+                # This is the GRAND TOTAL row
                 qty_since_display = ""
                 qty_upto_display = ""
                 rate_display = ""
-                amt_upto_display = f"{grand_total:.2f}"
-                amt_since_display = f"{grand_total:.2f}"
-                
+                amt_upto_display = f"{running_total:.2f}"
+                amt_since_display = f"{running_total:.2f}"
             else:
-                # Regular work order item
-                quantity_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
-                quantity_upto = self._safe_float(row.get('Quantity Upto', quantity_since))
+                # Regular work item
+                qty_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
+                qty_upto = self._safe_float(row.get('Quantity Upto', qty_since))
                 rate = self._safe_float(row.get('Rate', 0))
-                amount_since = quantity_since * rate
-                amount_upto = amount_since
-                running_total += amount_since
+                amt_upto = qty_upto * rate
+                amt_since = qty_since * rate
                 
-                qty_since_display = f"{quantity_since:.2f}" if quantity_since > 0 else ""
-                qty_upto_display = f"{quantity_upto:.2f}" if quantity_upto > 0 else ""
-                rate_display = f"{rate:.2f}" if rate > 0 else ""
-                amt_upto_display = f"{amount_upto:.2f}" if amount_upto > 0 else ""
-                amt_since_display = f"{amount_since:.2f}" if amount_since > 0 else ""
+                # Update running totals
+                running_total += amt_upto
+                total_amount += amt_upto
+                
+                # Format for display (empty string if zero)
+                qty_since_display = f"{qty_since:.2f}" if qty_since != 0 else ""
+                qty_upto_display = f"{qty_upto:.2f}" if qty_upto != 0 else ""
+                rate_display = f"{rate:.2f}" if rate != 0 else ""
+                amt_upto_display = f"{amt_upto:.2f}" if amt_upto != 0 else ""
+                amt_since_display = f"{amt_since:.2f}" if amt_since != 0 else ""
             
             html_content += f"""
                     <tr>
@@ -1091,39 +774,37 @@ class DocumentGenerator:
                         <td class="amount">{qty_since_display}</td>
                         <td class="amount">{qty_upto_display}</td>
                         <td>{self._safe_serial_no(row.get('Item No.', row.get('Item', '')))}</td>
-                        <td>{row.get('Description', '')}</td>
+                        <td>{description}</td>
                         <td class="amount">{rate_display}</td>
                         <td class="amount">{amt_upto_display}</td>
                         <td class="amount">{amt_since_display}</td>
+                        <td>{row.get('Remark', '')}</td>
                     </tr>
             """
         
-        # Calculate grand total (tender_premium_percent already retrieved above)
-        tender_premium_amount = total_amount * (tender_premium_percent / 100)
-        grand_total = total_amount + tender_premium_amount
-        
-        # Get last bill amount from title data
-        last_bill_amount = self._safe_float(self.title_data.get('Amount Paid Vide Last Bill', 
-                                                                 self.title_data.get('amount_paid_last_bill', 0)))
-        
-        # Calculate net payable amount
-        net_payable = grand_total - last_bill_amount
-        
-        # Note: TOTAL, Add Tender Premium, and GRAND TOTAL are already in work order items above
-        # So we only add the deduction and net payable rows here
         html_content += f"""
-                    <tr>
-                        <td colspan="6">Less: Amount Paid Vide Last Bill Rs.</td>
-                        <td class="amount">{last_bill_amount:.2f}</td>
-                        <td class="amount">{last_bill_amount:.2f}</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td colspan="6">NET PAYABLE AMOUNT Rs.</td>
-                        <td class="amount">{net_payable:.2f}</td>
-                        <td class="amount">{net_payable:.2f}</td>
-                    </tr>
                 </tbody>
             </table>
+            
+            <!-- Closure Lines -->
+            <div style="margin-top: 40px; width: 100%; display: table;">
+                <div style="display: table-row;">
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Prepared by</strong><br>
+                            <span style="font-size: 8pt;">Assistant Engineer</span><br>
+                            <span style="font-size: 8pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Checked & Approved by</strong><br>
+                            <span style="font-size: 8pt;">Executive Engineer</span><br>
+                            <span style="font-size: 8pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </body>
         </html>
         """
@@ -1271,6 +952,26 @@ class DocumentGenerator:
         html_content += f"""
                 </tbody>
             </table>
+            
+            <!-- Closure Lines -->
+            <div style="margin-top: 40px; width: 100%; display: table;">
+                <div style="display: table-row;">
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Prepared by</strong><br>
+                            <span style="font-size: 8pt;">Assistant Engineer</span><br>
+                            <span style="font-size: 8pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                    <div style="display: table-cell; width: 50%; padding: 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #000; padding-top: 5px; text-align: center;">
+                            <strong>Checked & Approved by</strong><br>
+                            <span style="font-size: 8pt;">Executive Engineer</span><br>
+                            <span style="font-size: 8pt;">Date: {current_date}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </body>
         </html>
         """
@@ -1278,7 +979,7 @@ class DocumentGenerator:
         return html_content
     
     def _generate_final_bill_scrutiny(self) -> str:
-        """Generate Final Bill Scrutiny Sheet"""
+        """Generate Bill Scrutiny Sheet"""
         current_date = datetime.now().strftime('%d/%m/%Y')
         bill_number = self.title_data.get('Bill Number', 'Bill Number Not Available')
         
@@ -1421,17 +1122,6 @@ class DocumentGenerator:
                 }}
                 th {{ background-color: #f0f0f0; font-weight: bold; }}
                 .amount {{ text-align: right; }}
-                
-                /* Column-specific widths for Extra Items (same as First Page) */
-                th:nth-child(1), td:nth-child(1) {{ width: 5.89%; }}   /* Unit */
-                th:nth-child(2), td:nth-child(2) {{ width: 8.06%; }}   /* Qty Since */
-                th:nth-child(3), td:nth-child(3) {{ width: 8.06%; }}   /* Qty Upto */
-                th:nth-child(4), td:nth-child(4) {{ width: 5.59%; }}   /* S.No */
-                th:nth-child(5), td:nth-child(5) {{ width: 37.38%; }}  /* Description */
-                th:nth-child(6), td:nth-child(6) {{ width: 7.71%; }}   /* Rate */
-                th:nth-child(7), td:nth-child(7) {{ width: 11.44%; }}  /* Amt Upto */
-                th:nth-child(8), td:nth-child(8) {{ width: 8.87%; }}   /* Amt Since */
-                th:nth-child(9), td:nth-child(9) {{ width: 7.00%; }}   /* Remarks */
             </style>
         </head>
         <body>
@@ -1439,67 +1129,54 @@ class DocumentGenerator:
                 <div class="subtitle">Extra Items Statement</div>
                 <div class="subtitle">Date: {current_date}</div>
             </div>
-        """
-        
-        if isinstance(self.extra_items_data, pd.DataFrame) and not self.extra_items_data.empty:
-            html_content += """
+            
             <h3>Extra Items</h3>
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10.06mm;">Unit</th>
-                        <th style="width: 13.76mm;">Quantity executed (or supplied) since last certificate</th>
-                        <th style="width: 13.76mm;">Quantity executed (or supplied) upto date as per MB</th>
-                        <th style="width: 9.55mm;">S. No.</th>
-                        <th style="width: 63.83mm;">Item of Work supplies (Grouped under "sub-head" and "sub work" of estimate)</th>
-                        <th style="width: 13.16mm;">Rate</th>
-                        <th style="width: 19.53mm;">Upto date Amount</th>
-                        <th style="width: 15.15mm;">Amount Since previous bill (Total for each sub-head)</th>
-                        <th style="width: 11.96mm;">Remarks</th>
+                        <th style="width: 10%;">Item No.</th>
+                        <th style="width: 50%;">Description</th>
+                        <th style="width: 10%;">Unit</th>
+                        <th style="width: 10%;">Quantity</th>
+                        <th style="width: 10%;">Rate</th>
+                        <th style="width: 10%;">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-            """
-            
-            total_amount = 0
+        """
+        
+        total_amount = 0
+        if isinstance(self.extra_items_data, pd.DataFrame) and not self.extra_items_data.empty:
             for index, row in self.extra_items_data.iterrows():
                 quantity = self._safe_float(row.get('Quantity', 0))
                 rate = self._safe_float(row.get('Rate', 0))
                 amount = quantity * rate
                 total_amount += amount
                 
-                qty_display = f"{quantity:.2f}" if quantity > 0 else ""
-                rate_display = f"{rate:.2f}" if rate > 0 else ""
-                amount_display = f"{amount:.2f}" if amount > 0 else ""
-                
                 html_content += f"""
                         <tr>
-                            <td>{self._format_unit_or_text(row.get('Unit', ''))}</td>
-                            <td class="amount">{qty_display}</td>
-                            <td class="amount">{qty_display}</td>
-                            <td>{self._safe_serial_no(row.get('Item No.', row.get('Item No', row.get('Item', ''))))}</td>
+                            <td>{self._safe_serial_no(row.get('Item No.', row.get('Item', '')))}</td>
                             <td>{row.get('Description', '')}</td>
-                            <td class="amount">{rate_display}</td>
-                            <td class="amount">{amount_display}</td>
-                            <td class="amount">{amount_display}</td>
-                            <td>{row.get('Remark', '')}</td>
+                            <td>{self._format_unit_or_text(row.get('Unit', ''))}</td>
+                            <td class="amount">{self._format_number(quantity)}</td>
+                            <td class="amount">{self._format_number(rate)}</td>
+                            <td class="amount">{self._format_number(amount)}</td>
                         </tr>
                 """
-            
-            html_content += f"""
-                        <tr style="font-weight: bold;">
-                            <td colspan="6">TOTAL</td>
-                            <td class="amount">{total_amount:.2f}</td>
-                            <td class="amount">{total_amount:.2f}</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            """
         else:
-            html_content += "<p>No extra items found in the provided data.</p>"
+            html_content += """
+                    <tr>
+                        <td colspan="6">No extra items data available</td>
+                    </tr>
+            """
         
-        html_content += """
+        html_content += f"""
+                    <tr style="font-weight: bold;">
+                        <td colspan="5">TOTAL</td>
+                        <td class="amount">{total_amount:.2f}</td>
+                    </tr>
+                </tbody>
+            </table>
         </body>
         </html>
         """
@@ -1507,7 +1184,7 @@ class DocumentGenerator:
         return html_content
     
     def _generate_certificate_ii(self) -> str:
-        """Generate Professional Certificate II - Government Standard"""
+        """Generate Certificate II document"""
         current_date = datetime.now().strftime('%d/%m/%Y')
         
         html_content = f"""
@@ -1519,85 +1196,66 @@ class DocumentGenerator:
             <style>
                 @page {{ 
                     size: A4; 
-                    margin: 15mm 20mm;
+                    margin: 15mm;
                 }}
                 * {{ box-sizing: border-box; }}
                 body {{ 
-                    font-family: 'Times New Roman', serif; 
+                    font-family: Arial, sans-serif; 
                     margin: 0; 
-                    padding: 0;
-                    font-size: 14pt;
+                    padding: 15mm;
+                    font-size: 11pt; 
                     line-height: 1.6;
-                    color: #000;
                 }}
-                .letterhead {{
+                .header {{ text-align: center; margin-bottom: 20px; }}
+                .title {{ font-size: 14pt; font-weight: bold; margin-bottom: 30px; }}
+                .content {{ text-align: justify; margin-bottom: 30px; }}
+                .signature-block {{ 
+                    margin-top: 50px; 
+                    display: flex; 
+                    justify-content: space-between;
+                }}
+                .signature {{ 
+                    width: 45%; 
                     text-align: center;
-                    border-bottom: 3px double #000;
-                    padding-bottom: 15px;
-                    margin-bottom: 20px;
                 }}
-                .dept-header {{
-                    font-size: 18pt;
-                    font-weight: bold;
-                    color: #2d5f3f;
-                    margin-bottom: 5px;
-                }}
-                .cert-title {{
-                    text-align: center;
-                    font-size: 20pt;
-                    font-weight: bold;
-                    text-decoration: underline;
-                    margin: 25px 0;
-                    color: #2d5f3f;
-                }}
-                .content {{
-                    text-align: justify;
-                    margin: 20px 0;
-                    text-indent: 50px;
-                }}
-                .project-details {{
-                    background: #f8f9fa;
-                    padding: 15px;
-                    border: 2px solid #2d5f3f;
-                    margin: 20px 0;
-                    border-radius: 5px;
-                }}
-                .signatures {{
-                    margin-top: 60px;
-                    text-align: right;
-                }}
-                .signature-title {{
-                    font-weight: bold;
-                    font-size: 12pt;
+                .signature-line {{ 
+                    margin-top: 60px; 
+                    border-top: 1px solid #000; 
+                    padding-top: 5px;
                 }}
             </style>
         </head>
         <body>
-            <div class="letterhead">
-                <div class="dept-header">PUBLIC WORKS DEPARTMENT</div>
-                <div>GOVERNMENT OF RAJASTHAN</div>
-            </div>
-            
-            <div class="cert-title">CERTIFICATE - II</div>
-            <div style="text-align: center; font-size: 16pt; font-weight: bold; margin-bottom: 20px;">
-                (WORK COMPLETION CERTIFICATE)
+            <div class="header">
+                <div class="title">CERTIFICATE II</div>
+                <div class="title">WORK COMPLETION CERTIFICATE</div>
             </div>
             
             <div class="content">
-                <p>This is to <strong>CERTIFY</strong> that the work described in the measurement book and bill has been executed according to the approved drawings, specifications, and technical standards prescribed for the work, and is <strong>COMPLETE IN ALL RESPECTS</strong>.</p>
+                <p>This is to certify that the work mentioned in the agreement/bill has been completed/executed as per the terms 
+                and conditions of the agreement and measurement book. The quality of work is found satisfactory.</p>
+                
+                <p>The bills have been scrutinized and found correct and in order. The work has been executed as per specifications 
+                and the measurements recorded are correct.</p>
+                
+                <p>All materials used are as per approved standards and specifications. The work has been carried out under my 
+                personal supervision and knowledge.</p>
             </div>
             
-            <div class="project-details">
-                <p><strong>Project Name:</strong> {self.title_data.get('Project Name', 'N/A')}</p>
-                <p><strong>Contract No:</strong> {self.title_data.get('Contract No', 'N/A')}</p>
-                <p><strong>Work Order No:</strong> {self.title_data.get('Work Order No', 'N/A')}</p>
-            </div>
-            
-            <div class="signatures">
-                <p>Date: {current_date}</p>
-                <div style="margin-top: 60px;">
-                    <p class="signature-title">Executive Engineer</p>
-                    <p>PWD, Udaipur</p>
+            <div class="signature-block">
+                <div class="signature">
+                    <div>Prepared by</div>
+                    <div class="signature-line">
+                        Assistant Engineer<br>
+                        Date: {current_date}
+                    </div>
+                </div>
+                <div class="signature">
+                    <div>Approved by</div>
+                    <div class="signature-line">
+                        Executive Engineer<br>
+                        Date: {current_date}
+                    </div>
                 </div>
             </div>
         </body>
@@ -1607,7 +1265,7 @@ class DocumentGenerator:
         return html_content
     
     def _generate_certificate_iii(self) -> str:
-        """Generate Professional Certificate III"""
+        """Generate Certificate III document"""
         current_date = datetime.now().strftime('%d/%m/%Y')
         
         html_content = f"""
@@ -1615,89 +1273,70 @@ class DocumentGenerator:
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Certificate III - Measurement Certificate</title>
+            <title>Certificate III - Payment Certification</title>
             <style>
                 @page {{ 
                     size: A4; 
-                    margin: 15mm 20mm;
+                    margin: 15mm;
                 }}
                 * {{ box-sizing: border-box; }}
                 body {{ 
-                    font-family: 'Times New Roman', serif; 
+                    font-family: Arial, sans-serif; 
                     margin: 0; 
-                    padding: 0;
-                    font-size: 14pt;
+                    padding: 15mm;
+                    font-size: 11pt; 
                     line-height: 1.6;
-                    color: #000;
                 }}
-                .letterhead {{
+                .header {{ text-align: center; margin-bottom: 20px; }}
+                .title {{ font-size: 14pt; font-weight: bold; margin-bottom: 30px; }}
+                .content {{ text-align: justify; margin-bottom: 30px; }}
+                .signature-block {{ 
+                    margin-top: 50px; 
+                    display: flex; 
+                    justify-content: space-between;
+                }}
+                .signature {{ 
+                    width: 45%; 
                     text-align: center;
-                    border-bottom: 3px double #000;
-                    padding-bottom: 15px;
-                    margin-bottom: 20px;
                 }}
-                .dept-header {{
-                    font-size: 18pt;
-                    font-weight: bold;
-                    color: #2d5f3f;
-                    margin-bottom: 5px;
-                }}
-                .cert-title {{
-                    text-align: center;
-                    font-size: 20pt;
-                    font-weight: bold;
-                    text-decoration: underline;
-                    margin: 25px 0;
-                    color: #2d5f3f;
-                }}
-                .content {{
-                    text-align: justify;
-                    margin: 20px 0;
-                    text-indent: 50px;
-                }}
-                .project-details {{
-                    background: #f8f9fa;
-                    padding: 15px;
-                    border: 2px solid #2d5f3f;
-                    margin: 20px 0;
-                    border-radius: 5px;
-                }}
-                .signatures {{
-                    margin-top: 60px;
-                    text-align: right;
-                }}
-                .signature-title {{
-                    font-weight: bold;
-                    font-size: 12pt;
+                .signature-line {{ 
+                    margin-top: 60px; 
+                    border-top: 1px solid #000; 
+                    padding-top: 5px;
                 }}
             </style>
         </head>
         <body>
-            <div class="letterhead">
-                <div class="dept-header">PUBLIC WORKS DEPARTMENT</div>
-                <div>GOVERNMENT OF RAJASTHAN</div>
-            </div>
-            
-            <div class="cert-title">CERTIFICATE - III</div>
-            <div style="text-align: center; font-size: 16pt; font-weight: bold; margin-bottom: 20px;">
-                (MEASUREMENT CERTIFICATE)
+            <div class="header">
+                <div class="title">CERTIFICATE III</div>
+                <div class="title">PAYMENT CERTIFICATION</div>
             </div>
             
             <div class="content">
-                <p>This is to <strong>CERTIFY</strong> that I have satisfied myself that the rate/rates for the work has/have been correctly entered in the books and have been paid according to the Contract Agreement and as per the sanctioned rates.</p>
+                <p>This is to certify that the payment claimed in the bill is correct and in order. The work has been executed 
+                satisfactorily and measurements are correct as per records.</p>
+                
+                <p>The bills have been thoroughly examined and verified. All deductions as per rules have been made. The payment 
+                is recommended subject to budget provision and availability of funds.</p>
+                
+                <p>The work has been completed/executed as per agreement terms and conditions. No adverse remarks are reported 
+                against the contractor.</p>
             </div>
             
-            <div class="project-details">
-                <p><strong>Project Name:</strong> {self.title_data.get('Project Name', 'N/A')}</p>
-                <p><strong>Contract No:</strong> {self.title_data.get('Contract No', 'N/A')}</p>
-                <p><strong>Work Order No:</strong> {self.title_data.get('Work Order No', 'N/A')}</p>
-            </div>
-            
-            <div class="signatures">
-                <p>Date: {current_date}</p>
-                <div style="margin-top: 60px;">
-                    <p class="signature-title">Executive Engineer</p>
-                    <p>PWD, Udaipur</p>
+            <div class="signature-block">
+                <div class="signature">
+                    <div>Prepared by</div>
+                    <div class="signature-line">
+                        Assistant Engineer<br>
+                        Date: {current_date}
+                    </div>
+                </div>
+                <div class="signature">
+                    <div>Approved by</div>
+                    <div class="signature-line">
+                        Executive Engineer<br>
+                        Date: {current_date}
+                    </div>
                 </div>
             </div>
         </body>
@@ -1705,3 +1344,184 @@ class DocumentGenerator:
         """
         
         return html_content
+    
+    def _generate_doc_first_page(self) -> bytes:
+        """Generate First Page Summary document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('First Page Summary', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add project information
+        doc.add_heading('Project Information', level=1)
+        
+        table = doc.add_table(rows=3, cols=2)
+        table.style = 'Table Grid'
+        
+        # Populate project info
+        table.cell(0, 0).text = 'Project Name:'
+        table.cell(0, 1).text = str(self.title_data.get('Project Name', 'N/A'))
+        table.cell(1, 0).text = 'Contract No:'
+        table.cell(1, 1).text = str(self.title_data.get('Contract No', 'N/A'))
+        table.cell(2, 0).text = 'Work Order No:'
+        table.cell(2, 1).text = str(self.title_data.get('Work Order No', 'N/A'))
+        
+        # Add work items summary
+        doc.add_heading('Work Items Summary', level=1)
+        
+        # Create work items table
+        if not self.work_order_data.empty:
+            # Add header row
+            table = doc.add_table(rows=1, cols=9)
+            table.style = 'Table Grid'
+            hdr_cells = table.rows[0].cells
+            hdr_cells[0].text = 'Unit'
+            hdr_cells[1].text = 'Quantity executed (or supplied) since last certificate'
+            hdr_cells[2].text = 'Quantity executed (or supplied) upto date as per MB'
+            hdr_cells[3].text = 'S. No.'
+            hdr_cells[4].text = 'Item of Work supplies'
+            hdr_cells[5].text = 'Rate'
+            hdr_cells[6].text = 'Upto date Amount'
+            hdr_cells[7].text = 'Amount Since previous bill'
+            hdr_cells[8].text = 'Remarks'
+            
+            # Add data rows
+            for index, row in self.work_order_data.iterrows():
+                row_cells = table.add_row().cells
+                row_cells[0].text = str(row.get('Unit', ''))
+                row_cells[1].text = str(row.get('Quantity Since', ''))
+                row_cells[2].text = str(row.get('Quantity Upto', ''))
+                row_cells[3].text = str(row.get('Item No.', ''))
+                row_cells[4].text = str(row.get('Description', ''))
+                row_cells[5].text = str(row.get('Rate', ''))
+                row_cells[6].text = str(row.get('Amount', ''))
+                row_cells[7].text = str(row.get('Amount', ''))
+                row_cells[8].text = str(row.get('Remark', ''))
+        
+        # Add totals section
+        doc.add_heading('Totals', level=1)
+        
+        totals_para = doc.add_paragraph()
+        totals_para.add_run(f'Grand Total: ₹{self.template_data.get("grand_total", 0):.2f}').bold = True
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_deviation_statement(self) -> bytes:
+        """Generate Deviation Statement document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Deviation Statement', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a deviation statement document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_note_sheet(self) -> bytes:
+        """Generate Bill Scrutiny Sheet document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Bill Scrutiny Sheet', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a final bill scrutiny sheet document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_extra_items(self) -> bytes:
+        """Generate Extra Items Statement document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Extra Items Statement', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is an extra items statement document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_certificate_ii(self) -> bytes:
+        """Generate Certificate II document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Certificate II - Work Completion Certificate', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a work completion certificate document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()
+    
+    def _generate_doc_certificate_iii(self) -> bytes:
+        """Generate Certificate III document in DOC format"""
+        doc = Document()
+        
+        # Add title
+        title = doc.add_heading('Certificate III - Payment Certification', 0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add date
+        current_date = datetime.now().strftime('%d/%m/%Y')
+        date_para = doc.add_paragraph(f'Date: {current_date}')
+        date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        
+        # Add content
+        doc.add_paragraph('This is a payment certification document.')
+        
+        # Save to bytes
+        doc_bytes = io.BytesIO()
+        doc.save(doc_bytes)
+        doc_bytes.seek(0)
+        return doc_bytes.getvalue()

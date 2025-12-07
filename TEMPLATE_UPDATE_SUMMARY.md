@@ -135,7 +135,7 @@
 The template is automatically used when generating documents via:
 ```python
 documents = generator.generate_all_documents()
-note_sheet = documents['Final Bill Scrutiny Sheet']
+note_sheet = documents['BILL SCRUTINY SHEET']
 ```
 
 The template will:

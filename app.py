@@ -248,6 +248,7 @@ with st.sidebar:
     
     if config.features.is_enabled('batch_processing'):
         modes.append("📦 Batch Processing")
+    modes.append("📥 Download Center")
     
     if config.features.is_enabled('analytics'):
         modes.append("📈 Analytics")
@@ -389,6 +390,18 @@ elif "💻 Online Entry" in selected_mode:
 elif "📦 Batch Processing" in selected_mode:
     from core.processors.batch_processor import show_batch_mode
     show_batch_mode(config)
+
+elif "📥 Download Center" in selected_mode:
+    from core.utils.download_manager import EnhancedDownloadManager
+    from core.ui.enhanced_download_center import EnhancedDownloadCenter, create_enhanced_download_center
+    
+    # Initialize download manager in session state if not exists
+    if 'download_manager' not in st.session_state:
+        st.session_state.download_manager = EnhancedDownloadManager()
+    
+    # Create and show download center
+    download_center = create_enhanced_download_center(st.session_state.download_manager)
+    download_center.render_download_center()
 
 elif "📈 Analytics" in selected_mode:
     st.markdown("## 📈 Analytics Dashboard")

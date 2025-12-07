@@ -98,7 +98,7 @@ def process_file(input_file, output_dir):
         
         # Step 3: Test HTML readability
         print("[3/5] Testing HTML readability...")
-        note_sheet_html = html_documents.get('Final Bill Scrutiny Sheet', '')
+        note_sheet_html = html_documents.get('BILL SCRUTINY SHEET', '')
         
         if note_sheet_html:
             html_checks, html_valid = check_html_readability(note_sheet_html)

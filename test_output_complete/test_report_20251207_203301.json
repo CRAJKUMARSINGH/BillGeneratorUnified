@@ -1,0 +1,115 @@
+{
+  "test_info": {
+    "timestamp": "2025-12-07T20:33:01.988971",
+    "input_directory": "TEST_INPUT_FILES",
+    "output_directory": "test_output_complete",
+    "total_files": 8,
+    "success_count": 0,
+    "error_count": 8,
+    "total_processing_time": 1.2833778858184814,
+    "average_time_per_file": 0.1601715087890625
+  },
+  "statistics": {
+    "total_html_files": 0,
+    "total_pdf_files": 0,
+    "success_rate": 0.0
+  },
+  "results": [
+    {
+      "input_file": "TEST_INPUT_FILES\\0511-N-extra.xlsx",
+      "filename": "0511-N-extra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 1.0029520988464355,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:00.705593",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\0511Wextra.xlsx",
+      "filename": "0511Wextra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.023346900939941406,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.708545",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalNoExtra.xlsx",
+      "filename": "3rdFinalNoExtra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.02672886848449707,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.731892",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalVidExtra.xlsx",
+      "filename": "3rdFinalVidExtra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.08021688461303711,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.758621",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningNoExtra.xlsx",
+      "filename": "3rdRunningNoExtra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.0405726432800293,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.839845",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningVidExtra.xlsx",
+      "filename": "3rdRunningVidExtra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.039380550384521484,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.880418",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALnoExtra.xlsx",
+      "filename": "FirstFINALnoExtra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.034598350524902344,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.920797",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALvidExtra.xlsx",
+      "filename": "FirstFINALvidExtra.xlsx",
+      "status": "error",
+      "error": "'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>",
+      "processing_time": 0.03357577323913574,
+      "html_files": [],
+      "pdf_files": [],
+      "output_folder": null,
+      "timestamp": "2025-12-07T20:33:01.955395",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_all_input_files_offline.py\", line 45, in process_file_complete\n    print(f\"     \u2713 Excel processed successfully\")\n  File \"C:\\Users\\Rajkumar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2713' in position 5: character maps to <undefined>\n"
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+[
+  {
+    "file_path": "TEST_INPUT_FILES\\0511-N-extra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [
+        "17.A - Upto Last Bill"
+      ],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "1/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\0511Wextra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [
+        "17.A - Upto Last Bill"
+      ],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "1/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdFinalNoExtra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.A - Upto Last Bill",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "0/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdFinalVidExtra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.A - Upto Last Bill",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "0/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdRunningNoExtra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.A - Upto Last Bill",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "0/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\3rdRunningVidExtra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.A - Upto Last Bill",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "0/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\FirstFINALnoExtra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [
+        "17.A - Upto Last Bill"
+      ],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "1/3"
+    }
+  },
+  {
+    "file_path": "TEST_INPUT_FILES\\FirstFINALvidExtra.xlsx",
+    "validation_status": "SUCCESS",
+    "first_20_rows_processed": true,
+    "first_20_rows_count": 19,
+    "title_data_fields": 21,
+    "scrutiny_sheet_generated": true,
+    "validation_details": {
+      "template_expressions_found": [
+        "Agreement No/Work Order No",
+        "A&F Sanction",
+        "Technical Section",
+        "Sub Division",
+        "Name of Work",
+        "Name of Contractor",
+        "Original/Deposit",
+        "Budget Provision",
+        "Date of Commencement",
+        "Date of Completion",
+        "Actual Date of Completion",
+        "Measurement Date"
+      ],
+      "template_expressions_missing": [
+        "MB No. & Page",
+        "Delay Extension",
+        "Notice Issued",
+        "Repair Work",
+        "Excess Quantity",
+        "Delay Comment"
+      ],
+      "template_coverage": "12/18",
+      "financial_fields_found": [
+        "17.A - Upto Last Bill"
+      ],
+      "financial_fields_missing": [
+        "Work Order Amount",
+        "17.B - This Bill"
+      ],
+      "financial_coverage": "1/3"
+    }
+  }
+]

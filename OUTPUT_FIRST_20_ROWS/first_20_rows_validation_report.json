@@ -1,0 +1,71 @@
+{
+  "total_files_validated": 8,
+  "files_with_first_20_metadata": 8,
+  "files_with_adequate_row_coverage": 8,
+  "validation_details": [
+    {
+      "file": "0511-N-extra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "0511Wextra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "3rdFinalNoExtra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "3rdFinalVidExtra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "3rdRunningNoExtra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "3rdRunningVidExtra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "FirstFINALnoExtra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    },
+    {
+      "file": "FirstFINALvidExtra.xlsx",
+      "has_metadata": true,
+      "row_coverage": 0,
+      "validation_status": "success",
+      "row_count": 19,
+      "adequate_coverage": true
+    }
+  ]
+}

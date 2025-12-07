@@ -1,0 +1,901 @@
+{
+  "test_info": {
+    "timestamp": "2025-12-07T21:22:24.080809",
+    "test_type": "ONLINE - Work Order & Title Sheet with Quantity Modifications",
+    "input_directory": "TEST_INPUT_FILES",
+    "output_directory": "test_output_online_workorder",
+    "total_files": 8,
+    "success_count": 8,
+    "error_count": 0,
+    "total_processing_time": 31.485431432724,
+    "average_time_per_file": 3.935554027557373,
+    "total_main_item_modifications": 47,
+    "total_extra_item_modifications": 22
+  },
+  "results": [
+    {
+      "input_file": "TEST_INPUT_FILES\\0511-N-extra.xlsx",
+      "filename": "0511-N-extra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 5.857022047042847,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 10.62
+          },
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 5.19
+          },
+          {
+            "row": 7,
+            "item": "E-01",
+            "old_quantity": 2.0,
+            "new_quantity": 2.9
+          },
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 8.95
+          },
+          {
+            "row": 9,
+            "item": "E-03",
+            "old_quantity": 5.0,
+            "new_quantity": 8.04
+          },
+          {
+            "row": 8,
+            "item": "E-02",
+            "old_quantity": 4.0,
+            "new_quantity": 5.7
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 10,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 10,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212152_0511-N-extra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212152_0511-N-extra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:21:52.595378",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s. Shree Krishna B_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212152_0511-N-extra\\0511-N-extra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212152_0511-N-extra\\0511-N-extra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212152_0511-N-extra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\0511Wextra.xlsx",
+      "filename": "0511Wextra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 4.651379108428955,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 10.99
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 9,
+            "item": "E-03",
+            "old_quantity": 5.0,
+            "new_quantity": 6.88
+          },
+          {
+            "row": 7,
+            "item": "E-01",
+            "old_quantity": 2.0,
+            "new_quantity": 3.32
+          },
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 8.72
+          },
+          {
+            "row": 8,
+            "item": "E-02",
+            "old_quantity": 4.0,
+            "new_quantity": 5.24
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 4.99
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 10,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 10,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212158_0511Wextra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212158_0511Wextra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:21:58.452399",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s. Shree Krishna B_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212158_0511Wextra\\0511Wextra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212158_0511Wextra\\0511Wextra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212158_0511Wextra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalNoExtra.xlsx",
+      "filename": "3rdFinalNoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 3.51765775680542,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 13,
+            "item": 8.0,
+            "old_quantity": 8.0,
+            "new_quantity": 9.6
+          },
+          {
+            "row": 14,
+            "item": 9.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 16,
+            "item": 11.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 29,
+            "item": 17.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": []
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212203_3rdFinalNoExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212203_3rdFinalNoExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:22:03.103779",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s. Shivshakti Trad_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212203_3rdFinalNoExtra\\3rdFinalNoExtra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212203_3rdFinalNoExtra\\3rdFinalNoExtra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212203_3rdFinalNoExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalVidExtra.xlsx",
+      "filename": "3rdFinalVidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 3.3610260486602783,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 12,
+            "item": 7.0,
+            "old_quantity": 12.0,
+            "new_quantity": 16.56
+          },
+          {
+            "row": 14,
+            "item": 9.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 19,
+            "item": 12.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 10,
+            "item": 5.0,
+            "old_quantity": 22.0,
+            "new_quantity": 26.77
+          },
+          {
+            "row": 25,
+            "item": 15.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 2.0,
+            "new_quantity": 2.55
+          },
+          {
+            "row": 9,
+            "item": 4.0,
+            "old_quantity": 32.0,
+            "new_quantity": 41.09
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 7,
+            "item": "E-01",
+            "old_quantity": 2.0,
+            "new_quantity": 3.04
+          },
+          {
+            "row": 9,
+            "item": "E-03",
+            "old_quantity": 5.0,
+            "new_quantity": 9.5
+          },
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 6.6
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 5.23
+          },
+          {
+            "row": 10,
+            "item": "E-04",
+            "old_quantity": 5.0,
+            "new_quantity": 6.26
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212206_3rdFinalVidExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212206_3rdFinalVidExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:22:06.622436",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s. Shivshakti Trad_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212206_3rdFinalVidExtra\\3rdFinalVidExtra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212206_3rdFinalVidExtra\\3rdFinalVidExtra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212206_3rdFinalVidExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningNoExtra.xlsx",
+      "filename": "3rdRunningNoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 3.6964151859283447,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 12,
+            "item": 7.0,
+            "old_quantity": 12.0,
+            "new_quantity": 15.77
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 25,
+            "item": 15.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 9,
+            "item": "E-03",
+            "old_quantity": 5.0,
+            "new_quantity": 6.6
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 5.52
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212210_3rdRunningNoExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212210_3rdRunningNoExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:22:09.983462",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s Seema Electrical_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212210_3rdRunningNoExtra\\3rdRunningNoExtra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212210_3rdRunningNoExtra\\3rdRunningNoExtra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212210_3rdRunningNoExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningVidExtra.xlsx",
+      "filename": "3rdRunningVidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 3.6173362731933594,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 10,
+            "item": 5.0,
+            "old_quantity": 22.0,
+            "new_quantity": 31.49
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 52.35
+          },
+          {
+            "row": 12,
+            "item": 7.0,
+            "old_quantity": 12.0,
+            "new_quantity": 17.58
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 15.0,
+            "new_quantity": 22.42
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 7,
+            "item": "E-01",
+            "old_quantity": 2.0,
+            "new_quantity": 3.74
+          },
+          {
+            "row": 9,
+            "item": "E-03",
+            "old_quantity": 5.0,
+            "new_quantity": 9.24
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212213_3rdRunningVidExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212213_3rdRunningVidExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:22:13.679877",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s Seema Electrical_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212213_3rdRunningVidExtra\\3rdRunningVidExtra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212213_3rdRunningVidExtra\\3rdRunningVidExtra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212213_3rdRunningVidExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALnoExtra.xlsx",
+      "filename": "FirstFINALnoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 3.4004251956939697,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 19,
+            "item": 12.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 25,
+            "item": 15.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 13,
+            "item": 8.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.11
+          },
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 9.25
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 51.24
+          }
+        ],
+        "extra_items": []
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212217_FirstFINALnoExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212217_FirstFINALnoExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:22:17.297213",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s. Shivshakti Trad_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212217_FirstFINALnoExtra\\FirstFINALnoExtra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212217_FirstFINALnoExtra\\FirstFINALnoExtra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212217_FirstFINALnoExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALvidExtra.xlsx",
+      "filename": "FirstFINALvidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 3.3831706047058105,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 34,
+            "item": 18.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 15,
+            "item": 10.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.65
+          },
+          {
+            "row": 9,
+            "item": 4.0,
+            "old_quantity": 32.0,
+            "new_quantity": 41.42
+          },
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 41.77
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 15.0,
+            "new_quantity": 20.88
+          },
+          {
+            "row": 16,
+            "item": 11.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 29,
+            "item": 17.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 10,
+            "item": "E-04",
+            "old_quantity": 5.0,
+            "new_quantity": 6.79
+          },
+          {
+            "row": 8,
+            "item": "E-02",
+            "old_quantity": 4.0,
+            "new_quantity": 7.68
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 6.99
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251207_212220_FirstFINALvidExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251207_212220_FirstFINALvidExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-07T21:22:20.697638",
+      "macro_sheet": {
+        "success": true,
+        "sheet_name": "M s. Shree Krishna B_48-2024-25",
+        "output_file": "test_output_online_workorder\\20251207_212220_FirstFINALvidExtra\\FirstFINALvidExtra_with_macro.xlsm",
+        "pdf_file": "test_output_online_workorder\\20251207_212220_FirstFINALvidExtra\\FirstFINALvidExtra_with_macro.pdf",
+        "macro_run": true,
+        "pdf_exported": true
+      },
+      "output_folder": "test_output_online_workorder\\20251207_212220_FirstFINALvidExtra"
+    }
+  ]
+}

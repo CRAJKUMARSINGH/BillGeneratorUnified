@@ -1,0 +1,219 @@
+{
+  "test_info": {
+    "timestamp": "2025-12-07T20:36:27.812085",
+    "input_directory": "TEST_INPUT_FILES",
+    "output_directory": "test_output_complete",
+    "total_files": 8,
+    "success_count": 8,
+    "error_count": 0,
+    "total_processing_time": 85.96971154212952,
+    "average_time_per_file": 10.745729237794876
+  },
+  "statistics": {
+    "total_html_files": 48,
+    "total_pdf_files": 48,
+    "success_rate": 100.0
+  },
+  "results": [
+    {
+      "input_file": "TEST_INPUT_FILES\\0511-N-extra.xlsx",
+      "filename": "0511-N-extra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 10.670037269592285,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203512_0511-N-extra",
+      "timestamp": "2025-12-07T20:35:01.842374"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\0511Wextra.xlsx",
+      "filename": "0511Wextra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 7.853529214859009,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203520_0511Wextra",
+      "timestamp": "2025-12-07T20:35:12.512411"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalNoExtra.xlsx",
+      "filename": "3rdFinalNoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 8.156432867050171,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203528_3rdFinalNoExtra",
+      "timestamp": "2025-12-07T20:35:20.365941"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalVidExtra.xlsx",
+      "filename": "3rdFinalVidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 8.625172853469849,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203537_3rdFinalVidExtra",
+      "timestamp": "2025-12-07T20:35:28.523381"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningNoExtra.xlsx",
+      "filename": "3rdRunningNoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 10.278369426727295,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203547_3rdRunningNoExtra",
+      "timestamp": "2025-12-07T20:35:37.149070"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningVidExtra.xlsx",
+      "filename": "3rdRunningVidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 12.233103275299072,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203559_3rdRunningVidExtra",
+      "timestamp": "2025-12-07T20:35:47.428441"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALnoExtra.xlsx",
+      "filename": "FirstFINALnoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 13.868930578231812,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203613_FirstFINALnoExtra",
+      "timestamp": "2025-12-07T20:35:59.662545"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALvidExtra.xlsx",
+      "filename": "FirstFINALvidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 14.280258417129517,
+      "html_files": [
+        "First Page Summary",
+        "Deviation Statement",
+        "BILL SCRUTINY SHEET",
+        "Extra Items Statement",
+        "Certificate II",
+        "Certificate III"
+      ],
+      "pdf_files": [
+        "First Page Summary.pdf",
+        "Deviation Statement.pdf",
+        "BILL SCRUTINY SHEET.pdf",
+        "Extra Items Statement.pdf",
+        "Certificate II.pdf",
+        "Certificate III.pdf"
+      ],
+      "output_folder": "test_output_complete\\20251207_203627_FirstFINALvidExtra",
+      "timestamp": "2025-12-07T20:36:13.531827"
+    }
+  ]
+}

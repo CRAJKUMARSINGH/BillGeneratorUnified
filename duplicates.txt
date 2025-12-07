@@ -1,0 +1,451 @@
+﻿=== Duplicate Group: DC9E56678F43BBE9E707C67F494637D3A20875CA59500687B791D23A1C85AB38 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\add_macro_to_any_workbook.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\add_macro_to_any_workbook.py
+=== Duplicate Group: 000FF2F63E51ED810852BC699D1519C13C4DE0DF87C6F545AB16E5BD2055777C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\ADD_MACRO_TO_COPIED_SHEETS.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\ADD_MACRO_TO_COPIED_SHEETS.bat
+=== Duplicate Group: D0EF47D917301C8FE7AF58B0671F377BB8FC4F43151EEE4F7C137805CF2E04F1 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\add_note_computing_formulas.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\add_note_computing_formulas.py
+=== Duplicate Group: 8BC65D5473E4835DC8A03C87B1A04F44574D76B5B91FB5175B9436CFC0207351 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\add_vba_to_even_sheet.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\add_vba_to_even_sheet.py
+=== Duplicate Group: 9612BCA655FFD6F119E19A0962626D83399999A6D63F3CF608BB612FBF38DDA3 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\analyze_workbook_structure.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\analyze_workbook_structure.py
+=== Duplicate Group: 9C569C5423169CFBE8F867E3912177D7932CBF80D3C3CC240FCB3670E0DA3F80 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\apply_complete_update.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\apply_complete_update.py
+=== Duplicate Group: 96C939E4555020D3B63E80BFEF12D5B79CC251202E6CA12682C07B72B85EAB28 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\apply_corrected_vba.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\apply_corrected_vba.py
+=== Duplicate Group: 6E13DB93699CF82CFF92E3FCAE8F5A599DFBF3E914BA807F69D0F653A0BF01D5 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\apply_final_correction.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\apply_final_correction.py
+=== Duplicate Group: 7336F68BF200B7E1FDD6530465C466943124F27733A56AB9D5C8DCDE3DA95633 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\apply_minor_correction.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\apply_minor_correction.py
+=== Duplicate Group: 2B0BC7098C444CA06E31F5D4E241099DBEBFC7281ED1700FB2FA696D853CBA11 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\apply_vba_correction.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\apply_vba_correction.py
+=== Duplicate Group: 0DA8A221C03EDA333FF0CCCF5C46DA769E18452A7B1F2326A1F170B11C90897D (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\autonomous_test_agent.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\autonomous_test_agent.py
+=== Duplicate Group: 574D16D6BB085DE5FA89AD91AF1DD993B2E0B9E156E52001AD55785864B87111 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\BATCH_RUN.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\BATCH_RUN.bat
+=== Duplicate Group: 617B9CD78DDAF21875896939EC9241B0E07867349FE4D1EF38B06604FDCDBFEF (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\batch_run_demo.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\batch_run_demo.py
+=== Duplicate Group: 690FA9D92DE9F7D64E99FDF9E0D5193E379A7CE8A60ABC12B1B77C5EFF94A4F8 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\batch_test_notesheet.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\batch_test_notesheet.py
+=== Duplicate Group: 53BDE36A2E858711ED039B832C6C55EEEBC5A27EC2E6BFE05E8F479A0023BDD2 (Count: 5)
+C:\Users\Rajkumar\BillGeneratorUnified\BATCH_TEST_NOTESHEET_README.md
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\core\docs\BATCH_TEST_NOTESHEET_README.md
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\core\docs\INTEGRATION_STEPS.md
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\core\docs\OPTIMIZATION_GUIDE.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\BATCH_TEST_NOTESHEET_README.md
+=== Duplicate Group: 38C80362B907C0E1D4DA63A4EEFAE436B2036B852667C92A9E84E492E9CE9EC8 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\billgen-unified-deploy-20251117.zip
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\billgen-unified-deploy-20251117.zip
+=== Duplicate Group: 21338B155B9C88AE7D0BCC72099802BA64DBB0F6FAE6D26055361638CFE41E21 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\BUILD_CLEAN_ZIP.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\BUILD_CLEAN_ZIP.bat
+=== Duplicate Group: F61C72FF87126E23575BF6671DD90F094046452075D42186B34962DE2B1A55A0 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\BUILD_INSTRUCTIONS.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\BUILD_INSTRUCTIONS.md
+=== Duplicate Group: D4934EC72ACC69AEE04DE5479A643EE12C31860F2A2DE27E2B516EFB24811D88 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\check_cell_values.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\check_cell_values.py
+=== Duplicate Group: 3CB3FAA04D94CD00118BA21AD05C4EA42256F2CC4434448A64882F6B8B9A6B24 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\check_macros.ps1
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\check_macros.ps1
+=== Duplicate Group: CF955CE623233986D9E76960CD392BBC7CA3C7DD7C3D8DF17CC1808293AFC25A (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\COMPLETE_FIX_SUMMARY.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\COMPLETE_FIX_SUMMARY.md
+=== Duplicate Group: E90C26203AE211DB5018A649FC86038C0686D1CB454AAEA945EEF1ACD62F8257 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\COMPLETE_UPDATE.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\COMPLETE_UPDATE.bat
+=== Duplicate Group: E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\complete_xlsm_update.py
+C:\Users\Rajkumar\BillGeneratorUnified\error_handler.log
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\complete_xlsm_update.py
+=== Duplicate Group: CF70A37DA06024CAA198F2D9C9DE88476F153B98488CCA304C55AF5E893433D7 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\create_formula_based_notes.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\create_formula_based_notes.py
+=== Duplicate Group: AB455ED002CD61C543E8C9B2F185C9408EF0EF33DACF6CEFD23098A474B1320A (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\create_test_excel.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\create_test_excel.py
+=== Duplicate Group: B910CBEB1C1E358AFAE41AD16706484CC91DD00A5E1CE8F9C548F13FBFFE560C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\enable_vba_and_update.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\enable_vba_and_update.py
+=== Duplicate Group: 02E58A865A5B1F9F91B4124D9433005D7A081399CE4F5F80EC6AFAE47246F591 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\FINAL_FIX_SUMMARY.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\FINAL_FIX_SUMMARY.md
+=== Duplicate Group: 6BECF585F61116671388DA0CADD662D5E0A38E3DF19979EF79FF5CAFF50F1B48 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\FINAL_TESTING_SUMMARY.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\FINAL_TESTING_SUMMARY.md
+=== Duplicate Group: 8DCF581E260CEF1BA7CD72EE040754D574FFBEE2954CF213799FE1E53B9C4B65 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\fix_computation.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\fix_computation.py
+=== Duplicate Group: E558A5C2D5687CD10D595E0E2545AC28B6A8540D3B1787CE38507A7794BB393E (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\FIX_MACROS.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\FIX_MACROS.bat
+=== Duplicate Group: 0BEF5EA4B1C4D3E69A77CBF28EE2529B317CA284B49B225C178AB2A39875E2F7 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\fix_macro_transfer.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\fix_macro_transfer.py
+=== Duplicate Group: 614F792F3A1E51608D18A73906B9A90318952CA7E010F8E7FFA894ACDCCB50C7 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\fix_note_sheet_computing.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\fix_note_sheet_computing.py
+=== Duplicate Group: 6BB6D72BD112B324D6B8C645FE5C15E54E95E41A3533A300672F739DA3E86B17 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\GIT_SETUP.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\GIT_SETUP.bat
+=== Duplicate Group: C6D2D8BBBF89D613B35CD5DF5A7A74A4184CD173C726858BC2207B1418CD8F54 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\MACRO_FIX_README.txt
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\MACRO_FIX_README.txt
+=== Duplicate Group: C3795212656A59B9715DB6C8C186E954D2A014AD0EAA3E2D08E93D63049E63D0 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\MACRO_FOR_COPIED_SHEETS_README.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\MACRO_FOR_COPIED_SHEETS_README.md
+=== Duplicate Group: 3F8C13D21484DF10C2BC2ACFDD5FD94FB576C3819A540C416AEA266854A8164C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\MACRO_UPDATE_SUMMARY.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\MACRO_UPDATE_SUMMARY.md
+=== Duplicate Group: EAABE6FACF57F50B6572794B7F94A7481FD4F1365470B15CD77FEC0D8C51912F (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\MANUAL_VBA_UPDATE_INSTRUCTIONS.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\MANUAL_VBA_UPDATE_INSTRUCTIONS.md
+=== Duplicate Group: BCA166F05C30D6445BCE36D0718F4CEBF5BE09CD7A14F1B8E14173CD44788308 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\OPEN_OUTPUT_FOLDER.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\OPEN_OUTPUT_FOLDER.bat
+=== Duplicate Group: 87BA92D73EDD04521B926847F5F80FF793623EFEA189679E327FCA307A105769 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\packages.txt
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\packages.txt
+=== Duplicate Group: F570D45E246DAFEAE3E5513E09BA8B2F4002A6B09F50ED1156991B6449D19A89 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\PDF_GENERATION_CONFIRMATION.md
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\PDF_GENERATION_CONFIRMATION.md
+=== Duplicate Group: D37B31729A3676C981A4920117838AEC16DE2A7F8644CB60A45838C1C3234034 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\QUICK_TEST.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\QUICK_TEST.bat
+=== Duplicate Group: 89BE15F8A1D37477F061AF32688CB2E3B5DD356EC58145DF19C5283BD0F85CAC (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\quick_test.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\quick_test.py
+=== Duplicate Group: 6A577EE5D7DA700A43C5022DD737C2BDD6D58FE3C3E0CA58673AD5B2240AAA30 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\RUN_ALL_TESTS.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\RUN_ALL_TESTS.bat
+=== Duplicate Group: 7332B432F3CB100A1ABA12CA398C8BA2CA25D07093641D733442925206A803A4 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\run_all_tests.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\run_all_tests.py
+=== Duplicate Group: 3627F144F06EABA2242BAD6DEB8F50E5AC5B416C7A95809BC00DE476D3F7B265 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\SHOW_PATHS.bat
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\SHOW_PATHS.bat
+=== Duplicate Group: 8CF45713309D90C2F4806E68230D6AC7756D7DD3698513F63D89E1156440C19D (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TESTING_README.md
+C:\Users\Rajkumar\BillGeneratorUnified\TESTING_README.md
+=== Duplicate Group: 2EB031141C09529AB1322A9A9A42C376258B700CA342F0F8CAAFBA8E4E6B5BAD (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\test_25_variations.py
+C:\Users\Rajkumar\BillGeneratorUnified\test_25_variations.py
+=== Duplicate Group: 451EB2F83D6B328E754A666F1AA92B7F3E8F2F29F9DE9E0EEDA6C26A6A50E801 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\test_chrome_headless.py
+C:\Users\Rajkumar\BillGeneratorUnified\test_chrome_headless.py
+=== Duplicate Group: BF49BAFF58B47E7296E36655258242F28195DB6F687CAFD697B1A8F61B066EA2 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\test_enhanced_pdf.py
+C:\Users\Rajkumar\BillGeneratorUnified\test_enhanced_pdf.py
+=== Duplicate Group: C3FD838D7164ACD878A1AE394E7D8B2E0A5A31BDDB0045B77599C19016D11CD5 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_RESULTS_REPORT.md
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_RESULTS_REPORT.md
+=== Duplicate Group: 369B2E7CF7DC6029A35E4774C9EF6EFA9EF427275532C7F8C3712CAE43DC045A (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\test_streamlit_deploy.py
+C:\Users\Rajkumar\BillGeneratorUnified\test_streamlit_deploy.py
+=== Duplicate Group: B862696003E1D9854116791E71BA1229FA0D1D9FE5FD03F8D7258D7F4BB475FB (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\test_templates.py
+C:\Users\Rajkumar\BillGeneratorUnified\test_templates.py
+=== Duplicate Group: 51FBDF060C99DF30E5F072B7F55C0B5EE566F71FAC5D0D50037A86DA5F250028 (Count: 4)
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_0511-N-extra.jpeg
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_0511Wextra.jpeg
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_FirstFINALvidExtra.jpeg
+C:\Users\Rajkumar\BillGeneratorUnified\title_modified_0511-N-extra.jpeg
+=== Duplicate Group: FA25BBA6C05C00B5C038AFE1840459BA46D320DAA7CA56E6EFA491FE8882AFDA (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\updated_macro.vba
+C:\Users\Rajkumar\BillGeneratorUnified\updated_macro.vba
+=== Duplicate Group: A8466BE78BE6F717545041AB317DF374E9BB4E4283F4F8B39A16A1110D8B273A (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\updated_macro_corrected.vba
+C:\Users\Rajkumar\BillGeneratorUnified\updated_macro_corrected.vba
+=== Duplicate Group: 8CA0383289D6B9E0F76695496EADF58ABB0BB3891D840189B266DEEB7148A270 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\update_macro_to_activesheet.py
+C:\Users\Rajkumar\BillGeneratorUnified\update_macro_to_activesheet.py
+=== Duplicate Group: 4617F4353932595278104841D85F050BAA609E26EFEE298FF500B2CFAA177B8E (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\update_xlsm_complete.py
+C:\Users\Rajkumar\BillGeneratorUnified\update_xlsm_complete.py
+=== Duplicate Group: 5C891A9BAE99938848BAF7C54AB94672C97F0B9D0864368D43484FC33CD4F941 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\update_xlsm_format.py
+C:\Users\Rajkumar\BillGeneratorUnified\update_xlsm_format.py
+=== Duplicate Group: AF7931F3971EB181855DEDA4617644033BBA6D29DB4160C5E9C84E975EF7DDAB (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\.streamlit\config.toml
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\.streamlit\config.toml
+=== Duplicate Group: B70936E54B05DD9100C1792FF494D8E381B8B22F432A9D92D91F2D208E8691FF (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\english Note FINAL BILL NOTE SHEET_UPDATED.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\ATTACHED_ASSETS\english Note FINAL BILL NOTE SHEET_UPDATED.xlsm
+=== Duplicate Group: 4EB348DA15CBDCF17BD475AE2882B68A603901BAA4B4F11F39A20C8770F8FB81 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_3rdFinalNoExtra.jpeg
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_3rdFinalVidExtra.jpeg
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_FirstFINALnoExtra.jpeg
+=== Duplicate Group: 29FD776EAF94C318F86B2369CF32E41B6431B0775D07444AFF486DCE43478414 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_3rdRunningNoExtra.jpeg
+C:\Users\Rajkumar\BillGeneratorUnified\ATTACHED_ASSETS\title_modified_3rdRunningVidExtra.jpeg
+=== Duplicate Group: A6CB1A5FD4A5F9BBEC0DE23DC7C825E82AEE2EE20833F72FDB2D5AC75DA3EED8 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\bill-generator_optimised\requirements.txt
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\requirements.txt
+=== Duplicate Group: 97F0C4B4CD3F14F2AD69047BD8C5B873FD335F842CB76CC776F99CF121C00079 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\bill-generator_optimised\core\utils\cache_manager.py
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\core\utils\cache_manager.py
+C:\Users\Rajkumar\BillGeneratorUnified\core\utils\optimized\cache_manager.py
+=== Duplicate Group: 9D0664D0F1D8C50669CAB92A22951459716FE766F8ADD2304227789737E21D12 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\bill-generator_optimised\core\utils\memory_manager.py
+C:\Users\Rajkumar\BillGeneratorUnified\core\utils\optimized\memory_manager.py
+=== Duplicate Group: 7C03086323F95172DAC2927BB542D192CF19EC47C35904D92379EA68A8A56554 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\bill-generator_optimised\core\utils\streaming_processor.py
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\core\utils\streaming_processor.py
+=== Duplicate Group: 940AE221CE10E33E855EB2AC053EF9D51448B981A460B415EBBBEFB1C10F7942 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\BillGeneratorUnified_Optimized\core\utils\security_manager.py
+C:\Users\Rajkumar\BillGeneratorUnified\core\utils\optimized\security_manager.py
+=== Duplicate Group: BBB0D6EA6F8C004C195D343E36922A445E7B037CBD9322D945EBB88C83C0793B (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\config\v03.json
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\config\v03.json
+=== Duplicate Group: A2C357D77308A428312EC10C357F480E378AD1A47A37234452981CF80B0A0ACC (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\config\v04.json
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\config\v04.json
+=== Duplicate Group: 04BCAC4CC38C5CE22D43A2D89A1010F03F15C8B8DAD6E99F65677605452C0087 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\__init__.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\core\__init__.py
+=== Duplicate Group: 9D4948F4F94E7989C834CA146FAF3BE8821008225B938E51B57CBF534AEECDCB (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\config\__init__.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\core\config\__init__.py
+=== Duplicate Group: 16204FA44E62ED80548E772BC634B226992899B5AEF9750A9249043491706A15 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\generators\__init__.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\core\generators\__init__.py
+=== Duplicate Group: AF2EBEAD8101D727388AC5BF6FEF6E692EF13830CCCE250081A768B32D2D77DA (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\processors\excel_mode_enhanced.py
+C:\Users\Rajkumar\BillGeneratorUnified\core\processors\Untitled-3.py
+=== Duplicate Group: B194B24E6B3FD0BBF6160B3F42F7F7D0A19AFAD84615433FC0B59DC3A1BDDB0E (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\processors\__init__.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\core\processors\__init__.py
+=== Duplicate Group: E0443444A9EB7EDD125AD0CA9FC6AD6965B3F6135C253C708DD875743F55FB9C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\ui\__init__.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\core\ui\__init__.py
+=== Duplicate Group: 23B5142EB9E772F2FE522C7461380F36F544F23E10670D529994BC70CC87BD3C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\core\utils\smart_features.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\core\utils\smart_features.py
+=== Duplicate Group: 0777CF229F92B22459426252189B62A753AB22EC09E1FE70C70044FE715CF2BD (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\input\FirstFINALnoExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\FirstFINALnoExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\FirstFINALnoExtra.xlsx
+=== Duplicate Group: CC089D1013816843831603B5AE888C2960A1CBB00181D123381414269910075D (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\input\test_project.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\input\test_project.xlsx
+=== Duplicate Group: 647C384BE595D2023544054DBF0F9A041AFC5C7D87413E9F536754CAE14BFBEA (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\launchers\launch_smartbillflow.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\launchers\launch_smartbillflow.py
+=== Duplicate Group: 310CE2211BFDB4EF18506D687157F2D75F2DA7F0DBDD709A9DE7D162A58DBD89 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\launchers\launch_v03.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\launchers\launch_v03.py
+=== Duplicate Group: 35AA6740FBCB77AC1B0162D8F3153008172F6353ED446DFC613586F6131108A7 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\launchers\launch_v04.py
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\launchers\launch_v04.py
+=== Duplicate Group: 3D5FCD6859D98C1E011691EE176E3812E19DA02743FEFEB7F9FC94B2AB930699 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\macro_templates\sample_macros.bas
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\macro_templates\sample_macros.bas
+=== Duplicate Group: 51F8C6E7568C3639F6F8D5E8C4B8E36BF93A0E6AD94B4D82B11B5210AF5FDD3E (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\output\20251204_103932_test_project\html\Certificate III.html
+C:\Users\Rajkumar\BillGeneratorUnified\output\20251207_065757_test_project\html\Certificate III.html
+=== Duplicate Group: 1C8C030FD6A16DC43C26D78AF00D791F114A33D4EEBF06295FC8FBAC9C1D53AB (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\output\20251207_065748_FirstFINALnoExtra\html\Certificate II.html
+C:\Users\Rajkumar\BillGeneratorUnified\output\20251207_065757_test_project\html\Certificate II.html
+=== Duplicate Group: C81CF906FCAFB61BA4164A1CB1055CDA5A5298F5A0A26456775D08B03878F3EA (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\output\20251207_065748_FirstFINALnoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204106_FirstFINALnoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_FirstFINALnoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212019_FirstFINALnoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212131_FirstFINALnoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212217_FirstFINALnoExtra\html\First Page Summary.html
+=== Duplicate Group: 28D8883F7D45FA75E5DB094570E064003F4CBCDF542A742138216696E5A17FF2 (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\0511-N-extra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\0511Wextra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\0511-N-extra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\0511Wextra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\0511-N-extra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\0511Wextra_notesheet.html
+=== Duplicate Group: 3E95B92612FCAC691CDD03783F3BF668BA50AF7620F02EDACB1747D64FB7EBE5 (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\3rdFinalNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\3rdFinalVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\3rdFinalNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\3rdFinalVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\3rdFinalNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\3rdFinalVidExtra_notesheet.html
+=== Duplicate Group: 2CBFD1CF89DD337D178A9C3917D50136AEB9599723C15C0E41965F234EBB44AF (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\3rdRunningNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\3rdRunningVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\3rdRunningNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\3rdRunningVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\3rdRunningNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\3rdRunningVidExtra_notesheet.html
+=== Duplicate Group: 777481F94DC2823AF7431E46679B2A407FB79318475DCEC2276514EA9D684574 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\FirstFINALnoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\FirstFINALnoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\FirstFINALnoExtra_notesheet.html
+=== Duplicate Group: 498DFEF004B732A9AD83A5DE84113D0128FAC8544A025B165FD6CBBCD63EEA24 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120020\FirstFINALvidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120115\FirstFINALvidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_120217\FirstFINALvidExtra_notesheet.html
+=== Duplicate Group: 590FB51E02ACA04962089945B871CEA47BCB7E251E4D236A815AE2EBE3F656BE (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\0511-N-extra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\0511Wextra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\0511-N-extra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\0511Wextra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\0511-N-extra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\0511Wextra_notesheet.html
+=== Duplicate Group: FCB5476E463F5A5F34C96DB6EDF3B290B238EED5C38A00EACAE8B2D4D5EE108D (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\3rdFinalNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\3rdFinalVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\3rdFinalNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\3rdFinalVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\3rdFinalNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\3rdFinalVidExtra_notesheet.html
+=== Duplicate Group: 3424A035B737F2B086B893E4F1552BD7449DFDE40B3BD46A3B40F683286EC7FC (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\3rdRunningNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\3rdRunningVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\3rdRunningNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\3rdRunningVidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\3rdRunningNoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\3rdRunningVidExtra_notesheet.html
+=== Duplicate Group: 55734526C10D5F68928BEDF2E0C288397EBBC27EE40E4DDD405453A19F6ACDBC (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\FirstFINALnoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\FirstFINALnoExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\FirstFINALnoExtra_notesheet.html
+=== Duplicate Group: D6BA815C5E9DA3C3928486C580CAFC0971F334540DA66810C2F8A7703FE19199 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_121554\FirstFINALvidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_122416\FirstFINALvidExtra_notesheet.html
+C:\Users\Rajkumar\BillGeneratorUnified\pdf_readability_test_output\test_run_20251206_130318\FirstFINALvidExtra_notesheet.html
+=== Duplicate Group: 866B3B7D9DCF10E521C5ABFCEBC67FF2744D3A70F8ABD89442587B97574B8203 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\bill_entry.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\bill_entry.html
+=== Duplicate Group: 6C95C52B4B9313BC72DC6A7B1306FFC96908E8E26E59E93F93E7DBFE34A86B3E (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\certificate_ii.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\certificate_ii.html
+=== Duplicate Group: B65252645BBCBC6103F0AA399DB1D5E88574DD9BB1EAC55B00E2D308A4664444 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\certificate_iii.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\certificate_iii.html
+=== Duplicate Group: FA41ABDD36293B7C133343CD1416B506165B42644744E60E62BCB10E7EF73490 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\extra_items.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\extra_items.html
+=== Duplicate Group: 70CFC0CC522D6C2E48EC23E94432E1E259C6CC9C97BDED333D3862654CA24FF6 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\index.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\index.html
+=== Duplicate Group: F2A17F4265B37FAA4E05FCFBC7DA98FCFD1B79050D405CABDD7BB19DE8EE8A67 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\index_enhanced.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\index_enhanced.html
+=== Duplicate Group: 84648DE6FF3B3561D9CE5D5DF2EDEF4EB6A96C53B6B01E4F90F3A10FF0DBBDF7 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\last_page.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\last_page.html
+=== Duplicate Group: 3675EA5742097ACDD6E09C8B90B54D16E478FDC866C3EA44CF6FEA17D5926C4C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\online_mode.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\online_mode.html
+=== Duplicate Group: 6A2D33D9E8C132D5D9018C6E4058616DE2438B78900AB465AAC4FFA8DD126861 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\quantity_filling.html
+C:\Users\Rajkumar\BillGeneratorUnified\templates\quantity_filling.html
+=== Duplicate Group: 90F5222AB809FE2649AABE0D54F802EF588B8EFCF66F6764601DFB9C6B4B4DFC (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\templates\statutory\sample_schema.xsd
+C:\Users\Rajkumar\BillGeneratorUnified\templates\statutory\sample_schema.xsd
+=== Duplicate Group: 9C6245EEAF044B39FC6731C30E721D2266095B1FAE17BB6D774555D6FCFEA44C (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\0511Wextra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\0511Wextra.xlsx
+=== Duplicate Group: F6D0E47BB035CB3A7B1C3CBEA944168A5AF6E59044D5DEC6A21E689BC96CBAE9 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\3rdFinalNoExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\3rdFinalNoExtra.xlsx
+=== Duplicate Group: 70269E0E86AA7AE928C39EAC1893CAD48EE5B830F4EFBE0A3E4E16AFD1F16931 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\3rdFinalVidExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\3rdFinalVidExtra.xlsx
+=== Duplicate Group: 3660430E11E8452064A1767BBEAB17490C9965AE960337249337A333C164300A (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\3rdRunningNoExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\3rdRunningNoExtra.xlsx
+=== Duplicate Group: C179C66B0958AA2E754925AD7F52A448D3D33B71AB06F659C7D4B51377CA2872 (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\3rdRunningVidExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\3rdRunningVidExtra.xlsx
+=== Duplicate Group: C693E8B8D3DC4344D540B3125387F7CAE94952E7F0E85D59CA5EB69BE854C86F (Count: 2)
+C:\Users\Rajkumar\BillGeneratorUnified\temp_clone\TEST_INPUT_FILES\FirstFINALvidExtra.xlsx
+C:\Users\Rajkumar\BillGeneratorUnified\TEST_INPUT_FILES\FirstFINALvidExtra.xlsx
+=== Duplicate Group: E72A09E6FEBCD5B046C09B82E233C9577FEC62F7FFFDB5DB99C7948DE9A544EE (Count: 10)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204104_0511-N-extra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204104_0511Wextra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_0511-N-extra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_0511Wextra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212017_0511-N-extra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212018_0511Wextra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212119_0511-N-extra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212122_0511Wextra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212152_0511-N-extra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212158_0511Wextra\html\First Page Summary.html
+=== Duplicate Group: 5DD3A0A0765EB6C0A8475802B60F59F7F5911400830425B8C2CA22CA8F365E9E (Count: 10)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204105_3rdFinalNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204105_3rdFinalVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_3rdFinalNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_3rdFinalVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212018_3rdFinalNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212018_3rdFinalVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212124_3rdFinalNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212125_3rdFinalVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212203_3rdFinalNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212206_3rdFinalVidExtra\html\First Page Summary.html
+=== Duplicate Group: 5CB45C50750795ED6DC61628EF5CBE04087C737A7AA50C474E6D5E9F3DC80F26 (Count: 10)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204105_3rdRunningNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204105_3rdRunningVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_3rdRunningNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_3rdRunningVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212019_3rdRunningNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212019_3rdRunningVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212128_3rdRunningNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212129_3rdRunningVidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212210_3rdRunningNoExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212213_3rdRunningVidExtra\html\First Page Summary.html
+=== Duplicate Group: 6FC661BDAC64A10DE78D596DB65BB593EAFBB68A567B41521264028669FC0E1C (Count: 5)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204106_FirstFINALvidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_FirstFINALvidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212020_FirstFINALvidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212134_FirstFINALvidExtra\html\First Page Summary.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212220_FirstFINALvidExtra\html\First Page Summary.html
+=== Duplicate Group: E4A6660CF2D0545E3075C3FB69B5BE3C9D87D99D31ECF8E893748837822C948E (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_0511-N-extra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_0511Wextra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212119_0511-N-extra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212122_0511Wextra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212152_0511-N-extra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212158_0511Wextra\html\BILL SCRUTINY SHEET.html
+=== Duplicate Group: 2F6F7636A2A8A211778B3C2988969822EF68BE604536351DCCEE279B0F1EA9CE (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_3rdFinalNoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204215_3rdFinalVidExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212124_3rdFinalNoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212125_3rdFinalVidExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212203_3rdFinalNoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212206_3rdFinalVidExtra\html\BILL SCRUTINY SHEET.html
+=== Duplicate Group: F55D8F9D3DE7B9C1A5D455E1AB9A29E8D7719EB9C6FB2D58523D4217F9E02BE2 (Count: 6)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_3rdRunningNoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_3rdRunningVidExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212128_3rdRunningNoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212129_3rdRunningVidExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212210_3rdRunningNoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212213_3rdRunningVidExtra\html\BILL SCRUTINY SHEET.html
+=== Duplicate Group: 97F277BED672FE0A5204120A39E9CEC4EDE90A83242EA46510A64062E495142D (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_FirstFINALnoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212131_FirstFINALnoExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212217_FirstFINALnoExtra\html\BILL SCRUTINY SHEET.html
+=== Duplicate Group: 0E82156083ADB6033916BAD6E71B24569A3E6F75BAD2247DE61AB747E782F1D8 (Count: 3)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_204216_FirstFINALvidExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212134_FirstFINALvidExtra\html\BILL SCRUTINY SHEET.html
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212220_FirstFINALvidExtra\html\BILL SCRUTINY SHEET.html
+=== Duplicate Group: 4DA42AD5973071D41B3B91326828E5659D0B639F04BA9BF25E3988200B5BCA41 (Count: 8)
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212119_0511-N-extra\0511-N-extra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212122_0511Wextra\0511Wextra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212124_3rdFinalNoExtra\3rdFinalNoExtra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212125_3rdFinalVidExtra\3rdFinalVidExtra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212128_3rdRunningNoExtra\3rdRunningNoExtra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212129_3rdRunningVidExtra\3rdRunningVidExtra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212131_FirstFINALnoExtra\FirstFINALnoExtra_with_macro.xlsm
+C:\Users\Rajkumar\BillGeneratorUnified\test_output_online_workorder\20251207_212134_FirstFINALvidExtra\FirstFINALvidExtra_with_macro.xlsm
