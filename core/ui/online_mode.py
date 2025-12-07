@@ -304,11 +304,16 @@ def show_online_mode(config):
                 with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
                     # Add HTML files to zip
                     for doc_name, html_content in html_documents.items():
-                        zip_file.writestr(f"{doc_name}.html", html_content)
+                        # Ensure content is bytes
+                        if isinstance(html_content, str):
+                            content_bytes = html_content.encode('utf-8')
+                        else:
+                            content_bytes = html_content
+                        zip_file.writestr(f"{doc_name}.html", content_bytes)
                     
                     # Add PDF files to zip
                     for doc_name, pdf_content in pdf_documents.items():
-                        zip_file.writestr(doc_name, pdf_content)
+                        zip_file.writestr(f"{doc_name}.pdf", pdf_content)
                     
                     # Add DOC files to zip
                     for doc_name, doc_content in doc_documents.items():
@@ -322,7 +327,7 @@ def show_online_mode(config):
                 # Zip download button
                 st.download_button(
                     "📦 Download All Documents (ZIP)",
-                    data=zip_buffer,
+                    data=zip_buffer.getvalue(),
                     file_name="online_bill_documents.zip",
                     mime="application/zip",
                     key="online_zip_download"
@@ -337,9 +342,14 @@ def show_online_mode(config):
                     
                     for idx, (doc_name, html_content) in enumerate(html_documents.items()):
                         with cols[idx % 3]:
+                            # Ensure content is bytes for download
+                            if isinstance(html_content, str):
+                                content_bytes = html_content.encode('utf-8')
+                            else:
+                                content_bytes = html_content
                             st.download_button(
                                 f"📄 {doc_name}",
-                                data=html_content,
+                                data=content_bytes,
                                 file_name=f"{doc_name}.html",
                                 mime="text/html",
                                 key=f"online_html_{idx}"
@@ -354,7 +364,7 @@ def show_online_mode(config):
                             st.download_button(
                                 f"📕 {doc_name}",
                                 data=pdf_content,
-                                file_name=doc_name,
+                                file_name=f"{doc_name}.pdf",
                                 mime="application/pdf",
                                 key=f"online_pdf_{idx}"
                             )
