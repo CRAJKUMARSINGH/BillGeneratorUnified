@@ -19,16 +19,77 @@ def show_online_mode(config):
     
     st.info("📝 Enter bill details manually through web forms")
     
+    # Excel file upload to extract title sheet data
+    st.markdown("### 📊 Extract Data from Excel")
+    excel_file = st.file_uploader("Upload Excel file to extract Project Name and Contractor", type=['xlsx', 'xls'])
+    
+    # Default values
+    default_project_name = ""
+    default_contractor = ""
+    
+    # Extract data from Excel if uploaded
+    if excel_file:
+        try:
+            # Read all sheets
+            excel_data = pd.read_excel(excel_file, sheet_name=None)
+            
+            # Look for title sheet (common names)
+            title_sheet_names = ['Title', 'title', 'TITLE', 'Title Sheet', 'title sheet', 'Sheet1', 'Sheet 1']
+            title_data = None
+            
+            for sheet_name in title_sheet_names:
+                if sheet_name in excel_data:
+                    title_data = excel_data[sheet_name]
+                    break
+            
+            # If not found, try first sheet
+            if title_data is None and excel_data:
+                title_data = list(excel_data.values())[0]
+            
+            # Extract project name and contractor from title data
+            if title_data is not None:
+                # Convert to string for easier searching
+                title_string = title_data.to_string()
+                
+                # Look for project name patterns
+                project_patterns = ['Project Name', 'Project', 'Work Name', 'Work']
+                contractor_patterns = ['Contractor', 'Name of Contractor', 'Contractor Name']
+                
+                # Search in column names and data
+                for col in title_data.columns:
+                    col_str = str(col).lower()
+                    if any(pattern.lower() in col_str for pattern in project_patterns):
+                        # Get first non-null value in this column
+                        project_values = title_data[col].dropna()
+                        if not project_values.empty:
+                            default_project_name = str(project_values.iloc[0])
+                            break
+                
+                # Search for contractor
+                for col in title_data.columns:
+                    col_str = str(col).lower()
+                    if any(pattern.lower() in col_str for pattern in contractor_patterns):
+                        # Get first non-null value in this column
+                        contractor_values = title_data[col].dropna()
+                        if not contractor_values.empty:
+                            default_contractor = str(contractor_values.iloc[0])
+                            break
+                
+                st.success("✅ Successfully extracted data from Excel file")
+        except Exception as e:
+            st.warning(f"Could not extract data from Excel file: {str(e)}")
+    
     # Project Details
     with st.expander("📋 Project Details", expanded=True):
         col1, col2 = st.columns(2)
         
         with col1:
-            project_name = st.text_input("Project Name", placeholder="Enter project name")
-            contractor = st.text_input("Contractor Name", placeholder="Enter contractor name")
+            project_name = st.text_input("Project Name", value=default_project_name, placeholder="Enter project name")
+            contractor = st.text_input("Contractor Name", value=default_contractor, placeholder="Enter contractor name")
         
         with col2:
-            bill_date = st.date_input("Bill Date", value=datetime.now())
+            # Keep bill date blank by default
+            bill_date = st.date_input("Bill Date", value=None)
             tender_premium = st.number_input("Tender Premium (%)", min_value=0.0, max_value=100.0, value=4.0)
     
     # Work Items - Using session state for persistence
@@ -133,11 +194,14 @@ def show_online_mode(config):
                 from core.generators.document_generator import DocumentGenerator
                 
                 # Prepare data structure similar to Excel processor output
+                # Handle blank bill date
+                bill_date_str = bill_date.strftime('%d/%m/%Y') if bill_date else ""
+                
                 processed_data = {
                     "title_data": {
                         "Project Name": project_name,
                         "Contractor": contractor,
-                        "Bill Date": bill_date.strftime('%d/%m/%Y'),
+                        "Bill Date": bill_date_str,
                         "Tender Premium %": tender_premium
                     },
                     "work_order_data": [],
