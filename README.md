@@ -65,6 +65,42 @@ Process multiple Excel files at once!
 - Progress tracking
 - Error handling per file
 
+## 📝 DOC Template Support
+
+Generate documents in Microsoft Word format!
+
+- All document templates now support DOC format generation
+- Compatible with Microsoft Word and other DOC readers
+- Full formatting preserved
+- Batch processing includes DOC documents
+- ZIP downloads include DOC files
+
+## 🖼️ Title Image Customization
+
+Add project information to your title images!
+
+### Method 1: Using Configuration File
+1. Place your base image as `ATTACHED_ASSETS/title.jpeg`
+2. Customize the data in `config/title_config.json`
+3. Run `INSERT_TITLE.bat` to add project data
+4. Find the customized image in `ATTACHED_ASSETS/title_modified.jpeg`
+
+### Method 2: Using Excel Input Files
+1. Run `CUSTOMIZE_TITLE.bat` to extract data from Excel files
+2. Run `INSERT_TITLE.bat` with an Excel file path to use its data
+3. Or run `PROCESS_ALL_TITLES.bat` to process all Excel files
+4. Run `INSERT_TITLE_FROM_INPUT.bat` to generate title images for all input files
+
+**Features:**
+- Automatically adds project name, contract no, and work order no
+- Fully customizable text positions, colors, and fonts
+- Text overlay with shadow for better visibility
+- Preserves image quality
+- Configurable through JSON settings
+- Supports automatic extraction from Excel Title sheets
+- Batch processing for multiple files
+- Generate customized images for each input file
+
 ## 📁 Structure
 
 ```

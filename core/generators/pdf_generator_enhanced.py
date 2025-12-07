@@ -491,10 +491,10 @@ class EnhancedPDFGenerator:
         # Try Chrome Headless first (best quality with --disable-smart-shrinking)
         # Note: Not available on Streamlit Cloud
         try:
-            print("🔄 Trying Chrome Headless...")
+            print("[INFO] Trying Chrome Headless...")
             return self.convert_with_chrome_headless(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ Chrome Headless not available (expected on Streamlit Cloud): {e}")
+            print(f"[WARNING] Chrome Headless not available (expected on Streamlit Cloud): {e}")
         
         # Try wkhtmltopdf (also supports --disable-smart-shrinking)
         # Note: Not available on Streamlit Cloud
@@ -505,25 +505,25 @@ class EnhancedPDFGenerator:
                 disable_smart_shrinking=disable_smart_shrinking
             )
         except Exception as e:
-            print(f"⚠️ wkhtmltopdf not available (expected on Streamlit Cloud): {e}")
+            print(f"[WARNING] wkhtmltopdf not available (expected on Streamlit Cloud): {e}")
         
         # Try Playwright
         # Note: Not available on Streamlit Cloud
         try:
             return self.convert_with_playwright(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ Playwright not available (expected on Streamlit Cloud): {e}")
+            print(f"[WARNING] Playwright not available (expected on Streamlit Cloud): {e}")
         
         # Try WeasyPrint
         # Note: Not available on Streamlit Cloud
         try:
             return self.convert_with_weasyprint(html_content, zoom=zoom)
         except Exception as e:
-            print(f"⚠️ WeasyPrint not available (expected on Streamlit Cloud): {e}")
+            print(f"[WARNING] WeasyPrint not available (expected on Streamlit Cloud): {e}")
         
         # Try xhtml2pdf (works on Streamlit Cloud)
         try:
-            print("🔄 Using xhtml2pdf (Streamlit Cloud compatible)...")
+            print("[INFO] Using xhtml2pdf (Streamlit Cloud compatible)...")
             from xhtml2pdf import pisa
             import io
             
@@ -532,7 +532,7 @@ class EnhancedPDFGenerator:
             pisa.CreatePDF(html_with_zoom, dest=output, encoding="utf-8")
             return output.getvalue()
         except Exception as e:
-            print(f"⚠️ xhtml2pdf failed: {e}")
+            print(f"[WARNING] xhtml2pdf failed: {e}")
         
         raise Exception("No PDF engine available. Please check requirements installation.")
     
@@ -574,16 +574,16 @@ class EnhancedPDFGenerator:
         
         for doc_name, html_content in html_documents.items():
             try:
-                print(f"🔄 Converting {doc_name} to PDF...")
+                print(f"[INFO] Converting {doc_name} to PDF...")
                 pdf_bytes = self.auto_convert(
                     html_content,
                     zoom=zoom,
                     disable_smart_shrinking=disable_smart_shrinking
                 )
                 pdf_documents[doc_name] = pdf_bytes
-                print(f"✅ {doc_name} converted ({len(pdf_bytes)} bytes)")
+                print(f"[OK] {doc_name} converted ({len(pdf_bytes)} bytes)")
             except Exception as e:
-                print(f"❌ Failed to convert {doc_name}: {e}")
+                print(f"[ERROR] Failed to convert {doc_name}: {e}")
         
         return pdf_documents
 

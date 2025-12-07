@@ -115,7 +115,7 @@ def process_file(input_file, output_dir):
             with open(html_file, 'w', encoding='utf-8') as f:
                 f.write(note_sheet_html)
             result['output_files']['html'] = str(html_file)
-            print(f"     ✓ HTML saved: {html_file.name}")
+            print(f"     [OK] HTML saved: {html_file.name}")
             
             if not html_valid:
                 result['warnings'].append("HTML readability checks failed")
@@ -150,7 +150,7 @@ def process_file(input_file, output_dir):
                 f.write(pdf_bytes)
             result['output_files']['pdf'] = str(pdf_file)
             result['pdf_size'] = len(pdf_bytes)
-            print(f"     ✓ PDF saved: {pdf_file.name} ({len(pdf_bytes):,} bytes)")
+            print(f"     [OK] PDF saved: {pdf_file.name} ({len(pdf_bytes):,} bytes)")
             
             if not pdf_valid:
                 result['warnings'].append("PDF readability checks failed")
@@ -160,12 +160,21 @@ def process_file(input_file, output_dir):
         except Exception as e:
             result['errors'].append(f"PDF generation failed: {str(e)}")
             result['pdf_tests'] = {'error': str(e)}
-            print(f"     ✗ PDF generation failed: {e}")
+            print(f"     [ERROR] PDF generation failed: {e}")
         
-        # Step 5: Generate all PDFs using document generator
+        # Step 5: Generate all PDFs using document generator (optional)
         print("[5/5] Generating all PDFs via document generator...")
         try:
-            pdf_documents = generator.create_pdf_documents(html_documents)
+            # Suppress print statements that might have Unicode issues
+            import sys
+            from io import StringIO
+            old_stdout = sys.stdout
+            sys.stdout = StringIO()
+            
+            try:
+                pdf_documents = generator.create_pdf_documents(html_documents)
+            finally:
+                sys.stdout = old_stdout
             
             for doc_name, pdf_content in pdf_documents.items():
                 pdf_file = output_dir / f"{input_file.stem}_{doc_name.replace(' ', '_')}.pdf"
@@ -173,20 +182,20 @@ def process_file(input_file, output_dir):
                     f.write(pdf_content)
                 result['output_files'][f'pdf_{doc_name}'] = str(pdf_file)
             
-            print(f"     ✓ Generated {len(pdf_documents)} PDF documents")
+            print(f"     [OK] Generated {len(pdf_documents)} PDF documents")
             
         except Exception as e:
             result['warnings'].append(f"Document generator PDF failed: {str(e)}")
-            print(f"     ⚠ Document generator PDF warning: {e}")
+            print(f"     [WARNING] Document generator PDF warning: {e}")
         
         result['status'] = 'success'
-        print(f"\n[✓] SUCCESS: {input_file.name}")
+        print(f"\n[SUCCESS] {input_file.name}")
         
     except Exception as e:
         result['status'] = 'error'
         result['errors'].append(str(e))
         result['traceback'] = traceback.format_exc()
-        print(f"\n[✗] ERROR: {str(e)}")
+        print(f"\n[ERROR] {str(e)}")
         traceback.print_exc()
     
     return result
@@ -242,14 +251,14 @@ def generate_readability_report(results, output_dir):
                 f.write(f"\n   HTML Readability:\n")
                 html_tests = result.get('html_tests', {})
                 for test, passed in html_tests.items():
-                    status = "✓" if passed else "✗"
+                    status = "[OK]" if passed else "[FAIL]"
                     f.write(f"     {status} {test}: {passed}\n")
                 
                 # Format Tests
                 f.write(f"\n   Format Verification:\n")
                 format_tests = result.get('format_tests', {})
                 for test, passed in format_tests.items():
-                    status = "✓" if passed else "✗"
+                    status = "[OK]" if passed else "[FAIL]"
                     f.write(f"     {status} {test}: {passed}\n")
                 
                 # PDF Tests
@@ -257,7 +266,7 @@ def generate_readability_report(results, output_dir):
                     f.write(f"\n   PDF Readability:\n")
                     pdf_tests = result.get('pdf_tests', {})
                     for test, passed in pdf_tests.items():
-                        status = "✓" if passed else "✗"
+                        status = "[OK]" if passed else "[FAIL]"
                         f.write(f"     {status} {test}: {passed}\n")
                 
                 # Output files
@@ -282,7 +291,7 @@ def generate_readability_report(results, output_dir):
         f.write("SUMMARY\n")
         f.write("="*70 + "\n\n")
         
-        f.write("✓ All tests confirm:\n")
+        f.write("[OK] All tests confirm:\n")
         f.write("  - CSS zoom property is applied\n")
         f.write("  - --disable-smart-shrinking is used\n")
         f.write("  - Exact pixel-perfect calculations\n")
@@ -317,10 +326,10 @@ def main():
     
     print(f"\nFound {len(input_files)} input files")
     print("\nTesting PDF generation with:")
-    print("  ✓ CSS zoom property")
-    print("  ✓ --disable-smart-shrinking flag")
-    print("  ✓ Exact pixel-perfect calculations")
-    print("  ✓ Readability verification")
+    print("  [OK] CSS zoom property")
+    print("  [OK] --disable-smart-shrinking flag")
+    print("  [OK] Exact pixel-perfect calculations")
+    print("  [OK] Readability verification")
     
     # Process each file
     results = []
@@ -357,11 +366,11 @@ def main():
     print(f"  Format Valid: {format_valid_count}/{len(input_files)}")
     
     if success_count == len(input_files) and pdf_valid_count == len(input_files):
-        print("\n✅ ALL TESTS PASSED - Output matches desired format!")
+        print("\n[SUCCESS] ALL TESTS PASSED - Output matches desired format!")
     elif success_count == len(input_files):
-        print("\n⚠️  Some PDF readability checks failed - check report for details")
+        print("\n[WARNING] Some PDF readability checks failed - check report for details")
     else:
-        print("\n❌ Some tests failed - check report for details")
+        print("\n[ERROR] Some tests failed - check report for details")
 
 if __name__ == "__main__":
     main()
