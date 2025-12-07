@@ -1,0 +1,813 @@
+{
+  "test_info": {
+    "timestamp": "2025-12-08T01:43:37.676353",
+    "test_type": "ONLINE - Work Order & Title Sheet with Quantity Modifications",
+    "input_directory": "TEST_INPUT_FILES",
+    "output_directory": "test_output_online_workorder",
+    "total_files": 8,
+    "success_count": 8,
+    "error_count": 0,
+    "total_processing_time": 6.632889032363892,
+    "average_time_per_file": 0.828407496213913,
+    "total_main_item_modifications": 50,
+    "total_extra_item_modifications": 15
+  },
+  "results": [
+    {
+      "input_file": "TEST_INPUT_FILES\\0511-N-extra.xlsx",
+      "filename": "0511-N-extra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 1.1596431732177734,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.35
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 8.18
+          },
+          {
+            "row": 8,
+            "item": "E-02",
+            "old_quantity": 4.0,
+            "new_quantity": 5.61
+          },
+          {
+            "row": 10,
+            "item": "E-04",
+            "old_quantity": 5.0,
+            "new_quantity": 9.83
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 10,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 10,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014331_0511-N-extra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014331_0511-N-extra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:31.043987",
+      "output_folder": "test_output_online_workorder\\20251208_014331_0511-N-extra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\0511Wextra.xlsx",
+      "filename": "0511Wextra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 0.797382116317749,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 9.9
+          },
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 7,
+            "item": "E-01",
+            "old_quantity": 2.0,
+            "new_quantity": 3.3
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 10,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 10,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014332_0511Wextra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014332_0511Wextra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:32.204674",
+      "output_folder": "test_output_online_workorder\\20251208_014332_0511Wextra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalNoExtra.xlsx",
+      "filename": "3rdFinalNoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 0.6790151596069336,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 2,
+            "item": 1.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 52.85
+          },
+          {
+            "row": 10,
+            "item": 5.0,
+            "old_quantity": 22.0,
+            "new_quantity": 31.7
+          },
+          {
+            "row": 15,
+            "item": 10.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": []
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014333_3rdFinalNoExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014333_3rdFinalNoExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:33.002056",
+      "output_folder": "test_output_online_workorder\\20251208_014333_3rdFinalNoExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdFinalVidExtra.xlsx",
+      "filename": "3rdFinalVidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 0.7149713039398193,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 9,
+            "item": 4.0,
+            "old_quantity": 32.0,
+            "new_quantity": 41.86
+          },
+          {
+            "row": 34,
+            "item": 18.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 2.0,
+            "new_quantity": 2.26
+          },
+          {
+            "row": 13,
+            "item": 8.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.35
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.58
+          },
+          {
+            "row": 25,
+            "item": 15.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 16,
+            "item": 11.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 29,
+            "item": 17.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 9,
+            "item": "E-03",
+            "old_quantity": 5.0,
+            "new_quantity": 8.44
+          },
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 6.01
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014333_3rdFinalVidExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014333_3rdFinalVidExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:33.681071",
+      "output_folder": "test_output_online_workorder\\20251208_014333_3rdFinalVidExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningNoExtra.xlsx",
+      "filename": "3rdRunningNoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 0.7621631622314453,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 19,
+            "item": 12.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 13,
+            "item": 8.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.1
+          },
+          {
+            "row": 14,
+            "item": 9.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 9,
+            "item": 4.0,
+            "old_quantity": 32.0,
+            "new_quantity": 46.7
+          },
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 46.09
+          },
+          {
+            "row": 16,
+            "item": 11.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 25,
+            "item": 15.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 8,
+            "item": "E-02",
+            "old_quantity": 4.0,
+            "new_quantity": 6.78
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 7.83
+          },
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 8.13
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014334_3rdRunningNoExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014334_3rdRunningNoExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:34.396042",
+      "output_folder": "test_output_online_workorder\\20251208_014334_3rdRunningNoExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\3rdRunningVidExtra.xlsx",
+      "filename": "3rdRunningVidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 0.700416088104248,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 34,
+            "item": 18.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 29,
+            "item": 17.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 15.0,
+            "new_quantity": 16.78
+          },
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 27,
+            "item": 16.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 8,
+            "item": "E-02",
+            "old_quantity": 4.0,
+            "new_quantity": 7.29
+          },
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 9.53
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 6.57
+          },
+          {
+            "row": 10,
+            "item": "E-04",
+            "old_quantity": 5.0,
+            "new_quantity": 9.89
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014335_3rdRunningVidExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014335_3rdRunningVidExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:35.160228",
+      "output_folder": "test_output_online_workorder\\20251208_014335_3rdRunningVidExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALnoExtra.xlsx",
+      "filename": "FirstFINALnoExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 0.7940511703491211,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 40.73
+          },
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 10.78
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 5.0,
+            "new_quantity": 6.61
+          },
+          {
+            "row": 14,
+            "item": 9.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 13,
+            "item": 8.0,
+            "old_quantity": 8.0,
+            "new_quantity": 11.02
+          }
+        ],
+        "extra_items": []
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014336_FirstFINALnoExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014336_FirstFINALnoExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:35.862175",
+      "output_folder": "test_output_online_workorder\\20251208_014336_FirstFINALnoExtra"
+    },
+    {
+      "input_file": "TEST_INPUT_FILES\\FirstFINALvidExtra.xlsx",
+      "filename": "FirstFINALvidExtra.xlsx",
+      "status": "success",
+      "error": null,
+      "processing_time": 1.0196177959442139,
+      "modifications": {
+        "main_items": [
+          {
+            "row": 8,
+            "item": 3.0,
+            "old_quantity": 8.0,
+            "new_quantity": 10.69
+          },
+          {
+            "row": 14,
+            "item": 9.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 6,
+            "item": 2.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 11,
+            "item": 6.0,
+            "old_quantity": 36.0,
+            "new_quantity": 47.42
+          },
+          {
+            "row": 22,
+            "item": 13.0,
+            "old_quantity": 15.0,
+            "new_quantity": 20.48
+          },
+          {
+            "row": 23,
+            "item": 14.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 29,
+            "item": 17.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          },
+          {
+            "row": 15,
+            "item": 10.0,
+            "old_quantity": 0,
+            "new_quantity": 0.0
+          }
+        ],
+        "extra_items": [
+          {
+            "row": 12,
+            "item": "E-06",
+            "old_quantity": 5.0,
+            "new_quantity": 8.79
+          },
+          {
+            "row": 11,
+            "item": "E-05",
+            "old_quantity": 4.0,
+            "new_quantity": 6.95
+          }
+        ]
+      },
+      "work_order_validation": {
+        "has_work_order": true,
+        "work_order_rows": 38,
+        "has_bill_quantity": true,
+        "bill_quantity_rows": 38,
+        "columns": [
+          "Item",
+          "Description",
+          "Unit",
+          "Quantity",
+          "Rate",
+          "Amount",
+          "BSR"
+        ],
+        "has_quantity_column": true,
+        "quantity_columns": [
+          "Quantity"
+        ]
+      },
+      "title_sheet_validation": {
+        "has_title_data": true,
+        "title_fields_count": 21,
+        "key_fields": {
+          "Agreement No": true,
+          "Work Order No": false,
+          "Project Name": false,
+          "Contractor Name": false,
+          "Date of Commencement": false,
+          "Date of Completion": false,
+          "Work Order Amount": false
+        }
+      },
+      "output_files": {
+        "First Page Summary": "test_output_online_workorder\\20251208_014336_FirstFINALvidExtra\\html\\First Page Summary.html",
+        "BILL SCRUTINY SHEET": "test_output_online_workorder\\20251208_014336_FirstFINALvidExtra\\html\\BILL SCRUTINY SHEET.html"
+      },
+      "timestamp": "2025-12-08T01:43:36.656735",
+      "output_folder": "test_output_online_workorder\\20251208_014336_FirstFINALvidExtra"
+    }
+  ]
+}

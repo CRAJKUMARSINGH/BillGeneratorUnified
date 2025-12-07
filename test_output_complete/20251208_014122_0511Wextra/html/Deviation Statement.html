@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deviation Statement</title>
+    <style>
+        @page { 
+            size: A4 landscape; 
+            margin: 10mm;
+        }
+        @media print {
+            html, body {
+                width: 277mm !important;
+                min-width: 277mm !important;
+                max-width: 277mm !important;
+            }
+            table {
+                width: 277mm !important;
+                min-width: 277mm !important;
+                max-width: 277mm !important;
+            }
+        }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        html {
+            zoom: 1.0 !important;
+            -webkit-text-size-adjust: none !important;
+        }
+        body { 
+            font-family: Calibri, sans-serif; 
+            font-size: 8pt; 
+            margin: 0; 
+            line-height: 1.2;
+            width: 277mm !important;
+            max-width: 277mm !important;
+            min-width: 277mm !important;
+            transform: scale(1.0) !important;
+            overflow-x: visible !important;
+        }
+        .container { 
+            width: 277mm !important;
+            max-width: 277mm !important;
+            min-width: 277mm !important;
+            min-height: 190mm; 
+            margin: 0; 
+            padding: 0;
+            transform: scale(1.0) !important;
+        }
+        table { 
+            width: 277mm !important;
+            min-width: 277mm !important;
+            max-width: 277mm !important;
+            border-collapse: collapse; 
+            table-layout: fixed !important; 
+            font-size: 8pt;
+            transform: scale(1.0) !important;
+        }
+        /* FORCE exact column widths for deviation statement - NO SHRINKING */
+        table th:nth-child(1), table td:nth-child(1) { width: 20mm !important; min-width: 20mm !important; max-width: 20mm !important; }
+        table th:nth-child(2), table td:nth-child(2) { width: 60mm !important; min-width: 60mm !important; max-width: 60mm !important; }
+        table th:nth-child(3), table td:nth-child(3) { width: 15mm !important; min-width: 15mm !important; max-width: 15mm !important; }
+        table th:nth-child(4), table td:nth-child(4) { width: 20mm !important; min-width: 20mm !important; max-width: 20mm !important; }
+        table th:nth-child(5), table td:nth-child(5) { width: 20mm !important; min-width: 20mm !important; max-width: 20mm !important; }
+        table th:nth-child(6), table td:nth-child(6) { width: 20mm !important; min-width: 20mm !important; max-width: 20mm !important; }
+        table th:nth-child(7), table td:nth-child(7) { width: 20mm !important; min-width: 20mm !important; max-width: 20mm !important; }
+        table th:nth-child(8), table td:nth-child(8) { width: 25mm !important; min-width: 25mm !important; max-width: 25mm !important; }
+        table th:nth-child(9), table td:nth-child(9) { width: 25mm !important; min-width: 25mm !important; max-width: 25mm !important; }
+        table th:nth-child(10), table td:nth-child(10) { width: 25mm !important; min-width: 25mm !important; max-width: 25mm !important; }
+        table th:nth-child(11), table td:nth-child(11) { width: 27mm !important; min-width: 27mm !important; max-width: 27mm !important; }
+        th, td { 
+            border: 1px solid black; 
+            padding: 3px 2px; 
+            text-align: left; 
+            vertical-align: top; 
+            overflow: hidden; 
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        .header { text-align: center; margin-bottom: 8px; }
+        .header h2 { font-size: 11pt; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Deviation Statement</h2>
+        </div>
+        <table>
+            <colgroup>
+                <col style="width: 8mm;">
+                <col style="width: 120mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 12mm;">
+                <col style="width: 37mm;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th style="width: 8mm;">ITEM No.</th>
+                    <th style="width: 120mm;">Description</th>
+                    <th style="width: 12mm;">Unit</th>
+                    <th style="width: 12mm;">Qty as per Work Order</th>
+                    <th style="width: 12mm;">Rate</th>
+                    <th style="width: 12mm;">Amt as per Work Order Rs.</th>
+                    <th style="width: 12mm;">Qty Executed</th>
+                    <th style="width: 12mm;">Amt as per Executed Rs.</th>
+                    <th style="width: 12mm;">Excess Qty</th>
+                    <th style="width: 12mm;">Excess Amt Rs.</th>
+                    <th style="width: 12mm;">Saving Qty</th>
+                    <th style="width: 12mm;">Saving Amt Rs.</th>
+                    <th style="width: 37mm;">REMARKS/ REASON.</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <tr >
+                        <td>1.0</td>
+                        <td >Rewiring of light point/ fan point/ exhaust fan point/ call bell point with 1.5 sq. mm nominal size FR PVC insulated unsheathed flexible copper conductor 1.1 kV grade  and 1.5 sq. mm nominal size FR PVC insulated unsheathed flexible copper earth conductor 1.1 kV grade (IS:694) in recessed  ISI marked MMS ( IS:9537 P - III ) virgin material PVC conduit & it's ISI marked (IS:3419-1988) accessories, round tiles, 1.2 mm thick MS box with earth terminal, 6 A switch, 3 pin ceiling rose/holder / 3 way connector , 3.0 mm thick ISI marked (IS:2036-1995) phenolic laminated sheet, Al.alloy / Cadmium plated iron/  brass  screws, cup washers, making connections, testing etc. as required. For specification of copper  Conductor,  Phenolic Laminated sheet's & Electrical/ Wiring accessories refer Chapter E - 04, E - 05 & E - 07 For additional technical parameters of product / work refer Annexure 'A' attached with this BSR</td>
+                        
+                            
+                                <!-- Leave columns 3 to 13 blank when rate is zero or blank -->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >Short point (up to 3 mtr.)</td>
+                        
+                            
+                                <td>P. point</td>
+                                <td>50.0</td>
+                                <td>256.0</td>
+                                <td>12800.0</td>
+                                <td>50.0</td>
+                                <td>12800.0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >Medium point (up to 6 mtr.)</td>
+                        
+                            
+                                <td>P. point</td>
+                                <td>50.0</td>
+                                <td>472.0</td>
+                                <td>23600.0</td>
+                                <td>50.0</td>
+                                <td>23600.0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >Long point  (up to 10 mtr.)</td>
+                        
+                            
+                                <td>P. point</td>
+                                <td>50.0</td>
+                                <td>662.0</td>
+                                <td>33100.0</td>
+                                <td>50.0</td>
+                                <td>33100.0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td>2.0</td>
+                        <td >Rewiring of 3/5 pin 6 amp. Light plug point with 1.5 sq. mm nominal size  FR PVC insulated unsheathed flexible copper conductor 1.1 kV grade  and 1.5 sq. mm nominal size FR PVC insulated unsheathed flexible copper earth conductor 1.1 kV grade(IS:694)   in recessed ISI marked MMS ( IS:9537 P - III ) virgin material  PVC conduit & it's  ISI marked (IS:3419-1988) accessories, 1.2 mm thick  MS box with earth terminal of required size,  6 A  switch, 3/5 pin 6 A socket, 3.0 mm thick ISI marked (IS:2036-1995) phenolic laminated sheet, Al.alloy / Cadmium plated iron/ brass  screws, cup washers, making connections, testing etc. as required.  For specification of copper  Conductor,  Phenolic Laminated sheet's & Electrical/ Wiring accessories refer Chapter E - 04, E - 05 & E - 07 For additional technical parameters of product / work refer Annexure 'A' attached with this BSR</td>
+                        
+                            
+                                <!-- Leave columns 3 to 13 blank when rate is zero or blank -->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >On board</td>
+                        
+                            
+                                <td>P. point</td>
+                                <td>100.0</td>
+                                <td>136.0</td>
+                                <td>13600.0</td>
+                                <td>100.0</td>
+                                <td>13600.0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td>3.0</td>
+                        <td >P & F ISI marked (IS:3854) 6 amp. flush type non modular switch  with CM/L no. printed and made out from industrial grade Polycarbonate or fire resistant ABS material including cutting hole in tile and making connection testing etc. as required. All as per pre approved by Engineer in charge.  For additional technical parameters of products/ work  , refer   Annexure "A" attached with this BSR .</td>
+                        
+                            
+                                <td>Each</td>
+                                <td>10.0</td>
+                                <td>23.0</td>
+                                <td>230.0</td>
+                                <td>10.0</td>
+                                <td>230.0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >Total</td>
+                        
+                            
+                                <!-- Leave columns 3 to 13 blank when rate is zero or blank -->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >Add Tender Premium </td>
+                        
+                            
+                                <!-- Leave columns 3 to 13 blank when rate is zero or blank -->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                    <tr >
+                        <td></td>
+                        <td >Grand Total</td>
+                        
+                            
+                                <!-- Leave columns 3 to 13 blank when rate is zero or blank -->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            <td></td>
+                        
+                    </tr>
+                
+                <tr>
+                    <td></td>
+                    <td>Grand Total Rs.</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>83330.0</td>
+                    <td></td>
+                    <td>83330.0</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Add Tender Premium (5.11%)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>4258.1630000000005</td>
+                    <td></td>
+                    <td>4258.1630000000005</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Grand Total including Tender Premium Rs.</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>87588.163</td>
+                    <td></td>
+                    <td>87588.163</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: left;">
+                        
+                            Overall Excess With Respect to the Work Order Amount Rs.
+                        
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: left;">
+                        Percentage of Deviation %
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0.00%</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

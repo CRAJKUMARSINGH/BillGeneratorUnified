@@ -1,0 +1,178 @@
+======================================================================
+COMPREHENSIVE OFFLINE TEST - SUMMARY REPORT
+======================================================================
+
+Test Run: 20251208_014322
+Start Time: 2025-12-08 01:43:22
+Input Directory: TEST_INPUT_FILES
+Output Directory: test_output_complete
+
+----------------------------------------------------------------------
+OVERALL STATISTICS
+----------------------------------------------------------------------
+
+Total Files Processed: 8
+Success: 8
+Errors: 0
+Success Rate: 100.0%
+Total Processing Time: 166.94 seconds
+Average Time per File: 20.87 seconds
+Total HTML Files Generated: 48
+Total PDF Files Generated: 48
+
+----------------------------------------------------------------------
+DETAILED RESULTS
+----------------------------------------------------------------------
+
+1. 0511-N-extra.xlsx
+   Status: SUCCESS
+   Processing Time: 40.16 seconds
+   Output Folder: 20251208_014115_0511-N-extra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+2. 0511Wextra.xlsx
+   Status: SUCCESS
+   Processing Time: 7.59 seconds
+   Output Folder: 20251208_014122_0511Wextra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+3. 3rdFinalNoExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 8.76 seconds
+   Output Folder: 20251208_014131_3rdFinalNoExtra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+4. 3rdFinalVidExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 8.80 seconds
+   Output Folder: 20251208_014140_3rdFinalVidExtra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+5. 3rdRunningNoExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 8.58 seconds
+   Output Folder: 20251208_014149_3rdRunningNoExtra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+6. 3rdRunningVidExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 30.98 seconds
+   Output Folder: 20251208_014219_3rdRunningVidExtra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+7. FirstFINALnoExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 34.29 seconds
+   Output Folder: 20251208_014254_FirstFINALnoExtra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+
+8. FirstFINALvidExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 27.77 seconds
+   Output Folder: 20251208_014322_FirstFINALvidExtra
+   HTML Files (6):
+     - First Page Summary.html
+     - Deviation Statement.html
+     - BILL SCRUTINY SHEET.html
+     - Extra Items Statement.html
+     - Certificate II.html
+     - Certificate III.html
+   PDF Files (6):
+     - First Page Summary.pdf
+     - Deviation Statement.pdf
+     - BILL SCRUTINY SHEET.pdf
+     - Extra Items Statement.pdf
+     - Certificate II.pdf
+     - Certificate III.pdf
+

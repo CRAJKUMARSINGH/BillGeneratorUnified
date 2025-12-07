@@ -2,6 +2,7 @@
 Online Entry Mode UI
 """
 import streamlit as st
+import pandas as pd
 from datetime import datetime
 
 def show_online_mode(config):
@@ -30,38 +31,67 @@ def show_online_mode(config):
             bill_date = st.date_input("Bill Date", value=datetime.now())
             tender_premium = st.number_input("Tender Premium (%)", min_value=0.0, max_value=100.0, value=4.0)
     
-    # Work Items
-    with st.expander("🔨 Work Items", expanded=True):
-        st.markdown("### Add Work Items")
+    # Work Items - Using session state for persistence
+    st.markdown("### 🔨 Work Items")
+    
+    # Number of items input
+    num_items = st.number_input("Number of Items", min_value=1, max_value=50, value=3, key="num_items_online")
+    
+    # Initialize session state for items
+    if 'online_items' not in st.session_state:
+        st.session_state.online_items = []
+    
+    # Adjust session state size based on num_items
+    current_num_items = len(st.session_state.online_items)
+    if current_num_items != num_items:
+        if current_num_items < num_items:
+            # Add new empty items
+            for i in range(num_items - current_num_items):
+                st.session_state.online_items.append({
+                    'item_no': f"{current_num_items + i + 1:03d}",
+                    'description': '',
+                    'quantity': 0.0,
+                    'rate': 0.0
+                })
+        else:
+            # Remove excess items
+            st.session_state.online_items = st.session_state.online_items[:num_items]
+    
+    # Create item input fields and update session state
+    updated_items = []
+    for i in range(int(num_items)):
+        st.markdown(f"**Item {i+1}**")
+        col1, col2, col3, col4 = st.columns(4)
         
-        num_items = st.number_input("Number of Items", min_value=1, max_value=50, value=3)
+        with col1:
+            item_no = st.text_input(f"Item No.", value=st.session_state.online_items[i]['item_no'], key=f"item_no_{i}")
+        with col2:
+            description = st.text_input(f"Description", value=st.session_state.online_items[i]['description'], key=f"desc_{i}")
+        with col3:
+            quantity = st.number_input(f"Quantity", min_value=0.0, value=float(st.session_state.online_items[i]['quantity']), key=f"qty_{i}")
+        with col4:
+            rate = st.number_input(f"Rate", min_value=0.0, value=float(st.session_state.online_items[i]['rate']), key=f"rate_{i}")
         
-        items = []
-        for i in range(int(num_items)):
-            st.markdown(f"**Item {i+1}**")
-            col1, col2, col3, col4 = st.columns(4)
-            
-            with col1:
-                item_no = st.text_input(f"Item No.", value=f"{i+1:03d}", key=f"item_no_{i}")
-            with col2:
-                description = st.text_input(f"Description", key=f"desc_{i}")
-            with col3:
-                quantity = st.number_input(f"Quantity", min_value=0.0, key=f"qty_{i}")
-            with col4:
-                rate = st.number_input(f"Rate", min_value=0.0, key=f"rate_{i}")
-            
-            items.append({
-                'item_no': item_no,
-                'description': description,
-                'quantity': quantity,
-                'rate': rate
-            })
+        # Store updated values
+        updated_item = {
+            'item_no': item_no,
+            'description': description,
+            'quantity': quantity,
+            'rate': rate
+        }
+        updated_items.append(updated_item)
+    
+    # Update session state with current values
+    st.session_state.online_items = updated_items
     
     # Generate button
     if st.button("🚀 Generate Documents", type="primary"):
         if not project_name:
             st.error("❌ Please enter project name")
         else:
+            # Use items from session state
+            items = st.session_state.online_items
+            
             with st.spinner("Generating documents..."):
                 st.success("✅ Documents generated successfully!")
                 
@@ -75,6 +105,29 @@ def show_online_mode(config):
                 col1.metric("Total Amount", f"₹{total:,.2f}")
                 col2.metric("Premium", f"₹{premium_amount:,.2f}")
                 col3.metric("NET PAYABLE", f"₹{net_payable:,.2f}")
+                
+                # Display item details table
+                st.markdown("### 📋 Item Details")
+                if items:
+                    item_data = []
+                    for item in items:
+                        # Show all items, not just those with quantity/rate > 0
+                        amount = item['quantity'] * item['rate']
+                        item_data.append({
+                            "Item No.": item['item_no'],
+                            "Description": item['description'],
+                            "Quantity": item['quantity'],
+                            "Rate": item['rate'],
+                            "Amount": amount
+                        })
+                    
+                    if item_data:
+                        df = pd.DataFrame(item_data)
+                        st.dataframe(df, use_container_width=True)
+                    else:
+                        st.info("No items entered.")
+                else:
+                    st.info("No items entered.")
                 
                 # Generate actual documents
                 from core.generators.document_generator import DocumentGenerator
@@ -99,7 +152,7 @@ def show_online_mode(config):
                     }
                 }
                 
-                # Add items to work order data
+                # Add items to work order data (only items with valid data)
                 for item in items:
                     if item['quantity'] > 0 and item['rate'] > 0:
                         processed_data["work_order_data"].append({

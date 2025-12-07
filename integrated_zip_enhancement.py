@@ -17,14 +17,9 @@ import io
 import time
 
 # Import our enhanced components
-from enhanced_zip_download import (
-    EnhancedZipProcessor, 
-    ZipConfig, 
-    EnhancedDownloadManager, 
-    EnhancedDownloadUI,
-    create_download_manager,
-    create_download_ui
-)
+from core.utils.download_manager import EnhancedDownloadManager, DownloadCategory, FileType
+from core.utils.optimized_zip_processor import OptimizedZipProcessor, OptimizedZipConfig, ZipMetrics
+from core.ui.enhanced_download_center import EnhancedDownloadCenter
 
 def integrate_with_batch_processor():
     """
@@ -43,18 +38,22 @@ def integrate_with_batch_processor():
             processed_files = simulate_batch_processing()
             
             # Create download manager
-            download_manager = create_download_manager()
+            download_manager = EnhancedDownloadManager()
             
             # Add processed files to download manager
             for file_info in processed_files:
                 # Add HTML files
                 for doc_name, html_content in file_info['html_documents'].items():
+                    if isinstance(html_content, str):
+                        content_bytes = html_content.encode('utf-8')
+                    else:
+                        content_bytes = html_content
                     download_manager.add_item(
                         name=f"{doc_name}.html",
-                        content=html_content,
-                        file_type="html",
+                        content=content_bytes,
+                        file_type=FileType.HTML,
                         description=f"HTML version of {doc_name}",
-                        category=f"{file_info['name']}/HTML"
+                        category=DownloadCategory.HTML_DOCUMENTS
                     )
                 
                 # Add PDF files
@@ -62,9 +61,9 @@ def integrate_with_batch_processor():
                     download_manager.add_item(
                         name=doc_name,
                         content=pdf_content,
-                        file_type="pdf",
+                        file_type=FileType.PDF,
                         description=f"PDF version of {doc_name}",
-                        category=f"{file_info['name']}/PDF"
+                        category=DownloadCategory.PDF_DOCUMENTS
                     )
                 
                 # Add DOC files
@@ -72,9 +71,9 @@ def integrate_with_batch_processor():
                     download_manager.add_item(
                         name=doc_name,
                         content=doc_content,
-                        file_type="doc",
+                        file_type=FileType.DOC,
                         description=f"DOC version of {doc_name}",
-                        category=f"{file_info['name']}/DOC"
+                        category=DownloadCategory.DOC_DOCUMENTS
                     )
             
             # Store in session state
@@ -84,13 +83,13 @@ def integrate_with_batch_processor():
             
             # Show download area
             if 'download_manager' in st.session_state:
-                download_ui = create_download_ui(st.session_state.download_manager)
-                download_ui.render_download_area("📥 Download Processed Documents")
+                download_center = EnhancedDownloadCenter(st.session_state.download_manager)
+                download_center.render_download_center("📥 Download Processed Documents")
     
     # Show existing download manager if available
     elif 'download_manager' in st.session_state:
-        download_ui = create_download_ui(st.session_state.download_manager)
-        download_ui.render_download_area("📥 Download Processed Documents")
+        download_center = EnhancedDownloadCenter(st.session_state.download_manager)
+        download_center.render_download_center("📥 Download Processed Documents")
         
         if st.button("🗑️ Clear Download Queue"):
             del st.session_state.download_manager
@@ -189,27 +188,30 @@ def demonstrate_advanced_zip_features():
     
     # Create ZIP with configuration
     if st.button("📦 Create Configured ZIP"):
-        config = ZipConfig(
+        config = OptimizedZipConfig(
             compression_level=compression_level,
-            max_memory_mb=max_memory_mb,
-            enable_validation=enable_validation,
+            memory_limit_mb=max_memory_mb,
             enable_integrity_check=enable_integrity
         )
         
-        with EnhancedZipProcessor(config) as processor:
+        with OptimizedZipProcessor(config) as processor:
             # Progress tracking
             progress_text = st.empty()
             progress_bar = st.progress(0)
             
             def progress_callback(progress, status):
-                progress_bar.progress(progress)
+                progress_bar.progress(int(progress))
                 progress_text.text(status)
                 
             processor.set_progress_callback(progress_callback)
             
             try:
+                # Add files to processor
+                for name, content in sample_data.items():
+                    processor.add_file_from_memory(content, name)
+                
                 # Create ZIP
-                zip_buffer, metrics = processor.create_zip_from_data(sample_data)
+                zip_buffer, metrics = processor.create_zip()
                 
                 # Clear progress
                 progress_bar.empty()
@@ -219,11 +221,11 @@ def demonstrate_advanced_zip_features():
                 st.success(f"✅ ZIP created successfully!")
                 st.json({
                     "Total Files": metrics.total_files,
-                    "Original Size (KB)": f"{metrics.total_size / 1024:.2f}",
-                    "Compressed Size (KB)": f"{metrics.compressed_size / 1024:.2f}",
-                    "Compression Ratio (%)": f"{metrics.compression_ratio:.2f}",
-                    "Processing Time (s)": f"{metrics.processing_time:.3f}",
-                    "Memory Usage (MB)": f"{metrics.memory_usage:.2f}"
+                    "Original Size (KB)": f"{metrics.total_size_bytes / 1024:.2f}",
+                    "Compressed Size (KB)": f"{metrics.compressed_size_bytes / 1024:.2f}",
+                    "Compression Ratio (%)": f"{metrics.compression_ratio_percent:.2f}",
+                    "Processing Time (s)": f"{metrics.processing_time_seconds:.3f}",
+                    "Memory Usage (MB)": f"{metrics.memory_usage_peak_mb:.2f}"
                 })
                 
                 # Download button
@@ -264,13 +266,17 @@ def show_performance_comparison():
         
         # Enhanced ZIP processing
         enhanced_start = time.time()
-        config = ZipConfig(compression_level=6)
-        with EnhancedZipProcessor(config) as processor:
+        config = OptimizedZipConfig(compression_level=6)
+        with OptimizedZipProcessor(config) as processor:
             try:
-                zip_buffer, metrics = processor.create_zip_from_data(data)
-                enhanced_time = metrics.processing_time
-                enhanced_size = metrics.compressed_size
-                compression_ratio = metrics.compression_ratio
+                # Add files to processor
+                for name, content in data.items():
+                    processor.add_file_from_memory(content, name)
+                
+                zip_buffer, metrics = processor.create_zip()
+                enhanced_time = metrics.processing_time_seconds
+                enhanced_size = metrics.compressed_size_bytes
+                compression_ratio = metrics.compression_ratio_percent
             except Exception as e:
                 st.error(f"Error with {dataset_name}: {e}")
                 continue
@@ -343,15 +349,18 @@ def main():
             # Add files...
         
         # New way
-        config = ZipConfig(compression_level=6)
-        with EnhancedZipProcessor(config) as processor:
-            zip_buffer, metrics = processor.create_zip_from_data(data_dict)
+        config = OptimizedZipConfig(compression_level=6)
+        with OptimizedZipProcessor(config) as processor:
+            # Add files to processor
+            for name, content in data_dict.items():
+                processor.add_file_from_memory(content, name)
+            zip_buffer, metrics = processor.create_zip()
         ```
         
         2. **Add Progress Tracking**:
         ```python
         def progress_callback(progress, status):
-            st.progress(progress)
+            st.progress(int(progress))
             st.text(status)
             
         processor.set_progress_callback(progress_callback)
@@ -359,10 +368,10 @@ def main():
         
         3. **Enhance Download Management**:
         ```python
-        download_manager = create_download_manager()
+        download_manager = EnhancedDownloadManager()
         download_manager.add_item(name, content, file_type, description, category)
-        download_ui = create_download_ui(download_manager)
-        download_ui.render_download_area("Download Center")
+        download_center = EnhancedDownloadCenter(download_manager)
+        download_center.render_download_center("Download Center")
         ```
         
         ### 2. Configuration Options

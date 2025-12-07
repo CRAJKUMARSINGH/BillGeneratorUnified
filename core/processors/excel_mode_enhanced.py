@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 from typing import Dict, Any
 
-from core.ui.download_ui import DownloadManager, EnhancedDownloadUI, create_download_manager, create_download_ui
+from core.utils.download_manager import EnhancedDownloadManager, FileType, DownloadCategory
 
 def show_excel_mode(config):
     """Show enhanced Excel upload interface with advanced download system"""
@@ -97,7 +97,11 @@ def show_excel_mode(config):
                     processed_data = excel_processor.process_excel(uploaded_file)
                     
                     # Create download manager
-                    download_manager = create_download_manager()
+                    download_manager = EnhancedDownloadManager()
+                    
+                    # Initialize document containers
+                    pdf_documents = {}
+                    doc_documents = {}
                     
                     # Generate documents
                     st.info("📄 Generating documents...")
@@ -107,12 +111,10 @@ def show_excel_mode(config):
                     # Add HTML documents to download manager
                     if generate_html:
                         for doc_name, html_content in html_documents.items():
-                            download_manager.add_item(
+                            download_manager.add_html_document(
                                 name=f"{doc_name}.html",
                                 content=html_content,
-                                file_type="html",
-                                description=f"HTML version of {doc_name}",
-                                category="HTML Documents"
+                                description=f"HTML version of {doc_name}"
                             )
                     
                     # Generate PDFs if requested
@@ -121,12 +123,10 @@ def show_excel_mode(config):
                         pdf_documents = doc_generator.create_pdf_documents(html_documents)
                         
                         for doc_name, pdf_content in pdf_documents.items():
-                            download_manager.add_item(
+                            download_manager.add_pdf_document(
                                 name=doc_name,
                                 content=pdf_content,
-                                file_type="pdf",
-                                description=f"PDF version of {doc_name}",
-                                category="PDF Documents"
+                                description=f"PDF version of {doc_name}"
                             )
                     
                     # Generate DOCs if requested
@@ -135,12 +135,10 @@ def show_excel_mode(config):
                         doc_documents = doc_generator.generate_doc_documents()
                         
                         for doc_name, doc_content in doc_documents.items():
-                            download_manager.add_item(
+                            download_manager.add_doc_document(
                                 name=doc_name,
                                 content=doc_content,
-                                file_type="doc",
-                                description=f"DOC version of {doc_name}",
-                                category="DOC Documents"
+                                description=f"DOC version of {doc_name}"
                             )
                     
                     # Generate JSON if requested
@@ -148,22 +146,35 @@ def show_excel_mode(config):
                         st.info("📋 Generating JSON data...")
                         json_data = _create_json_export(processed_data, html_documents)
                         
+                        # Convert string to bytes for JSON
+                        if isinstance(json_data, str):
+                            json_bytes = json_data.encode('utf-8')
+                        else:
+                            json_bytes = json_data
+                            
                         download_manager.add_item(
                             name="bill_data.json",
-                            content=json_data,
-                            file_type="json",
+                            content=json_bytes,
+                            file_type=FileType.JSON,
                             description="Complete bill data in JSON format",
-                            category="Data Export"
+                            category=DownloadCategory.GENERAL
                         )
                     
                     # Generate summary report
                     summary_data = _create_summary_report(processed_data, download_manager.download_items)
+                    
+                    # Convert string to bytes for text
+                    if isinstance(summary_data, str):
+                        summary_bytes = summary_data.encode('utf-8')
+                    else:
+                        summary_bytes = summary_data
+                        
                     download_manager.add_item(
                         name="generation_summary.txt",
-                        content=summary_data,
-                        file_type="text",
+                        content=summary_bytes,
+                        file_type=FileType.TXT,
                         description="Summary of document generation process",
-                        category="Reports"
+                        category=DownloadCategory.GENERAL
                     )
                     
                     # Celebrate success!
@@ -171,7 +182,8 @@ def show_excel_mode(config):
                     
                     # Show success metrics
                     total_files = len(download_manager.download_items)
-                    total_size = download_manager.get_total_size()
+                    stats = download_manager.get_statistics()
+                    total_size = stats['total_size_bytes']
                     
                     st.success(f"""
                     🎉 **Document Generation Complete!**
@@ -189,8 +201,9 @@ def show_excel_mode(config):
                     st.session_state.download_manager = download_manager
                     
                     # Show enhanced download area
-                    download_ui = create_download_ui(download_manager)
-                    download_ui.render_download_area("📥 Download Your Documents")
+                    from core.ui.enhanced_download_center import EnhancedDownloadCenter
+                    download_ui = EnhancedDownloadCenter(download_manager)
+                    download_ui.render_download_center("📥 Download Your Documents")
                     
                     # Quick download options
                     st.markdown("---")
@@ -291,7 +304,7 @@ This report was automatically generated by BillGenerator Unified v2.0.0
     
     return report
 
-def _create_quick_zip(download_manager: DownloadManager, filter_type: str, compression: str, structure: str):
+def _create_quick_zip(download_manager: EnhancedDownloadManager, filter_type: str, compression: str, structure: str):
     """Create quick ZIP download"""
     try:
         from core.utils.zip_processor import ZipProcessor, ZipConfig
@@ -300,9 +313,9 @@ def _create_quick_zip(download_manager: DownloadManager, filter_type: str, compr
         if filter_type == "all":
             items = download_manager.download_items
         elif filter_type == "html":
-            items = [item for item in download_manager.download_items if item.file_type == "html"]
+            items = [item for item in download_manager.download_items if item.file_type == FileType.HTML]
         elif filter_type == "pdf":
-            items = [item for item in download_manager.download_items if item.file_type == "pdf"]
+            items = [item for item in download_manager.download_items if item.file_type == FileType.PDF]
         else:
             items = download_manager.download_items
         
@@ -360,4 +373,6 @@ def _format_size(size_bytes: int) -> str:
     while size >= 1024.0 and i < len(size_names) - 1:
         size /= 1024.0
         i += 1
+        
+    return f"{size:.1f} {size_names[i]}"
     

@@ -1,0 +1,114 @@
+======================================================================
+ONLINE TEST - WORK ORDER & TITLE SHEET SUMMARY
+======================================================================
+
+Test Run: 20251208_014337
+Start Time: 2025-12-08 01:43:37
+Input Directory: TEST_INPUT_FILES
+Output Directory: test_output_online_workorder
+
+----------------------------------------------------------------------
+OVERALL STATISTICS
+----------------------------------------------------------------------
+
+Total Files Processed: 8
+Success: 8
+Errors: 0
+Success Rate: 100.0%
+Total Processing Time: 6.63 seconds
+Average Time per File: 0.83 seconds
+Total Main Item Modifications: 50
+Total Extra Item Modifications: 15
+
+----------------------------------------------------------------------
+DETAILED RESULTS
+----------------------------------------------------------------------
+
+1. 0511-N-extra.xlsx
+   Status: SUCCESS
+   Processing Time: 1.16 seconds
+   Main Items Modified: 3
+   Extra Items Modified: 3
+   Work Order Rows: 10
+   Bill Quantity Rows: 10
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014331_0511-N-extra
+
+2. 0511Wextra.xlsx
+   Status: SUCCESS
+   Processing Time: 0.80 seconds
+   Main Items Modified: 3
+   Extra Items Modified: 1
+   Work Order Rows: 10
+   Bill Quantity Rows: 10
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014332_0511Wextra
+
+3. 3rdFinalNoExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 0.68 seconds
+   Main Items Modified: 6
+   Extra Items Modified: 0
+   Work Order Rows: 38
+   Bill Quantity Rows: 38
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014333_3rdFinalNoExtra
+
+4. 3rdFinalVidExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 0.71 seconds
+   Main Items Modified: 9
+   Extra Items Modified: 2
+   Work Order Rows: 38
+   Bill Quantity Rows: 38
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014333_3rdFinalVidExtra
+
+5. 3rdRunningNoExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 0.76 seconds
+   Main Items Modified: 10
+   Extra Items Modified: 3
+   Work Order Rows: 38
+   Bill Quantity Rows: 38
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014334_3rdRunningNoExtra
+
+6. 3rdRunningVidExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 0.70 seconds
+   Main Items Modified: 6
+   Extra Items Modified: 4
+   Work Order Rows: 38
+   Bill Quantity Rows: 38
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014335_3rdRunningVidExtra
+
+7. FirstFINALnoExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 0.79 seconds
+   Main Items Modified: 5
+   Extra Items Modified: 0
+   Work Order Rows: 38
+   Bill Quantity Rows: 38
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014336_FirstFINALnoExtra
+
+8. FirstFINALvidExtra.xlsx
+   Status: SUCCESS
+   Processing Time: 1.02 seconds
+   Main Items Modified: 8
+   Extra Items Modified: 2
+   Work Order Rows: 38
+   Bill Quantity Rows: 38
+   Title Fields: 21
+   Key Fields Present: 1
+   Output Folder: 20251208_014336_FirstFINALvidExtra
+
