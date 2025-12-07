@@ -51,21 +51,59 @@ def show_online_mode(config):
                 # Convert to string for easier searching
                 title_string = title_data.to_string()
                 
-                # Look for project name patterns
-                project_patterns = ['Project Name', 'Project', 'Work Name', 'Work']
+                # Look for project name patterns - prioritize "Name of Work"
+                project_patterns_priority = ['Name of Work']  # Highest priority
+                project_patterns_secondary = ['Project Name', 'Project', 'Work Name', 'Work']
+                all_project_patterns = project_patterns_priority + project_patterns_secondary
+                
                 contractor_patterns = ['Contractor', 'Name of Contractor', 'Contractor Name']
                 
-                # Search in column names and data
+                # Search for "Name of Work" first (highest priority)
+                project_found = False
                 for col in title_data.columns:
                     col_str = str(col).lower()
-                    if any(pattern.lower() in col_str for pattern in project_patterns):
+                    if 'name of work' in col_str:
                         # Get first non-null value in this column
                         project_values = title_data[col].dropna()
                         if not project_values.empty:
                             default_project_name = str(project_values.iloc[0])
+                            project_found = True
                             break
                 
+                # If not found in column names, search in data cells
+                if not project_found:
+                    # Search through all cells for "Name of Work"
+                    for col in title_data.columns:
+                        col_data = title_data[col].astype(str)
+                        for idx, cell_value in col_data.items():
+                            if 'name of work' in cell_value.lower():
+                                # Look for the value in the next row or adjacent cell
+                                try:
+                                    # Try to get the value from the next row in the same column
+                                    next_value = title_data.iloc[idx+1][col] if idx+1 < len(title_data) else None
+                                    if next_value and str(next_value) != 'nan':
+                                        default_project_name = str(next_value)
+                                        project_found = True
+                                        break
+                                except:
+                                    pass
+                        if project_found:
+                            break
+                
+                # If still not found, try other project patterns
+                if not project_found:
+                    for col in title_data.columns:
+                        col_str = str(col).lower()
+                        if any(pattern.lower() in col_str for pattern in project_patterns_secondary):
+                            # Get first non-null value in this column
+                            project_values = title_data[col].dropna()
+                            if not project_values.empty:
+                                default_project_name = str(project_values.iloc[0])
+                                project_found = True
+                                break
+                
                 # Search for contractor
+                contractor_found = False
                 for col in title_data.columns:
                     col_str = str(col).lower()
                     if any(pattern.lower() in col_str for pattern in contractor_patterns):
@@ -73,9 +111,32 @@ def show_online_mode(config):
                         contractor_values = title_data[col].dropna()
                         if not contractor_values.empty:
                             default_contractor = str(contractor_values.iloc[0])
+                            contractor_found = True
                             break
                 
-                st.success("✅ Successfully extracted data from Excel file")
+                # If contractor not found in column names, search in data
+                if not contractor_found:
+                    for col in title_data.columns:
+                        col_data = title_data[col].astype(str)
+                        for idx, cell_value in col_data.items():
+                            if any(pattern.lower() in cell_value.lower() for pattern in contractor_patterns):
+                                # Look for the value in the next row or adjacent cell
+                                try:
+                                    # Try to get the value from the next row in the same column
+                                    next_value = title_data.iloc[idx+1][col] if idx+1 < len(title_data) else None
+                                    if next_value and str(next_value) != 'nan':
+                                        default_contractor = str(next_value)
+                                        contractor_found = True
+                                        break
+                                except:
+                                    pass
+                        if contractor_found:
+                            break
+                
+                if project_found or contractor_found:
+                    st.success("✅ Successfully extracted data from Excel file")
+                else:
+                    st.info("ℹ️ No project name or contractor data found in the Excel file")
         except Exception as e:
             st.warning(f"Could not extract data from Excel file: {str(e)}")
     
