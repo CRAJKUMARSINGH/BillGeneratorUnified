@@ -1,4 +1,3 @@
-# System packages required for Streamlit deployment
 libmagic-dev
 libmagickwand-dev
 ghostscript
