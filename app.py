@@ -18,6 +18,14 @@ from core.config.config_loader import ConfigLoader
 # Get config from environment or use default
 config = ConfigLoader.load_from_env('BILL_CONFIG', 'config/v01.json')
 
+# Page config
+st.set_page_config(
+    page_title=config.app_name,
+    page_icon=config.ui.branding.icon,
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # Automatic cache cleaning on startup (optional)
 # This can be controlled by configuration or environment variable
 auto_clean_env = os.getenv('CLEAN_CACHE_ON_STARTUP', 'false').lower() == 'true'
@@ -27,13 +35,29 @@ if 'cache_cleaned' not in st.session_state:
     st.session_state.cache_cleaned = False
 
 if (auto_clean_env or (config and config.processing.auto_clean_cache)) and not st.session_state.cache_cleaned:
+    # Define cache directories to clean
     cache_dirs = [
         "__pycache__",
         ".pytest_cache",
         ".mypy_cache"
     ]
     
+    # Define additional patterns to clean
+    additional_patterns = [
+        "**/__pycache__",  # Recursive py cache directories
+        "**/*.pyc",        # Python compiled files
+        "**/*.pyo",        # Optimized Python files
+        "**/*.pyd",        # Python DLL files
+        "**/*.pyz",        # Python zip files
+        "**/*.pyx",        # Cython files
+        "**/*.so",         # Shared libraries
+        "**/*.dll",        # Windows DLL files
+        "**/*.dylib"       # macOS dynamic libraries
+    ]
+    
     cleaned_any = False
+    
+    # Clean cache directories
     for cache_dir in cache_dirs:
         cache_path = Path(cache_dir)
         if cache_path.exists():
@@ -43,20 +67,33 @@ if (auto_clean_env or (config and config.processing.auto_clean_cache)) and not s
                 else:
                     cache_path.unlink()
                 cleaned_any = True
-            except Exception:
+                print(f"Cleaned cache directory: {cache_dir}")
+            except Exception as e:
+                print(f"Failed to clean {cache_dir}: {e}")
                 pass  # Silent fail on startup
+    
+    # Clean additional patterns
+    for pattern in additional_patterns:
+        try:
+            for file_path in Path(".").glob(pattern):
+                if file_path.is_file():
+                    file_path.unlink()
+                    cleaned_any = True
+                    print(f"Cleaned file: {file_path}")
+                elif file_path.is_dir():
+                    shutil.rmtree(file_path)
+                    cleaned_any = True
+                    print(f"Cleaned directory: {file_path}")
+        except Exception as e:
+            print(f"Failed to clean pattern {pattern}: {e}")
+            pass  # Silent fail on startup
     
     # Mark cache as cleaned for this session
     if cleaned_any:
         st.session_state.cache_cleaned = True
-
-# Page config
-st.set_page_config(
-    page_title=config.app_name,
-    page_icon=config.ui.branding.icon,
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+        print("Cache cleaning completed for this session")
+    else:
+        print("No cache files found to clean")
 
 # Custom CSS with Beautiful Green Header
 st.markdown("""
@@ -224,6 +261,7 @@ with st.sidebar:
     
     # Function to clean cache directories
     def clean_cache():
+        # Define cache directories to clean
         cache_dirs = [
             "__pycache__",
             ".pytest_cache",
@@ -231,18 +269,47 @@ with st.sidebar:
             "output",  # Output directory from batch processing
         ]
         
+        # Define additional patterns to clean
+        additional_patterns = [
+            "**/__pycache__",  # Recursive py cache directories
+            "**/*.pyc",        # Python compiled files
+            "**/*.pyo",        # Optimized Python files
+            "**/*.pyd",        # Python DLL files
+            "**/*.pyz",        # Python zip files
+            "**/*.pyx",        # Cython files
+            "**/*.so",         # Shared libraries
+            "**/*.dll",        # Windows DLL files
+            "**/*.dylib"       # macOS dynamic libraries
+        ]
+        
         cleaned_dirs = []
+        cleaned_files = 0
+        
+        # Clean cache directories
         for cache_dir in cache_dirs:
             cache_path = Path(cache_dir)
             if cache_path.exists():
                 try:
                     if cache_path.is_dir():
-                        shutil.rmtree(cache_path)
+                        shutil.rmtree(cache_dir)
                     else:
                         cache_path.unlink()
                     cleaned_dirs.append(cache_dir)
                 except Exception as e:
                     st.warning(f"Could not clean {cache_dir}: {str(e)}")
+        
+        # Clean additional patterns
+        for pattern in additional_patterns:
+            try:
+                for file_path in Path(".").glob(pattern):
+                    if file_path.is_file():
+                        file_path.unlink()
+                        cleaned_files += 1
+                    elif file_path.is_dir():
+                        shutil.rmtree(file_path)
+                        cleaned_dirs.append(str(file_path))
+            except Exception as e:
+                st.warning(f"Could not clean pattern {pattern}: {str(e)}")
         
         # Also clean any temporary files
         temp_patterns = ["*.tmp", "*.temp", "temp_*"]
@@ -253,19 +320,25 @@ with st.sidebar:
                         shutil.rmtree(temp_file)
                     else:
                         temp_file.unlink()
+                    cleaned_files += 1
                 except Exception as e:
                     st.warning(f"Could not clean {temp_file}: {str(e)}")
         
-        return cleaned_dirs
+        return cleaned_dirs, cleaned_files
     
     # Button to clean cache
     if st.button("🧹 Clean Cache & Temp Files"):
         with st.spinner("Cleaning cache and temporary files..."):
-            cleaned_dirs = clean_cache()
-            if cleaned_dirs:
-                st.success(f"✅ Cleaned cache directories: {', '.join(cleaned_dirs)}")
+            cleaned_dirs, cleaned_files = clean_cache()
+            if cleaned_dirs or cleaned_files > 0:
+                success_message = ""
+                if cleaned_dirs:
+                    success_message += f"✅ Cleaned cache directories: {', '.join(cleaned_dirs)}\n"
+                if cleaned_files > 0:
+                    success_message += f"✅ Cleaned {cleaned_files} additional files"
+                st.success(success_message)
             else:
-                st.info("ℹ️ No cache directories found to clean")
+                st.info("ℹ️ No cache directories or files found to clean")
         st.info("💡 Cache has been cleaned. Next run will start with a fresh state.")
         # Reset the cache cleaned flag so it can run again on next startup
         st.session_state.cache_cleaned = False

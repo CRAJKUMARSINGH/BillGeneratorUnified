@@ -1,0 +1,42 @@
+{
+  "title_data": {
+    "Project Name": "Smart Building Electrical Works",
+    "Contract No": "CB/ELEC/2025/001",
+    "Work Order No": "0511 Dt. 05-11-2023",
+    "Tender Premium %": 5.11
+  },
+  "processing": {
+    "auto_clean_cache": true
+  },
+  "image_settings": {
+    "font_size": 40,
+    "text_positions": {
+      "project_name": [
+        50,
+        50
+      ],
+      "contract_no": [
+        50,
+        120
+      ],
+      "work_order_no": [
+        50,
+        190
+      ]
+    },
+    "text_color": [
+      255,
+      255,
+      255
+    ],
+    "shadow_color": [
+      0,
+      0,
+      0
+    ],
+    "shadow_offset": [
+      2,
+      2
+    ]
+  }
+}
