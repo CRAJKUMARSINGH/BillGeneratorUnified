@@ -24,6 +24,25 @@ This is the Flask backend for the BillGenerator Unified application, implementin
   - Uses `werkzeug.security.check_password_hash()` for login
   - Never stores or compares plaintext passwords
 
+### 3. CORS Configuration
+- **Cross-Origin Resource Sharing**: Enabled secure web frontend integration
+- **Files Modified**:
+  - `backend/app.py` - CORS initialization and configuration
+- **Implementation**:
+  - Uses Flask-CORS library
+  - Configurable via environment variables
+  - Supports origin whitelisting for production
+
+### 4. Rate Limiting
+- **API Abuse Prevention**: Implemented rate limiting for all endpoints
+- **Files Modified**:
+  - `backend/app.py` - Rate limiting initialization and configuration
+- **Implementation**:
+  - Uses Flask-Limiter library
+  - Client IP-based rate limiting
+  - Specific limits for sensitive endpoints (registration, login)
+  - Configurable via environment variables
+
 ## Performance Improvements Implemented
 
 ### 1. Database Query Optimization
@@ -45,6 +64,27 @@ This is the Flask backend for the BillGenerator Unified application, implementin
   - Prevents memory exhaustion
   - Improves response times
   - Better user experience with large datasets
+
+## Monitoring & Observability Improvements
+
+### 1. Comprehensive Logging
+- **Production-Ready Logging**: File-based logging with rotation
+- **Files Modified**:
+  - `backend/app.py` - Logging configuration and setup
+- **Implementation**:
+  - Uses Python's built-in logging module
+  - Rotating file handler with size limits
+  - Structured log format with timestamps and source locations
+  - Automatic log rotation to prevent disk space issues
+
+### 2. Health Check Endpoint
+- **Infrastructure Monitoring**: Dedicated health check endpoint
+- **Files Modified**:
+  - `backend/app.py` - Health check endpoint implementation
+- **Implementation**:
+  - `GET /health` endpoint for monitoring systems
+  - Returns JSON status information
+  - Access logging for monitoring verification
 
 ## Code Quality Improvements
 
@@ -69,29 +109,29 @@ This is the Flask backend for the BillGenerator Unified application, implementin
 ## API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
+- `POST /api/auth/register` - Register a new user (rate limited)
+- `POST /api/auth/login` - Login user (rate limited)
 - `GET /api/auth/profile` - Get user profile (requires JWT)
 
 ### Users
-- `GET /api/users` - Get all users (paginated)
-- `GET /api/users/<id>` - Get a specific user
-- `PUT /api/users/<id>` - Update a user
-- `DELETE /api/users/<id>` - Delete a user
+- `GET /api/users` - Get all users (paginated, CORS enabled)
+- `GET /api/users/<id>` - Get a specific user (CORS enabled)
+- `PUT /api/users/<id>` - Update a user (CORS enabled)
+- `DELETE /api/users/<id>` - Delete a user (CORS enabled)
 
 ### Invoices
-- `GET /api/invoices` - Get all invoices (paginated, optimized)
-- `GET /api/invoices/<id>` - Get a specific invoice (optimized)
-- `POST /api/invoices` - Create a new invoice
-- `PUT /api/invoices/<id>` - Update an invoice
-- `DELETE /api/invoices/<id>` - Delete an invoice
+- `GET /api/invoices` - Get all invoices (paginated, optimized, CORS enabled)
+- `GET /api/invoices/<id>` - Get a specific invoice (optimized, CORS enabled)
+- `POST /api/invoices` - Create a new invoice (CORS enabled)
+- `PUT /api/invoices/<id>` - Update an invoice (CORS enabled)
+- `DELETE /api/invoices/<id>` - Delete an invoice (CORS enabled)
 
 ### Products
-- `GET /api/products` - Get all products (paginated)
-- `GET /api/products/<id>` - Get a specific product
-- `POST /api/products` - Create a new product (validated)
-- `PUT /api/products/<id>` - Update a product (validated)
-- `DELETE /api/products/<id>` - Delete a product
+- `GET /api/products` - Get all products (paginated, CORS enabled)
+- `GET /api/products/<id>` - Get a specific product (CORS enabled)
+- `POST /api/products` - Create a new product (validated, CORS enabled)
+- `PUT /api/products/<id>` - Update a product (validated, CORS enabled)
+- `DELETE /api/products/<id>` - Delete a product (CORS enabled)
 
 ## Environment Variables
 
@@ -109,6 +149,16 @@ MYSQL_PASSWORD=your_mysql_password
 FLASK_DEBUG=False
 FLASK_ENV=production
 JWT_ACCESS_TOKEN_EXPIRES=3600
+
+# CORS Settings
+CORS_ORIGINS=http://localhost:3000,https://yourdomain.com
+
+# Rate Limiting Settings
+RATE_LIMIT_DEFAULT=1000 per hour
+RATE_LIMIT_STORAGE=memory://
+
+# Redis Settings (for caching)
+REDIS_URL=redis://localhost:6379/0
 ```
 
 ## Installation
@@ -129,24 +179,20 @@ The backend includes comprehensive security and performance improvements:
    - Password hashing verification
    - Environment variable loading
    - JWT token management
+   - CORS header validation
+   - Rate limiting effectiveness
 
 2. **Performance Testing**:
    - Pagination with large datasets
    - Optimized database queries
    - Memory usage monitoring
+   - Request rate handling
 
 3. **Functionality Testing**:
    - All CRUD operations
    - Input validation
    - Error handling
-
-## Future Enhancements
-
-1. **Rate Limiting**: Implement rate limiting for API endpoints
-2. **CORS Configuration**: Configure CORS for web frontend integration
-3. **Logging**: Add comprehensive logging for security auditing
-4. **Database Migrations**: Implement database migration system
-5. **API Documentation**: Add Swagger/OpenAPI documentation
+   - Logging functionality
 
 ## Security Best Practices
 
@@ -155,3 +201,6 @@ The backend includes comprehensive security and performance improvements:
 3. **Regularly rotate secrets and API keys**
 4. **Limit permissions** for environment variables to authorized users only
 5. **Monitor for security updates** to dependencies
+6. **Review CORS configuration** for production deployments
+7. **Adjust rate limits** based on expected traffic patterns
+8. **Regularly review log files** for security events

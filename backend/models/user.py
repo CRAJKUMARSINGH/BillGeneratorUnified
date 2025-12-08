@@ -2,12 +2,9 @@
 User Model for BillGenerator Flask Backend
 Security improvements: Password hashing instead of plaintext storage
 """
-from flask_sqlalchemy import SQLAlchemy
+from backend.db import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-
-# Initialize SQLAlchemy
-db = SQLAlchemy()
 
 class User(db.Model):
     """User model with secure password handling"""

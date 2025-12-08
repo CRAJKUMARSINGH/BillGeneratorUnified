@@ -1,17 +1,20 @@
 """
 Invoice Routes for BillGenerator Flask Backend
-Performance improvements: Joined loading and pagination
+Performance improvements: Joined loading, pagination, and caching
 """
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.orm import joinedload
+from datetime import datetime
 from ..models.invoice import Invoice, db
 from ..models.user import User
+from ..utils.cache import cached, cache_manager
 
 bp = Blueprint('invoices', __name__, url_prefix='/api/invoices')
 
 @bp.route('', methods=['GET'])
 @jwt_required()
+@cached(expire=300)  # Cache for 5 minutes
 def get_invoices():
     """Get all invoices with pagination and optimized queries - Performance improvement"""
     try:
@@ -58,6 +61,12 @@ def get_invoices():
 def get_invoice(invoice_id):
     """Get a specific invoice with optimized query"""
     try:
+        # Try to get from cache first
+        cache_key = f"invoice_{invoice_id}"
+        cached_invoice = cache_manager.get(cache_key)
+        if cached_invoice:
+            return jsonify({'invoice': cached_invoice}), 200
+        
         # Use joined loading to prevent N+1 problem - Performance improvement
         invoice = Invoice.query.options(
             joinedload(Invoice.user)  # Eager load user data
@@ -66,7 +75,11 @@ def get_invoice(invoice_id):
         if not invoice:
             return jsonify({'error': 'Invoice not found'}), 404
             
-        return jsonify({'invoice': invoice.to_dict()}), 200
+        # Cache the result
+        invoice_dict = invoice.to_dict()
+        cache_manager.set(cache_key, invoice_dict, expire=300)  # Cache for 5 minutes
+            
+        return jsonify({'invoice': invoice_dict}), 200
         
     except Exception as e:
         return jsonify({'error': f'Failed to get invoice: {str(e)}'}), 500
@@ -86,23 +99,39 @@ def create_invoice():
             if field not in data:
                 return jsonify({'error': f'Missing required field: {field}'}), 400
         
+        # Get user ID from JWT token
+        current_user_id = int(get_jwt_identity())
+        
+        # Parse dates
+        try:
+            bill_date = datetime.strptime(data['bill_date'], '%Y-%m-%d').date()
+            due_date = datetime.strptime(data['due_date'], '%Y-%m-%d').date()
+        except ValueError:
+            return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD.'}), 400
+        
         # Create new invoice
         invoice = Invoice(
             invoice_number=data['invoice_number'],
             client_name=data['client_name'],
             work_order_number=data['work_order_number'],
-            bill_date=data['bill_date'],
-            due_date=data['due_date'],
+            bill_date=bill_date,
+            due_date=due_date,
             subtotal=data['subtotal'],
             total_amount=data['total_amount'],
             amount_paid=data.get('amount_paid', 0.0),
             unpaid_amount=data.get('unpaid_amount', data['total_amount']),
-            user_id=data.get('user_id')  # Optional, can be set from JWT token
+            user_id=current_user_id  # Set user ID from JWT token
         )
         
         # Save to database
         db.session.add(invoice)
         db.session.commit()
+        
+        # Invalidate cache for invoices list
+        cache_manager.flush()  # In a production system, you might want to be more selective
+        
+        # Cache the new invoice
+        cache_manager.set(f"invoice_{invoice.id}", invoice.to_dict(), expire=300)
         
         # Return created invoice
         return jsonify({'invoice': invoice.to_dict()}), 201
@@ -130,10 +159,24 @@ def update_invoice(invoice_id):
         
         for field in updatable_fields:
             if field in data:
-                setattr(invoice, field, data[field])
+                if field in ['bill_date', 'due_date']:
+                    # Parse dates
+                    try:
+                        setattr(invoice, field, datetime.strptime(data[field], '%Y-%m-%d').date())
+                    except ValueError:
+                        return jsonify({'error': f'Invalid date format for {field}. Use YYYY-MM-DD.'}), 400
+                else:
+                    setattr(invoice, field, data[field])
         
         # Save changes
         db.session.commit()
+        
+        # Invalidate caches
+        cache_manager.delete(f"invoice_{invoice_id}")
+        cache_manager.flush()  # Invalidate all invoices cache
+        
+        # Cache the updated invoice
+        cache_manager.set(f"invoice_{invoice.id}", invoice.to_dict(), expire=300)
         
         return jsonify({'invoice': invoice.to_dict()}), 200
         
@@ -153,6 +196,10 @@ def delete_invoice(invoice_id):
             
         db.session.delete(invoice)
         db.session.commit()
+        
+        # Invalidate caches
+        cache_manager.delete(f"invoice_{invoice_id}")
+        cache_manager.flush()  # Invalidate all invoices cache
         
         return jsonify({'message': 'Invoice deleted successfully'}), 200
         

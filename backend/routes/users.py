@@ -5,11 +5,13 @@ Performance improvements: Pagination
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from ..models.user import User, db
+from ..utils.cache import cached, cache_manager
 
 bp = Blueprint('users', __name__, url_prefix='/api/users')
 
 @bp.route('', methods=['GET'])
 @jwt_required()
+@cached(expire=300)  # Cache for 5 minutes
 def get_users():
     """Get all users with pagination - Performance improvement"""
     try:
@@ -51,12 +53,22 @@ def get_users():
 def get_user(user_id):
     """Get a specific user"""
     try:
+        # Try to get from cache first
+        cache_key = f"user_{user_id}"
+        cached_user = cache_manager.get(cache_key)
+        if cached_user:
+            return jsonify({'user': cached_user}), 200
+        
         user = User.query.get(user_id)
         
         if not user:
             return jsonify({'error': 'User not found'}), 404
             
-        return jsonify({'user': user.to_dict()}), 200
+        # Cache the result
+        user_dict = user.to_dict()
+        cache_manager.set(cache_key, user_dict, expire=300)  # Cache for 5 minutes
+            
+        return jsonify({'user': user_dict}), 200
         
     except Exception as e:
         return jsonify({'error': f'Failed to get user: {str(e)}'}), 500
@@ -66,6 +78,12 @@ def get_user(user_id):
 def update_user(user_id):
     """Update an existing user"""
     try:
+        # Try to get from cache first
+        cache_key = f"user_{user_id}"
+        cached_user = cache_manager.get(cache_key)
+        if cached_user:
+            cache_manager.delete(cache_key)
+        
         user = User.query.get(user_id)
         
         if not user:
@@ -87,6 +105,13 @@ def update_user(user_id):
         # Save changes
         db.session.commit()
         
+        # Invalidate caches
+        cache_manager.delete(f"user_{user_id}")
+        cache_manager.flush()  # Invalidate all users cache
+        
+        # Cache the updated user
+        cache_manager.set(f"user_{user.id}", user.to_dict(), expire=300)
+        
         return jsonify({'user': user.to_dict()}), 200
         
     except Exception as e:
@@ -98,6 +123,12 @@ def update_user(user_id):
 def delete_user(user_id):
     """Delete a user"""
     try:
+        # Try to get from cache first
+        cache_key = f"user_{user_id}"
+        cached_user = cache_manager.get(cache_key)
+        if cached_user:
+            cache_manager.delete(cache_key)
+        
         user = User.query.get(user_id)
         
         if not user:
@@ -105,6 +136,10 @@ def delete_user(user_id):
             
         db.session.delete(user)
         db.session.commit()
+        
+        # Invalidate caches
+        cache_manager.delete(f"user_{user_id}")
+        cache_manager.flush()  # Invalidate all users cache
         
         return jsonify({'message': 'User deleted successfully'}), 200
         

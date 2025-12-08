@@ -1,9 +1,8 @@
 """
 Invoice Model for BillGenerator Flask Backend
 """
-from flask_sqlalchemy import SQLAlchemy
+from backend.db import db
 from datetime import datetime
-from .user import db  # Import db from user model
 
 class Invoice(db.Model):
     """Invoice model"""

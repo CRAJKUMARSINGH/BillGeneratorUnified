@@ -49,6 +49,20 @@ The application now supports configuration via environment variables for enhance
    # Processing Settings
    PROCESSING_MAX_FILE_SIZE_MB=100
    PROCESSING_ENABLE_CACHING=true
+   
+   # Security Settings (Backend)
+   JWT_SECRET_KEY=your_super_secret_random_key
+   DATABASE_URL=sqlite:///billgenerator.db
+   
+   # CORS Settings
+   CORS_ORIGINS=http://localhost:3000,https://yourdomain.com
+   
+   # Rate Limiting Settings
+   RATE_LIMIT_DEFAULT=1000 per hour
+   RATE_LIMIT_STORAGE=memory://
+   
+   # Redis Settings (for caching)
+   REDIS_URL=redis://localhost:6379/0
    ```
 
 3. The application will automatically load these values, overriding the default configuration.
@@ -58,6 +72,8 @@ The application now supports configuration via environment variables for enhance
 - Use strong, randomly generated secrets for production
 - Regularly rotate secrets and API keys
 - Limit permissions for environment variables to authorized users only
+- Set specific CORS origins for production deployments
+- Adjust rate limits based on expected traffic patterns
 
 ## 🚀 Quick Start
 
@@ -89,6 +105,35 @@ python launchers/launch_smartbillflow.py
 | Custom Templates | ✗ | ✗ | ✗ | ✓ | ✓ |
 | Analytics | ✗ | ✗ | ✗ | ✗ | ✓ |
 | API Access | ✗ | ✗ | ✗ | ✗ | ✓ |
+
+## 🔒 Enterprise Security Features
+
+### API Security
+- **JWT Authentication**: Secure token-based authentication for all API endpoints
+- **Rate Limiting**: Prevent API abuse with configurable request limits
+- **CORS Protection**: Controlled cross-origin resource sharing
+- **Input Validation**: Structured validation with Pydantic
+- **Password Hashing**: Secure password storage using PBKDF2 SHA256
+
+### Data Protection
+- **Environment Variables**: All secrets stored securely outside code
+- **SQL Injection Prevention**: Parameterized queries throughout
+- **XSS Protection**: Sanitized user inputs and outputs
+- **CSRF Protection**: Secure form handling
+
+## 📊 Monitoring & Observability
+
+### Comprehensive Logging
+- **File-based Logging**: Structured logs with timestamps and severity levels
+- **Log Rotation**: Automatic log file rotation to prevent disk space issues
+- **Source Tracking**: Precise source code location for debugging
+- **Production Ready**: Minimal overhead in production environments
+
+### Health Monitoring
+- **Health Check Endpoint**: Dedicated endpoint for infrastructure monitoring
+- **Performance Metrics**: Response time and resource usage tracking
+- **Error Tracking**: Comprehensive error logging and monitoring
+- **Security Auditing**: Authentication and authorization event logging
 
 ## 🔄 Batch Processing
 
@@ -206,8 +251,10 @@ LAUNCH.bat
 ## 📖 Documentation
 
 - Configuration Guide: See `config/` folder
-- API Reference: Coming soon
+- API Reference: Available at `/docs/ endpoint
 - User Manual: Built-in help in each mode
+- Security Documentation: See `backend/README.md`
+- Monitoring Guide: See `MONITORING_LOGGING_SUMMARY.md`
 
 ## 🎉 What's New
 
@@ -217,6 +264,10 @@ LAUNCH.bat
 - ✅ Better error handling
 - ✅ 5 variants in one app
 - ✅ Configuration-driven features
+- ✅ Enterprise-grade security
+- ✅ Comprehensive monitoring
+- ✅ API rate limiting
+- ✅ CORS protection
 
 ## 👨‍💻 Created By
 

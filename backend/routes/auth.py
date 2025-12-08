@@ -34,8 +34,8 @@ def register():
         db.session.add(user)
         db.session.commit()
         
-        # Create access token
-        access_token = create_access_token(identity=user.id)
+        # Create access token - Convert user ID to string
+        access_token = create_access_token(identity=str(user.id))
         
         return jsonify({
             'message': 'User registered successfully',
@@ -62,8 +62,8 @@ def login():
         
         # Verify user and password - Security improvement: Hash comparison
         if user and user.check_password(data['password']):
-            # Create access token
-            access_token = create_access_token(identity=user.id)
+            # Create access token - Convert user ID to string
+            access_token = create_access_token(identity=str(user.id))
             
             return jsonify({
                 'message': 'Login successful',
@@ -81,7 +81,8 @@ def login():
 def profile():
     """Get user profile"""
     try:
-        current_user_id = get_jwt_identity()
+        # Get user ID from token and convert back to integer
+        current_user_id = int(get_jwt_identity())
         user = User.query.get(current_user_id)
         
         if not user:
