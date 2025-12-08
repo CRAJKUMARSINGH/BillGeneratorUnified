@@ -18,6 +18,47 @@
 - ⚡ **Advanced PDF** (V01, V04, SmartBillFlow)
 - 🔌 **API Access** (SmartBillFlow)
 
+## 🛡️ Security & Configuration
+
+### Environment Variables
+The application now supports configuration via environment variables for enhanced security. To use this feature:
+
+1. Copy the `.env.example` file to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit the `.env` file to set your configuration values:
+   ```env
+   # Application Settings
+   APP_NAME=MyBillGenerator
+   APP_VERSION=2.0.0
+   APP_MODE=Production
+   
+   # Feature Toggles
+   FEATURE_EXCEL_UPLOAD=true
+   FEATURE_ONLINE_ENTRY=true
+   FEATURE_BATCH_PROCESSING=true
+   FEATURE_ANALYTICS=false
+   
+   # UI Settings
+   BRANDING_TITLE="My Company Bill Generator"
+   BRANDING_ICON="🏢"
+   BRANDING_COLOR="#2196F3"
+   
+   # Processing Settings
+   PROCESSING_MAX_FILE_SIZE_MB=100
+   PROCESSING_ENABLE_CACHING=true
+   ```
+
+3. The application will automatically load these values, overriding the default configuration.
+
+### Security Best Practices
+- Never commit `.env` files to version control (already in `.gitignore`)
+- Use strong, randomly generated secrets for production
+- Regularly rotate secrets and API keys
+- Limit permissions for environment variables to authorized users only
+
 ## 🚀 Quick Start
 
 ### Windows (Easy)

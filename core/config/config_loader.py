@@ -6,6 +6,12 @@ import os
 from pathlib import Path
 from typing import Dict, Any
 
+# Import dotenv to load environment variables
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 class Config:
     """Configuration class"""
@@ -14,6 +20,11 @@ class Config:
         self.app_name = config_dict.get('app_name', 'BillGenerator Unified')
         self.version = config_dict.get('version', '2.0.0')
         self.mode = config_dict.get('mode', 'Standard')
+        
+        # Override with environment variables if available
+        self.app_name = os.getenv('APP_NAME', self.app_name)
+        self.version = os.getenv('APP_VERSION', self.version)
+        self.mode = os.getenv('APP_MODE', self.mode)
         
         # Features
         features_dict = config_dict.get('features', {})
@@ -39,6 +50,24 @@ class Features:
         self.analytics = features_dict.get('analytics', False)
         self.custom_templates = features_dict.get('custom_templates', False)
         self.api_access = features_dict.get('api_access', False)
+        
+        # Override with environment variables if available
+        self.excel_upload = self._get_bool_env('FEATURE_EXCEL_UPLOAD', self.excel_upload)
+        self.online_entry = self._get_bool_env('FEATURE_ONLINE_ENTRY', self.online_entry)
+        self.batch_processing = self._get_bool_env('FEATURE_BATCH_PROCESSING', self.batch_processing)
+        self.advanced_pdf = self._get_bool_env('FEATURE_ADVANCED_PDF', self.advanced_pdf)
+        self.analytics = self._get_bool_env('FEATURE_ANALYTICS', self.analytics)
+        self.custom_templates = self._get_bool_env('FEATURE_CUSTOM_TEMPLATES', self.custom_templates)
+        self.api_access = self._get_bool_env('FEATURE_API_ACCESS', self.api_access)
+    
+    def _get_bool_env(self, key: str, default: bool) -> bool:
+        """Get boolean value from environment variable"""
+        value = os.getenv(key, '').lower()
+        if value in ('true', '1', 'yes', 'on'):
+            return True
+        elif value in ('false', '0', 'no', 'off'):
+            return False
+        return default
     
     def is_enabled(self, feature_name: str) -> bool:
         """Check if a feature is enabled"""
@@ -52,8 +81,21 @@ class UI:
         self.theme = ui_dict.get('theme', 'default')
         self.show_debug = ui_dict.get('show_debug', False)
         
+        # Override with environment variables if available
+        self.theme = os.getenv('UI_THEME', self.theme)
+        self.show_debug = self._get_bool_env('UI_SHOW_DEBUG', self.show_debug)
+        
         branding_dict = ui_dict.get('branding', {})
         self.branding = Branding(branding_dict)
+    
+    def _get_bool_env(self, key: str, default: bool) -> bool:
+        """Get boolean value from environment variable"""
+        value = os.getenv(key, '').lower()
+        if value in ('true', '1', 'yes', 'on'):
+            return True
+        elif value in ('false', '0', 'no', 'off'):
+            return False
+        return default
 
 
 class Branding:
@@ -63,6 +105,11 @@ class Branding:
         self.title = branding_dict.get('title', 'BillGenerator Unified')
         self.icon = branding_dict.get('icon', '📄')
         self.color = branding_dict.get('color', '#00b894')
+        
+        # Override with environment variables if available
+        self.title = os.getenv('BRANDING_TITLE', self.title)
+        self.icon = os.getenv('BRANDING_ICON', self.icon)
+        self.color = os.getenv('BRANDING_COLOR', self.color)
 
 
 class Processing:
@@ -73,6 +120,21 @@ class Processing:
         self.enable_caching = processing_dict.get('enable_caching', True)
         self.pdf_engine = processing_dict.get('pdf_engine', 'reportlab')
         self.auto_clean_cache = processing_dict.get('auto_clean_cache', False)
+        
+        # Override with environment variables if available
+        self.max_file_size_mb = int(os.getenv('PROCESSING_MAX_FILE_SIZE_MB', self.max_file_size_mb))
+        self.enable_caching = self._get_bool_env('PROCESSING_ENABLE_CACHING', self.enable_caching)
+        self.pdf_engine = os.getenv('PROCESSING_PDF_ENGINE', self.pdf_engine)
+        self.auto_clean_cache = self._get_bool_env('PROCESSING_AUTO_CLEAN_CACHE', self.auto_clean_cache)
+    
+    def _get_bool_env(self, key: str, default: bool) -> bool:
+        """Get boolean value from environment variable"""
+        value = os.getenv(key, '').lower()
+        if value in ('true', '1', 'yes', 'on'):
+            return True
+        elif value in ('false', '0', 'no', 'off'):
+            return False
+        return default
 
 
 class ConfigLoader:
