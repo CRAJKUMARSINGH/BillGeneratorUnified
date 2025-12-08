@@ -9,18 +9,35 @@ def show_online_mode(config):
     """Show online entry interface"""
     st.markdown("## 💻 Online Entry Mode")
     
-    # Highlight data entry requirements with magenta theme
+    # Highlight data entry requirements with fluorescent green theme
     st.markdown("""
-    <div style='background-color: #ffe6ff; padding: 15px; border-radius: 8px; border-left: 5px solid #ff66ff; margin-bottom: 20px;'>
-        <h3 style='color: #cc00cc; margin-top: 0;'>✏️ Manual Data Entry Required</h3>
-        <p style='color: #990099; margin-bottom: 0;'>Please fill in all the required bill details in the forms below to generate documents.</p>
+    <div style='background: linear-gradient(135deg, #ccffcc 0%, #99ff99 100%); 
+                padding: 20px; 
+                border-radius: 12px; 
+                border: 2px dashed #00ff00; 
+                margin-bottom: 25px;
+                box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);'>
+        <h3 style='color: #006600; margin-top: 0; font-size: 1.6rem;'>
+            ✏️ Fluorescent Green Manual Data Entry
+        </h3>
+        <p style='color: #004d00; margin-bottom: 0; font-size: 1.1rem; font-weight: bold;'>
+            Please fill in all the required bill details in the forms below to generate documents
+        </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.info("📝 Enter bill details manually through web forms")
     
-    # Excel file upload to extract title sheet data
+    # Excel file upload to extract title sheet data - Enhanced styling
     st.markdown("### 📊 Extract Data from Excel")
+    st.markdown("""
+    <div style='background-color: #e6ffe6; padding: 15px; border-radius: 8px; border-left: 5px solid #00ff00; margin-bottom: 15px;'>
+        <p style='color: #006600; margin-bottom: 0; font-weight: bold;'>
+            📤 Optional: Upload Excel file to auto-extract Project Name and Contractor
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
     excel_file = st.file_uploader("Upload Excel file to extract Project Name and Contractor", type=['xlsx', 'xls'])
     
     # Default values
@@ -206,8 +223,21 @@ def show_online_mode(config):
     # Update session state with current values
     st.session_state.online_items = updated_items
     
-    # Generate button
-    if st.button("🚀 Generate Documents", type="primary"):
+    # Generate button with enhanced styling
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, #e6ffe6 0%, #ccffcc 100%); 
+                padding: 20px; 
+                border-radius: 12px; 
+                border: 2px solid #00ff00; 
+                text-align: center;
+                margin-top: 20px;'>
+        <h3 style='color: #006600; margin: 0;'>
+            🚀 Ready to Generate Documents
+        </h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("🚀 Generate Documents", type="primary", use_container_width=True):
         if not project_name:
             st.error("❌ Please enter project name")
         else:

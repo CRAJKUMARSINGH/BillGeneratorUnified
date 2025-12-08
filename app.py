@@ -95,7 +95,7 @@ if (auto_clean_env or (config and config.processing.auto_clean_cache)) and not s
     else:
         print("No cache files found to clean")
 
-# Custom CSS with Beautiful Green Header
+# Custom CSS with Beautiful Green Header and Fluorescent Green Upload Buttons
 st.markdown("""
 <style>
     /* Hide Streamlit branding and default elements */
@@ -186,6 +186,45 @@ st.markdown("""
     .stButton>button:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 184, 148, 0.4);
+    }
+    
+    /* Fluorescent Green File Upload Button */
+    [data-testid="stFileUploader"] {
+        border: 2px dashed #00ff00 !important;
+        background-color: #e6ffe6 !important;
+        border-radius: 10px !important;
+        padding: 20px !important;
+        text-align: center !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    [data-testid="stFileUploader"]:hover {
+        border: 2px dashed #00cc00 !important;
+        background-color: #ccffcc !important;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
+    }
+    
+    [data-testid="stFileUploader"] div:first-child {
+        background: linear-gradient(135deg, #00ff00 0%, #00cc66 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 12px 24px !important;
+        font-weight: bold !important;
+        font-size: 16px !important;
+        box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    [data-testid="stFileUploader"] div:first-child:hover {
+        background: linear-gradient(135deg, #00cc00 0%, #00994d 100%) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 255, 0, 0.4) !important;
+    }
+    
+    [data-testid="stFileUploader"] div:first-child:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 4px rgba(0, 255, 0, 0.3) !important;
     }
     
     /* Sidebar Styling */
@@ -432,7 +471,7 @@ st.markdown(f"""
         <p style='color: #636e72; font-size: 0.95rem; margin: 0.3rem 0;'>
             <strong>🤖 AI Development Partner:</strong> Kiro AI Assistant
         </p>
-        <p style='color: #b2bec3; font-size: 0.85rem; margin: 0.3rem 0;'>
+        <p style='color: #b2bec3; font-size: 0.9rem; margin: 0.3rem 0;'>
             Enhanced PDF Generation • Batch Processing • No-Shrink Fix
         </p>
     </div>

@@ -31,11 +31,23 @@ def show_excel_mode(config):
         **Caching:** {'Enabled' if config.processing.enable_caching else 'Disabled'}
         """)
     
-    # File upload with enhanced styling
+    # File upload with enhanced styling - Fluorescent Green
     st.markdown("""
-    <div style='background-color: #ffccff; padding: 20px; border-radius: 10px; border: 2px solid #ff66ff;'>
-        <h3 style='color: #cc00cc; margin-top: 0;'>📤 Excel File Required</h3>
-        <p style='color: #990099; margin-bottom: 0;'>Please upload your Excel bill file below to continue.</p>
+    <div style='background: linear-gradient(135deg, #ccffcc 0%, #99ff99 100%); 
+                padding: 25px; 
+                border-radius: 15px; 
+                border: 3px dashed #00ff00; 
+                text-align: center;
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);'>
+        <h3 style='color: #006600; margin-top: 0; font-size: 1.8rem;'>
+            📤 Fluorescent Green Excel Upload
+        </h3>
+        <p style='color: #004d00; margin-bottom: 0; font-size: 1.2rem; font-weight: bold;'>
+            Please upload your Excel bill file below to continue
+        </p>
+        <p style='color: #004d00; margin-top: 10px; font-style: italic;'>
+            Supported formats: .xlsx, .xls
+        </p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -47,8 +59,15 @@ def show_excel_mode(config):
     
     if not uploaded_file:
         st.markdown("""
-        <div style='background-color: #ffe6ff; padding: 15px; border-radius: 8px; border-left: 5px solid #ff66ff; margin-top: 10px;'>
-            <p style='color: #cc00cc; font-weight: bold; margin: 0;'>⚠️ Please upload an Excel file to proceed with document generation.</p>
+        <div style='background: linear-gradient(135deg, #ffe6ff 0%, #ffccff 100%); 
+                    padding: 15px; 
+                    border-radius: 8px; 
+                    border-left: 5px solid #ff66ff; 
+                    margin-top: 10px;
+                    box-shadow: 0 2px 8px rgba(255, 102, 255, 0.2);'>
+            <p style='color: #cc00cc; font-weight: bold; margin: 0; font-size: 1.1rem;'>
+                ⚠️ Please upload an Excel file to proceed with document generation
+            </p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -85,8 +104,21 @@ def show_excel_mode(config):
                     index=0
                 )
         
-        # Generate button
-        if st.button("🚀 Generate Documents", type="primary"):
+        # Generate button with enhanced styling
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #e6ffe6 0%, #ccffcc 100%); 
+                    padding: 20px; 
+                    border-radius: 12px; 
+                    border: 2px solid #00ff00; 
+                    text-align: center;
+                    margin-top: 20px;'>
+            <h3 style='color: #006600; margin: 0;'>
+                🚀 Ready to Generate Documents
+            </h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("🚀 Generate Documents", type="primary", use_container_width=True):
             with st.spinner("Processing and generating documents..."):
                 try:
                     # Import processors and generator
@@ -379,4 +411,3 @@ def _format_size(size_bytes: int) -> str:
         i += 1
         
     return f"{size:.1f} {size_names[i]}"
-    

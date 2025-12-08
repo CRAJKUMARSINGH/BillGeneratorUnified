@@ -1,6 +1,7 @@
 import pandas as pd
 from typing import Dict, Any
 import io
+from core.processors.hierarchical_filter import apply_hierarchical_filtering
 
 class ExcelProcessor:
     """Process Excel files and extract bill data"""
@@ -9,12 +10,13 @@ class ExcelProcessor:
         self.required_sheets = ['Title', 'Work Order', 'Bill Quantity']
         self.optional_sheets = ['Extra Items', 'Deviation']
     
-    def process_excel(self, file) -> Dict[str, Any]:
+    def process_excel(self, file, required_cols_only=True) -> Dict[str, Any]:
         """
-        Process Excel file and extract all necessary data
+        Process Excel file and extract all necessary data with optimization
         
         Args:
             file: Uploaded file object or file path
+            required_cols_only: Whether to load only required columns for better performance
             
         Returns:
             Dictionary containing processed data
@@ -47,6 +49,13 @@ class ExcelProcessor:
             else:
                 excel_data = pd.ExcelFile(file, engine='xlrd')
         
+        # Define required columns per sheet for optimization
+        required_cols = {
+            'Work Order': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate'],
+            'Bill Quantity': ['Item No.', 'Description', 'Quantity', 'Rate'],
+            'Extra Items': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate'],
+        }
+        
         processed_data = {}
         
         # Process Title sheet
@@ -56,23 +65,41 @@ class ExcelProcessor:
         else:
             processed_data['title_data'] = {}
         
-        # Process Work Order sheet
+        # Process Work Order sheet with column selection
         if 'Work Order' in excel_data.sheet_names:
-            work_order_df = pd.read_excel(excel_data, 'Work Order')
+            cols = required_cols['Work Order'] if required_cols_only else None
+            work_order_df = pd.read_excel(
+                excel_data, 
+                'Work Order',
+                usecols=cols,
+                dtype={'Item No.': str}  # Optimize data types
+            )
             processed_data['work_order_data'] = work_order_df
         else:
             processed_data['work_order_data'] = pd.DataFrame()
         
-        # Process Bill Quantity sheet
+        # Process Bill Quantity sheet with column selection
         if 'Bill Quantity' in excel_data.sheet_names:
-            bill_qty_df = pd.read_excel(excel_data, 'Bill Quantity')
+            cols = required_cols['Bill Quantity'] if required_cols_only else None
+            bill_qty_df = pd.read_excel(
+                excel_data, 
+                'Bill Quantity',
+                usecols=cols,
+                dtype={'Item No.': str}  # Optimize data types
+            )
             processed_data['bill_quantity_data'] = bill_qty_df
         else:
             processed_data['bill_quantity_data'] = pd.DataFrame()
         
-        # Process Extra Items sheet (optional)
+        # Process Extra Items sheet (optional) with column selection
         if 'Extra Items' in excel_data.sheet_names:
-            extra_items_df = pd.read_excel(excel_data, 'Extra Items')
+            cols = required_cols['Extra Items'] if required_cols_only else None
+            extra_items_df = pd.read_excel(
+                excel_data, 
+                'Extra Items',
+                usecols=cols,
+                dtype={'Item No.': str}  # Optimize data types
+            )
             processed_data['extra_items_data'] = extra_items_df
         else:
             processed_data['extra_items_data'] = pd.DataFrame()
@@ -83,6 +110,13 @@ class ExcelProcessor:
             processed_data['deviation_data'] = deviation_df
         else:
             processed_data['deviation_data'] = pd.DataFrame()
+        
+        # Apply hierarchical filtering
+        filtered_data = apply_hierarchical_filtering(
+            work_order_data=processed_data['work_order_data'],
+            bill_quantity_data=processed_data['bill_quantity_data']
+        )
+        processed_data.update(filtered_data)
         
         return processed_data
     
