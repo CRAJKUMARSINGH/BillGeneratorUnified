@@ -9,6 +9,34 @@ class ExcelProcessor:
     def __init__(self):
         self.required_sheets = ['Title', 'Work Order', 'Bill Quantity']
         self.optional_sheets = ['Extra Items', 'Deviation']
+        
+        # Define column mappings for different naming conventions
+        self.column_mappings = {
+            'Work Order': {
+                'Item No.': 'Item',  # Map expected to actual
+                'Item': 'Item',
+                'Description': 'Description',
+                'Unit': 'Unit',
+                'Quantity': 'Quantity',
+                'Rate': 'Rate'
+            },
+            'Bill Quantity': {
+                'Item No.': 'Item',  # Map expected to actual
+                'Item': 'Item',
+                'Description': 'Description',
+                'Unit': 'Unit',
+                'Quantity': 'Quantity',
+                'Rate': 'Rate'
+            },
+            'Extra Items': {
+                'Item No.': 'Item',  # Map expected to actual
+                'Item': 'Item',
+                'Description': 'Description',
+                'Unit': 'Unit',
+                'Quantity': 'Quantity',
+                'Rate': 'Rate'
+            }
+        }
     
     def process_excel(self, file, required_cols_only=True) -> Dict[str, Any]:
         """
@@ -68,11 +96,8 @@ class ExcelProcessor:
         # Process Work Order sheet with column selection
         if 'Work Order' in excel_data.sheet_names:
             cols = required_cols['Work Order'] if required_cols_only else None
-            work_order_df = pd.read_excel(
-                excel_data, 
-                'Work Order',
-                usecols=cols,
-                dtype={'Item No.': str}  # Optimize data types
+            work_order_df = self._read_sheet_with_flexible_columns(
+                excel_data, 'Work Order', cols, self.column_mappings['Work Order']
             )
             processed_data['work_order_data'] = work_order_df
         else:
@@ -81,11 +106,8 @@ class ExcelProcessor:
         # Process Bill Quantity sheet with column selection
         if 'Bill Quantity' in excel_data.sheet_names:
             cols = required_cols['Bill Quantity'] if required_cols_only else None
-            bill_qty_df = pd.read_excel(
-                excel_data, 
-                'Bill Quantity',
-                usecols=cols,
-                dtype={'Item No.': str}  # Optimize data types
+            bill_qty_df = self._read_sheet_with_flexible_columns(
+                excel_data, 'Bill Quantity', cols, self.column_mappings['Bill Quantity']
             )
             processed_data['bill_quantity_data'] = bill_qty_df
         else:
@@ -94,11 +116,8 @@ class ExcelProcessor:
         # Process Extra Items sheet (optional) with column selection
         if 'Extra Items' in excel_data.sheet_names:
             cols = required_cols['Extra Items'] if required_cols_only else None
-            extra_items_df = pd.read_excel(
-                excel_data, 
-                'Extra Items',
-                usecols=cols,
-                dtype={'Item No.': str}  # Optimize data types
+            extra_items_df = self._read_sheet_with_flexible_columns(
+                excel_data, 'Extra Items', cols, self.column_mappings['Extra Items']
             )
             processed_data['extra_items_data'] = extra_items_df
         else:
@@ -119,6 +138,105 @@ class ExcelProcessor:
         processed_data.update(filtered_data)
         
         return processed_data
+    
+    def _read_sheet_with_flexible_columns(self, excel_data, sheet_name, required_cols, column_mapping):
+        """
+        Read Excel sheet with flexible column handling to support different naming conventions
+        
+        Args:
+            excel_data: ExcelFile object
+            sheet_name: Name of the sheet to read
+            required_cols: List of required column names (expected names)
+            column_mapping: Dictionary mapping expected names to actual names
+            
+        Returns:
+            DataFrame with standardized column names
+        """
+        try:
+            # First, read the sheet to see what columns are available
+            df_sample = pd.read_excel(excel_data, sheet_name, nrows=1)
+            available_columns = list(df_sample.columns)
+            
+            # Special handling for Extra Items sheet which has irregular structure
+            if sheet_name == 'Extra Items':
+                # For Extra Items, we'll just read the whole sheet without column selection
+                df = pd.read_excel(excel_data, sheet_name)
+                return df  # Don't rename columns for Extra Items as it has a different structure
+            
+            # If we're not selecting specific columns, just read the whole sheet
+            if required_cols is None:
+                df = pd.read_excel(excel_data, sheet_name)
+                # Rename columns to standard names if needed
+                return self._standardize_column_names(df, column_mapping)
+            
+            # Otherwise, map required columns to actual column names
+            actual_cols = []
+            for expected_col in required_cols:
+                if expected_col in column_mapping:
+                    actual_col_name = column_mapping[expected_col]
+                    # Check if the actual column exists in the sheet
+                    if actual_col_name in available_columns:
+                        actual_cols.append(actual_col_name)
+                    else:
+                        # Try to find a column that might match (case-insensitive partial match)
+                        found = False
+                        for col in available_columns:
+                            if expected_col.lower() in col.lower() or col.lower() in expected_col.lower():
+                                actual_cols.append(col)
+                                found = True
+                                break
+                        if not found:
+                            # If we can't find it, we'll still try to read with the expected name
+                            # This will raise an error which we'll catch below
+                            actual_cols.append(expected_col)
+                else:
+                    actual_cols.append(expected_col)
+            
+            # Read the sheet with the mapped column names
+            df = pd.read_excel(excel_data, sheet_name, usecols=actual_cols)
+            
+            # Rename columns to standard names
+            return self._standardize_column_names(df, column_mapping)
+            
+        except ValueError as e:
+            # If there's an error with column selection, fall back to reading all columns
+            print(f"Warning: Column selection failed for sheet '{sheet_name}', reading all columns. Error: {e}")
+            df = pd.read_excel(excel_data, sheet_name)
+            # Don't rename columns for Extra Items as it has a different structure
+            if sheet_name == 'Extra Items':
+                return df
+            return self._standardize_column_names(df, column_mapping)
+    
+    def _standardize_column_names(self, df, column_mapping):
+        """
+        Standardize column names to expected format
+        
+        Args:
+            df: DataFrame with actual column names
+            column_mapping: Dictionary mapping expected names to actual names
+            
+        Returns:
+            DataFrame with standardized column names
+        """
+        # Create reverse mapping (actual -> expected)
+        reverse_mapping = {v: k for k, v in column_mapping.items()}
+        
+        # Rename columns
+        renamed_columns = {}
+        for col in df.columns:
+            if col in reverse_mapping:
+                renamed_columns[col] = reverse_mapping[col]
+            else:
+                # Keep the original name if no mapping exists
+                renamed_columns[col] = col
+        
+        df_renamed = df.rename(columns=renamed_columns)
+        
+        # Ensure Item No. column is treated as string
+        if 'Item No.' in df_renamed.columns:
+            df_renamed['Item No.'] = df_renamed['Item No.'].astype(str)
+        
+        return df_renamed
     
     def _process_title_sheet(self, df: pd.DataFrame) -> Dict[str, Any]:
         """
