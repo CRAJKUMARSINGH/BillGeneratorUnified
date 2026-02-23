@@ -38,6 +38,28 @@ def show_excel_mode(config):
         - Perfect templates
         """)
     
+    # Batch Run Button - Prominent at top
+    st.markdown("---")
+    batch_col1, batch_col2 = st.columns([3, 1])
+    with batch_col1:
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 1.5rem; 
+                    border-radius: 10px; 
+                    text-align: center;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);'>
+            <h3 style='color: white; margin: 0;'>⚡ Batch Processing Available</h3>
+            <p style='color: white; margin: 0.5rem 0 0 0; opacity: 0.9;'>
+                Process multiple Excel files at once in Batch Mode
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    with batch_col2:
+        if st.button("📦 Go to Batch Mode", type="secondary", use_container_width=True):
+            st.info("💡 Switch to 'Batch Processing' mode from the sidebar")
+    
+    st.markdown("---")
+    
     # File upload
     uploaded_file = st.file_uploader(
         "Upload Excel File",
@@ -48,19 +70,28 @@ def show_excel_mode(config):
     if uploaded_file:
         st.success(f"✅ File uploaded: {uploaded_file.name}")
         
-        # Options
-        col1, col2, col3 = st.columns(3)
+        # Options in a nice card
+        st.markdown("""
+        <div style='background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0;'>
+            <h4 style='margin: 0 0 0.5rem 0; color: #2d3436;'>📋 Output Options</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            generate_html = st.checkbox("📄 Generate HTML", value=True)
+            generate_html = st.checkbox("📄 HTML", value=True)
         with col2:
-            generate_pdf = st.checkbox("📕 Generate PDF", value=True)
+            generate_pdf = st.checkbox("📕 PDF", value=True)
         with col3:
-            generate_word = st.checkbox("📝 Generate Word (.docx)", value=False)
+            generate_word = st.checkbox("📝 DOCX", value=True)
+        with col4:
+            save_to_output = st.checkbox("💾 Save", value=True, 
+                                        help="Save to OUTPUT folder")
         
-        save_to_output = st.checkbox("💾 Save to OUTPUT folder", value=True, 
-                                    help="Uncheck to download directly to browser")
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        if st.button("🚀 Generate Documents", type="primary"):
+        # Generate button - large and prominent
+        if st.button("🚀 Generate All Documents", type="primary", use_container_width=True):
             # Clean cache before processing
             CacheCleaner.clean_cache(verbose=False)
             

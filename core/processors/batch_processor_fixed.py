@@ -19,41 +19,69 @@ def show_batch_mode(config):
     """Show batch processing interface with correct template flow"""
     st.markdown("## 📦 Batch Processing Mode")
     
-    st.info("Process multiple Excel files at once with proper templates and PDF generation")
+    # Prominent header
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                padding: 2rem; 
+                border-radius: 12px; 
+                text-align: center;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+                margin-bottom: 2rem;'>
+        <h2 style='color: white; margin: 0; font-size: 2rem;'>⚡ Batch Processing</h2>
+        <p style='color: white; margin: 0.5rem 0 0 0; opacity: 0.95; font-size: 1.1rem;'>
+            Process multiple Excel files simultaneously with high-speed generation
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    # File upload
+    # File upload with better styling
     uploaded_files = st.file_uploader(
-        "Upload Multiple Excel Files",
+        "📁 Upload Multiple Excel Files",
         type=['xlsx', 'xls', 'xlsm'],
         accept_multiple_files=True,
-        help="Upload multiple PWD bill Excel files"
+        help="Select multiple PWD bill Excel files for batch processing"
     )
     
     if uploaded_files:
-        st.success(f"✅ {len(uploaded_files)} files uploaded")
+        # Success message with file count
+        st.markdown(f"""
+        <div style='background: #d4edda; 
+                    padding: 1rem; 
+                    border-radius: 8px; 
+                    border-left: 4px solid #00b894;
+                    margin: 1rem 0;'>
+            <strong style='color: #155724;'>✅ {len(uploaded_files)} files ready for processing</strong>
+        </div>
+        """, unsafe_allow_html=True)
         
-        # Show file list
-        with st.expander("📂 Uploaded Files", expanded=False):
-            for file in uploaded_files:
-                st.text(f"  • {file.name}")
+        # Show file list in a nice card
+        with st.expander("📂 View Uploaded Files", expanded=False):
+            for idx, file in enumerate(uploaded_files, 1):
+                st.markdown(f"**{idx}.** {file.name}")
         
-        # Options
-        col1, col2, col3 = st.columns(3)
+        st.markdown("---")
+        
+        # Options in organized sections
+        st.markdown("### ⚙️ Processing Options")
+        
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            generate_html = st.checkbox("📄 Generate HTML", value=True)
+            generate_html = st.checkbox("📄 HTML", value=True)
         with col2:
-            generate_pdf = st.checkbox("📕 Generate PDF", value=True)
+            generate_pdf = st.checkbox("📕 PDF", value=True)
         with col3:
-            generate_word = st.checkbox("📝 Generate Word (.docx)", value=False)
-        
-        col4, col5 = st.columns(2)
+            generate_word = st.checkbox("📝 DOCX", value=True)
         with col4:
-            create_folders = st.checkbox("📁 Separate Folders", value=False)
-        with col5:
-            save_to_output = st.checkbox("💾 Save to OUTPUT", value=True,
-                                        help="Uncheck to download only")
+            create_folders = st.checkbox("📁 Folders", value=True, 
+                                        help="Create separate folder per file")
         
-        if st.button("🚀 Process All Files", type="primary"):
+        save_to_output = st.checkbox("💾 Save to OUTPUT folder", value=True,
+                                    help="Uncheck to download ZIP only")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Large prominent batch run button
+        if st.button("⚡ RUN BATCH PROCESSING", type="primary", use_container_width=True):
             # Clean cache before processing
             CacheCleaner.clean_cache(verbose=False)
             
