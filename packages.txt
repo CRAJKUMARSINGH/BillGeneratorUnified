@@ -1,4 +1,0 @@
-libmagic-dev
-libmagickwand-dev
-ghostscript
-poppler-utils

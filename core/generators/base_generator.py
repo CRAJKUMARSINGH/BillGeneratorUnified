@@ -52,7 +52,7 @@ class BaseGenerator:
         return f"{value:.2f}"
     
     def _number_to_words(self, num: int) -> str:
-        """Convert number to words (simplified version)"""
+        """Convert number to words using Indian numbering system (Lakh, Crore)"""
         ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
         teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
         tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
@@ -60,24 +60,108 @@ class BaseGenerator:
         if num == 0:
             return 'Zero'
         
-        if num < 10:
-            return ones[num]
-        elif num < 20:
-            return teens[num - 10]
-        elif num < 100:
-            return tens[num // 10] + ('' if num % 10 == 0 else ' ' + ones[num % 10])
-        elif num < 1000:
-            return ones[num // 100] + ' Hundred' + ('' if num % 100 == 0 else ' ' + self._number_to_words(num % 100))
-        elif num < 100000:
-            return self._number_to_words(num // 1000) + ' Thousand' + ('' if num % 1000 == 0 else ' ' + self._number_to_words(num % 1000))
-        else:
-            return str(num)  # For very large numbers, just return as string
+        def convert_below_hundred(n):
+            """Convert numbers below 100 to words"""
+            if n == 0:
+                return ''
+            elif n < 10:
+                return ones[n]
+            elif n < 20:
+                return teens[n - 10]
+            else:
+                return tens[n // 10] + ('' if n % 10 == 0 else ' ' + ones[n % 10])
+        
+        def convert_below_thousand(n):
+            """Convert numbers below 1000 to words"""
+            if n == 0:
+                return ''
+            elif n < 100:
+                return convert_below_hundred(n)
+            else:
+                hundred_part = ones[n // 100] + ' Hundred'
+                remainder = n % 100
+                if remainder == 0:
+                    return hundred_part
+                else:
+                    return hundred_part + ' ' + convert_below_hundred(remainder)
+        
+        # Handle Indian numbering system: Crore, Lakh, Thousand, Hundred
+        if num < 0:
+            return 'Minus ' + self._number_to_words(-num)
+        
+        result = []
+        
+        # Crores (10,000,000)
+        if num >= 10000000:
+            crore = num // 10000000
+            result.append(convert_below_thousand(crore) + ' Crore')
+            num = num % 10000000
+        
+        # Lakhs (100,000)
+        if num >= 100000:
+            lakh = num // 100000
+            result.append(convert_below_hundred(lakh) + ' Lakh')
+            num = num % 100000
+        
+        # Thousands (1,000)
+        if num >= 1000:
+            thousand = num // 1000
+            result.append(convert_below_hundred(thousand) + ' Thousand')
+            num = num % 1000
+        
+        # Hundreds and below
+        if num > 0:
+            result.append(convert_below_thousand(num))
+        
+        return ' '.join(result)
     
     def _has_extra_items(self) -> bool:
         """Check if there are extra items to include"""
         if isinstance(self.extra_items_data, pd.DataFrame):
             return not self.extra_items_data.empty
         return False
+    
+    def _calculate_delay_days(self) -> int:
+        """Calculate delay days between scheduled and actual completion dates"""
+        try:
+            from datetime import datetime
+            
+            # Get scheduled completion date
+            scheduled_str = self.title_data.get('St. date of completion :', '')
+            # Get actual completion date
+            actual_str = self.title_data.get('Date of actual completion of work :', '')
+            
+            if not scheduled_str or not actual_str:
+                return 0
+            
+            # Parse dates - try multiple formats
+            date_formats = ['%d/%m/%Y', '%Y-%m-%d', '%d-%m-%Y', '%m/%d/%Y']
+            
+            scheduled_date = None
+            actual_date = None
+            
+            for fmt in date_formats:
+                try:
+                    scheduled_date = datetime.strptime(str(scheduled_str).strip(), fmt)
+                    break
+                except:
+                    continue
+            
+            for fmt in date_formats:
+                try:
+                    actual_date = datetime.strptime(str(actual_str).strip(), fmt)
+                    break
+                except:
+                    continue
+            
+            if scheduled_date and actual_date:
+                delay = (actual_date - scheduled_date).days
+                return max(0, delay)  # Return 0 if completed early
+            
+            return 0
+        except Exception as e:
+            print(f"Error calculating delay days: {e}")
+            return 0
     
     def get_template(self, template_name: str):
         """Cache loaded templates"""

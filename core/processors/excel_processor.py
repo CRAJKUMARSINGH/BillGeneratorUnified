@@ -49,6 +49,15 @@ class ExcelProcessor:
         Returns:
             Dictionary containing processed data
         """
+        # Store filename for reference
+        filename = None
+        if hasattr(file, 'name'):
+            filename = file.name
+        elif isinstance(file, (str, type(None))):
+            filename = str(file) if file else None
+        else:
+            filename = "uploaded_file.xlsx"
+        
         # Read Excel file
         if hasattr(file, 'read'):
             # It's a file-like object (BytesIO or file object)
@@ -72,16 +81,17 @@ class ExcelProcessor:
         else:
             # It's a file path
             # Determine engine based on file extension
-            if str(file).endswith('.xlsx'):
+            file_str = str(file).lower()
+            if file_str.endswith('.xlsx') or file_str.endswith('.xlsm'):
                 excel_data = pd.ExcelFile(file, engine='openpyxl')
             else:
                 excel_data = pd.ExcelFile(file, engine='xlrd')
         
         # Define required columns per sheet for optimization
         required_cols = {
-            'Work Order': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate'],
-            'Bill Quantity': ['Item No.', 'Description', 'Quantity', 'Rate'],
-            'Extra Items': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate'],
+            'Work Order': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate', 'Amount', 'BSR'],
+            'Bill Quantity': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate', 'Amount', 'BSR'],
+            'Extra Items': ['Item No.', 'Description', 'Unit', 'Quantity', 'Rate', 'Amount', 'BSR'],
         }
         
         processed_data = {}
@@ -136,6 +146,9 @@ class ExcelProcessor:
             bill_quantity_data=processed_data['bill_quantity_data']
         )
         processed_data.update(filtered_data)
+        
+        # Add source filename for reference
+        processed_data['source_filename'] = filename
         
         return processed_data
     
@@ -248,6 +261,20 @@ class ExcelProcessor:
         """
         title_data = {}
         
+        # Date field keys that should be formatted
+        date_fields = [
+            'Date of written order to commence work :',
+            'Date of written order to commence work',
+            'St. date of Start :',
+            'St. date of Start',
+            'St. date of completion :',
+            'St. date of completion',
+            'Date of actual completion of work :',
+            'Date of actual completion of work',
+            'Date of measurement :',
+            'Date of measurement',
+        ]
+        
         # Process all rows but specifically track first 20 for validation
         first_20_rows = {}
         
@@ -257,6 +284,25 @@ class ExcelProcessor:
                 value = row[1] if pd.notna(row[1]) else None
                 
                 if key and key != 'nan':
+                    # Format date fields to remove timestamp
+                    if key in date_fields and value is not None:
+                        if isinstance(value, pd.Timestamp):
+                            value = value.strftime('%d/%m/%Y')
+                        elif hasattr(value, 'strftime'):
+                            value = value.strftime('%d/%m/%Y')
+                        else:
+                            # Try to parse as string if it contains timestamp
+                            value_str = str(value)
+                            if ' ' in value_str and ':' in value_str:
+                                # Has timestamp, extract date part only
+                                try:
+                                    from datetime import datetime
+                                    dt = pd.to_datetime(value_str)
+                                    value = dt.strftime('%d/%m/%Y')
+                                except:
+                                    # Keep original if parsing fails
+                                    pass
+                    
                     title_data[key] = value
                     
                     # Track first 20 rows for validation purposes

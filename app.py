@@ -2,6 +2,7 @@
 """
 BillGenerator Unified - Enhanced Version
 Includes best features from all 5 apps
+With automatic cache cleaning and centralized output management
 """
 import os
 import sys
@@ -11,6 +12,13 @@ import shutil
 
 # Add core to path
 sys.path.insert(0, str(Path(__file__).parent))
+
+# Import utilities
+from core.utils.cache_cleaner import CacheCleaner
+from core.utils.output_manager import get_output_manager
+
+# Clean cache on startup
+CacheCleaner.clean_cache(verbose=False)
 
 # Load configuration
 from core.config.config_loader import ConfigLoader
@@ -299,89 +307,33 @@ with st.sidebar:
     # Cache cleaning feature
     st.markdown("### 🧹 Maintenance")
     
-    # Function to clean cache directories
-    def clean_cache():
-        # Define cache directories to clean
-        cache_dirs = [
-            "__pycache__",
-            ".pytest_cache",
-            ".mypy_cache",
-            "output",  # Output directory from batch processing
-        ]
-        
-        # Define additional patterns to clean
-        additional_patterns = [
-            "**/__pycache__",  # Recursive py cache directories
-            "**/*.pyc",        # Python compiled files
-            "**/*.pyo",        # Optimized Python files
-            "**/*.pyd",        # Python DLL files
-            "**/*.pyz",        # Python zip files
-            "**/*.pyx",        # Cython files
-            "**/*.so",         # Shared libraries
-            "**/*.dll",        # Windows DLL files
-            "**/*.dylib"       # macOS dynamic libraries
-        ]
-        
-        cleaned_dirs = []
-        cleaned_files = 0
-        
-        # Clean cache directories
-        for cache_dir in cache_dirs:
-            cache_path = Path(cache_dir)
-            if cache_path.exists():
-                try:
-                    if cache_path.is_dir():
-                        shutil.rmtree(cache_dir)
-                    else:
-                        cache_path.unlink()
-                    cleaned_dirs.append(cache_dir)
-                except Exception as e:
-                    st.warning(f"Could not clean {cache_dir}: {str(e)}")
-        
-        # Clean additional patterns
-        for pattern in additional_patterns:
-            try:
-                for file_path in Path(".").glob(pattern):
-                    if file_path.is_file():
-                        file_path.unlink()
-                        cleaned_files += 1
-                    elif file_path.is_dir():
-                        shutil.rmtree(file_path)
-                        cleaned_dirs.append(str(file_path))
-            except Exception as e:
-                st.warning(f"Could not clean pattern {pattern}: {str(e)}")
-        
-        # Also clean any temporary files
-        temp_patterns = ["*.tmp", "*.temp", "temp_*"]
-        for pattern in temp_patterns:
-            for temp_file in Path(".").glob(pattern):
-                try:
-                    if temp_file.is_dir():
-                        shutil.rmtree(temp_file)
-                    else:
-                        temp_file.unlink()
-                    cleaned_files += 1
-                except Exception as e:
-                    st.warning(f"Could not clean {temp_file}: {str(e)}")
-        
-        return cleaned_dirs, cleaned_files
+    # Get output manager
+    output_mgr = get_output_manager()
+    output_size = output_mgr.get_folder_size()
+    output_files = len(output_mgr.get_all_files())
+    
+    if output_size > 0:
+        st.info(f"📦 OUTPUT folder: {output_files} files ({output_mgr.format_size(output_size)})")
     
     # Button to clean cache
     if st.button("🧹 Clean Cache & Temp Files"):
         with st.spinner("Cleaning cache and temporary files..."):
-            cleaned_dirs, cleaned_files = clean_cache()
+            cleaned_dirs, cleaned_files = CacheCleaner.clean_cache(verbose=False)
             if cleaned_dirs or cleaned_files > 0:
-                success_message = ""
-                if cleaned_dirs:
-                    success_message += f"✅ Cleaned cache directories: {', '.join(cleaned_dirs)}\n"
-                if cleaned_files > 0:
-                    success_message += f"✅ Cleaned {cleaned_files} additional files"
+                success_message = f"✅ Cleaned {cleaned_dirs} directories, {cleaned_files} files"
                 st.success(success_message)
             else:
-                st.info("ℹ️ No cache directories or files found to clean")
+                st.info("ℹ️ No cache files found to clean")
         st.info("💡 Cache has been cleaned. Next run will start with a fresh state.")
-        # Reset the cache cleaned flag so it can run again on next startup
-        st.session_state.cache_cleaned = False
+    
+    # Button to clean old output files
+    if st.button("🗑️ Clean Old Output Files"):
+        with st.spinner("Cleaning old output files..."):
+            files_deleted, space_freed = output_mgr.clean_old_files(keep_latest=10)
+            if files_deleted > 0:
+                st.success(f"✅ Deleted {files_deleted} old files ({output_mgr.format_size(space_freed)} freed)")
+            else:
+                st.info("ℹ️ No old files to clean")
     
     st.markdown("---")
     
@@ -419,16 +371,27 @@ with st.sidebar:
 
 # Main content
 if "📊 Excel Upload" in selected_mode:
-    from core.ui.excel_mode import show_excel_mode
-    show_excel_mode(config)
+    # Use fixed Excel mode with correct template flow
+    try:
+        from core.ui.excel_mode_fixed import show_excel_mode
+        show_excel_mode(config)
+    except ImportError:
+        st.error("❌ Excel mode not available. Please check installation.")
 
 elif "💻 Online Entry" in selected_mode:
-    from core.ui.online_mode import show_online_mode
-    show_online_mode(config)
+    try:
+        from core.ui.online_mode import show_online_mode
+        show_online_mode(config)
+    except ImportError:
+        st.info("💻 Online entry mode coming soon!")
 
 elif "📦 Batch Processing" in selected_mode:
-    from core.processors.batch_processor import show_batch_mode
-    show_batch_mode(config)
+    # Use fixed batch processor with correct template flow
+    try:
+        from core.processors.batch_processor_fixed import show_batch_mode
+        show_batch_mode(config)
+    except ImportError:
+        st.error("❌ Batch processing not available. Please check installation.")
 
 elif "📥 Download Center" in selected_mode:
     from core.utils.download_manager import EnhancedDownloadManager

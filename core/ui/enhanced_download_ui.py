@@ -7,9 +7,15 @@ import streamlit as st
 from typing import Callable, Optional
 import io
 from core.utils.download_manager import EnhancedDownloadManager, DownloadCategory, FileType
-from core.utils.enhanced_zip_processor import EnhancedZipProcessor, ZipConfig, create_zip_from_dict
 
-
+# Defensive import for ZIP processor to avoid circular import issues
+try:
+    from core.utils.enhanced_zip_processor import EnhancedZipProcessor, ZipConfig, create_zip_from_dict
+except ImportError:
+    # Fallback import structure
+    EnhancedZipProcessor = None
+    ZipConfig = None
+    create_zip_from_dict = None
 class EnhancedDownloadUI:
     """Enhanced UI for downloading files with better organization and user experience"""
     
@@ -85,6 +91,21 @@ class EnhancedDownloadUI:
         """Render ZIP download options"""
         st.markdown("#### 📦 Create Custom ZIP Archives")
         
+        # Display any pending download buttons from session state
+        zip_keys = [key for key in st.session_state.keys() if key.startswith(("enhanced_zip_data_", "categorized_zip_data_"))]
+        if zip_keys:
+            st.markdown("#### 📥 Available ZIP Downloads")
+            for key in zip_keys:
+                zip_info = st.session_state[key]
+                st.download_button(
+                    label=zip_info["label"],
+                    data=zip_info["data"],
+                    file_name=zip_info["filename"],
+                    mime=zip_info["mime"],
+                    key=key
+                )
+            st.markdown("---")
+        
         # ZIP configuration options
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -159,6 +180,11 @@ class EnhancedDownloadUI:
                                preserve_structure: bool = True,
                                integrity_check: bool = True):
         """Create and download a ZIP file"""
+        # Check if required imports are available
+        if EnhancedZipProcessor is None or ZipConfig is None:
+            st.error("ZIP processing is not available. Please check your installation.")
+            return
+            
         try:
             # Filter items if specific file type requested
             items = self.download_manager.get_all_items()
@@ -214,22 +240,30 @@ class EnhancedDownloadUI:
             with st.expander("ZIP Creation Metrics", expanded=False):
                 st.json(metrics)
                 
-            # Download button
-            st.download_button(
-                label=f"📥 Download {filename}",
-                data=zip_buffer,
-                file_name=filename,
-                mime="application/zip",
-                key=f"zip_download_{filename}"
-            )
+            # Store ZIP data in session state for download
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            zip_key = f"enhanced_zip_data_{filename}_{timestamp}"
             
-            st.success(f"✅ ZIP file '{filename}' created successfully!")
+            st.session_state[zip_key] = {
+                "data": zip_buffer,
+                "filename": filename,
+                "label": f"📥 Download {filename}",
+                "mime": "application/zip"
+            }
+            
+            st.success(f"✅ ZIP file '{filename}' created successfully! Click the download button below.")
             
         except Exception as e:
             st.error(f"Error creating ZIP: {str(e)}")
             
     def _create_categorized_zip(self, filename: str, compression_level: int = 6):
         """Create a ZIP with files organized by category"""
+        # Check if required imports are available
+        if create_zip_from_dict is None or ZipConfig is None:
+            st.error("ZIP processing is not available. Please check your installation.")
+            return
+            
         try:
             categorized_items = self.download_manager.get_items_by_category()
             
@@ -255,16 +289,19 @@ class EnhancedDownloadUI:
             # Create ZIP
             zip_buffer, metrics = create_zip_from_dict(data_dict, config)
             
-            # Download button
-            st.download_button(
-                label=f"📥 Download {filename}",
-                data=zip_buffer,
-                file_name=filename,
-                mime="application/zip",
-                key=f"categorized_zip_download_{filename}"
-            )
+            # Store ZIP data in session state for download
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            zip_key = f"categorized_zip_data_{filename}_{timestamp}"
             
-            st.success(f"✅ Categorized ZIP file '{filename}' created successfully!")
+            st.session_state[zip_key] = {
+                "data": zip_buffer,
+                "filename": filename,
+                "label": f"📥 Download {filename}",
+                "mime": "application/zip"
+            }
+            
+            st.success(f"✅ Categorized ZIP file '{filename}' created successfully! Click the download button below.")
             
         except Exception as e:
             st.error(f"Error creating categorized ZIP: {str(e)}")

@@ -120,12 +120,14 @@ class Processing:
         self.enable_caching = processing_dict.get('enable_caching', True)
         self.pdf_engine = processing_dict.get('pdf_engine', 'reportlab')
         self.auto_clean_cache = processing_dict.get('auto_clean_cache', False)
+        self.enable_macro_sheets = processing_dict.get('enable_macro_sheets', True)  # NEW: Enable macro sheets by default
         
         # Override with environment variables if available
         self.max_file_size_mb = int(os.getenv('PROCESSING_MAX_FILE_SIZE_MB', self.max_file_size_mb))
         self.enable_caching = self._get_bool_env('PROCESSING_ENABLE_CACHING', self.enable_caching)
         self.pdf_engine = os.getenv('PROCESSING_PDF_ENGINE', self.pdf_engine)
         self.auto_clean_cache = self._get_bool_env('PROCESSING_AUTO_CLEAN_CACHE', self.auto_clean_cache)
+        self.enable_macro_sheets = self._get_bool_env('PROCESSING_ENABLE_MACRO_SHEETS', self.enable_macro_sheets)  # NEW
     
     def _get_bool_env(self, key: str, default: bool) -> bool:
         """Get boolean value from environment variable"""
@@ -187,7 +189,8 @@ class ConfigLoader:
                 'max_file_size_mb': 50,
                 'enable_caching': True,
                 'pdf_engine': 'reportlab',
-                'auto_clean_cache': False
+                'auto_clean_cache': False,
+                'enable_macro_sheets': True  # NEW: Enable macro sheets by default
             }
         }
         return Config(default_config)

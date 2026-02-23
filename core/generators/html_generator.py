@@ -83,80 +83,208 @@ class HTMLGenerator(BaseGenerator):
         work_items = []
         total_amount = 0
         
-        # Process work order data
-        for index, row in self.work_order_data.iterrows():
-            quantity_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
-            rate = self._safe_float(row.get('Rate', 0))
-            amount = quantity_since * rate
-            total_amount += amount
-            
-            work_items.append({
-                'unit': row.get('Unit', ''),
-                'quantity_since': quantity_since,
-                'quantity_upto': self._safe_float(row.get('Quantity Upto', quantity_since)),
-                'item_no': self._safe_serial_no(row.get('Item No.', row.get('Item', ''))),
-                'description': row.get('Description', ''),
-                'rate': rate,
-                'amount_upto': amount,
-                'amount_since': amount,
-                'remark': row.get('Remark', ''),
-                'children': []  # Initialize children for hierarchy
-            })
+        # IMPORTANT: First Page uses Bill Quantity data, NOT Work Order data
+        # Process bill quantity data - check if it's a valid DataFrame
+        if isinstance(self.bill_quantity_data, pd.DataFrame) and not self.bill_quantity_data.empty:
+            for index, row in self.bill_quantity_data.iterrows():
+                quantity_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
+                rate = self._safe_float(row.get('Rate', 0))
+                amount = quantity_since * rate
+                total_amount += amount
+                
+                # Use BSR column as remark (there's no separate Remark column)
+                bsr = row.get('BSR', '')
+                
+                # If BSR is not blank, use it as remark (without prefix)
+                if pd.notna(bsr) and str(bsr).strip():
+                    combined_remark = str(bsr).strip()
+                else:
+                    combined_remark = ''
+                
+                work_items.append({
+                    'unit': row.get('Unit', ''),
+                    'quantity_since': quantity_since,
+                    'quantity_upto': self._safe_float(row.get('Quantity Upto', quantity_since)),
+                    'item_no': self._safe_serial_no(row.get('Item No.', row.get('Item', ''))),
+                    'description': row.get('Description', ''),
+                    'rate': rate,
+                    'amount_upto': amount,
+                    'amount_since': amount,
+                    'remark': combined_remark,
+                    'children': []  # Initialize children for hierarchy
+                })
+        elif isinstance(self.work_order_data, pd.DataFrame) and not self.work_order_data.empty:
+            # Fallback to work order data if bill quantity data is not available
+            for index, row in self.work_order_data.iterrows():
+                quantity_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
+                rate = self._safe_float(row.get('Rate', 0))
+                amount = quantity_since * rate
+                total_amount += amount
+                
+                # Use BSR column as remark (if available in work order)
+                bsr = row.get('BSR', '')
+                
+                # If BSR is not blank, use it as remark (without prefix)
+                if pd.notna(bsr) and str(bsr).strip():
+                    combined_remark = str(bsr).strip()
+                else:
+                    combined_remark = ''
+                
+                work_items.append({
+                    'unit': row.get('Unit', ''),
+                    'quantity_since': quantity_since,
+                    'quantity_upto': self._safe_float(row.get('Quantity Upto', quantity_since)),
+                    'item_no': self._safe_serial_no(row.get('Item No.', row.get('Item', ''))),
+                    'description': row.get('Description', ''),
+                    'rate': rate,
+                    'amount_upto': amount,
+                    'amount_since': amount,
+                    'remark': combined_remark,
+                    'children': []  # Initialize children for hierarchy
+                })
         
         # Process extra items
         extra_items = []
         extra_total = 0
+        extra_grand_total = 0  # This will include premium
+        extra_premium = 0  # Initialize
         
         if isinstance(self.extra_items_data, pd.DataFrame) and not self.extra_items_data.empty:
+            # Extra Items sheet has irregular structure
+            # Structure: Row 5 = headers (S.No., Particulars, Qty., unit, Rate, Amount)
+            # Rows 6-11 = actual items (E-01, E-02, etc.)
+            # Row 12 = Total, Row 13 = Add Tender Premium, Row 14 = Grand Total
+            
+            # Parse individual extra item rows
+            # Start from row index 5 (after header row at index 4)
             for index, row in self.extra_items_data.iterrows():
-                quantity = self._safe_float(row.get('Quantity', 0))
-                rate = self._safe_float(row.get('Rate', 0))
-                amount = quantity * rate
-                extra_total += amount
+                if index < 5:  # Skip header rows
+                    continue
                 
-                extra_items.append({
-                    'unit': row.get('Unit', ''),
-                    'quantity': quantity,
-                    'item_no': self._safe_serial_no(row.get('Item No.', row.get('Item', ''))),
-                    'description': row.get('Description', ''),
-                    'rate': rate,
-                    'amount': amount,
-                    'remark': row.get('Remark', ''),
-                    'children': []  # Initialize children for hierarchy
-                })
+                # Get item number from column 0 (Unnamed: 0)
+                item_no = str(row.iloc[0]) if pd.notna(row.iloc[0]) else ''
+                
+                # Stop when we reach Total/Grand Total rows (item_no will be NaN or empty)
+                if not item_no or item_no == 'nan' or 'total' in item_no.lower():
+                    break
+                
+                # Check if this is an actual extra item (E-01, E-02, etc.)
+                if item_no.startswith('E-') or item_no.startswith('e-'):
+                    # Column 1 (Unnamed: 1): BSR Reference
+                    bsr = str(row.iloc[1]) if len(row) > 1 and pd.notna(row.iloc[1]) else ''
+                    
+                    # Column 2 (Unnamed: 2): Description
+                    description = str(row.iloc[2]) if pd.notna(row.iloc[2]) else ''
+                    
+                    # Column 3 (EXTRA ITEM SLIP): Quantity
+                    quantity = self._safe_float(row.iloc[3] if len(row) > 3 else 0)
+                    
+                    # Column 4 (Unnamed: 4): Unit
+                    unit = str(row.iloc[4]) if len(row) > 4 and pd.notna(row.iloc[4]) else ''
+                    
+                    # Column 5 (Unnamed: 5): Rate
+                    rate = self._safe_float(row.iloc[5] if len(row) > 5 else 0)
+                    
+                    # Column 6 (Unnamed: 6): Amount
+                    amount = self._safe_float(row.iloc[6] if len(row) > 6 else 0)
+                    
+                    # Column 7 (Unnamed: 7): Remarks (if exists, otherwise use BSR)
+                    remark_col = str(row.iloc[7]) if len(row) > 7 and pd.notna(row.iloc[7]) else ''
+                    
+                    # Use BSR if remark is empty, otherwise use remark
+                    if remark_col.strip():
+                        remark = remark_col.strip()
+                    elif bsr.strip():
+                        remark = bsr.strip()
+                    else:
+                        remark = ''
+                    
+                    # Add to extra items list
+                    extra_items.append({
+                        'unit': unit,
+                        'quantity': quantity,
+                        'item_no': item_no,
+                        'description': description,
+                        'rate': rate,
+                        'amount': amount,
+                        'remark': remark,
+                        'children': []  # Initialize children for hierarchy
+                    })
+                    
+                    extra_total += amount
+            
+            # Now find Grand Total from the sheet for verification
+            for index, row in self.extra_items_data.iterrows():
+                row_text = ' '.join([str(v) for v in row.values if pd.notna(v)]).strip()
+                if 'Grand Total' in row_text or 'grand total' in row_text.lower():
+                    # Found Grand Total row - extract the amount from column 6
+                    if len(row) > 6 and pd.notna(row.iloc[6]):
+                        extra_grand_total = float(row.iloc[6])
+                    break
+            
+            # Calculate premium (difference between grand total and total)
+            if extra_grand_total > 0 and extra_total > 0:
+                extra_premium = extra_grand_total - extra_total
+            else:
+                # Fallback: calculate premium from title data
+                tender_premium_percent = self._safe_float(self.title_data.get('TENDER PREMIUM %', 0))
+                extra_premium = extra_total * (tender_premium_percent / 100)
+                extra_grand_total = extra_total + extra_premium
         
-        # Apply hierarchical filtering to remove zero quantity items
-        work_items_filtered = self.filter_zero_hierarchy(work_items)
-        extra_items_filtered = self.filter_zero_hierarchy(extra_items)
+        # CRITICAL FIX: Do NOT filter items here - filtering removes parent items
+        # The template will handle display logic based on quantities
+        # Hierarchical structure is maintained in the Excel data itself (NaN item numbers for sub-items)
+        work_items_filtered = work_items  # No filtering
+        extra_items_filtered = extra_items  # No filtering
         
-        # Calculate premiums
+        # Calculate premiums for work order items
         tender_premium_percent = self._safe_float(self.title_data.get('TENDER PREMIUM %', 0))
+        premium_type = str(self.title_data.get('Premium Type', 'Above')).strip().lower()
+        
         premium_amount = total_amount * (tender_premium_percent / 100)
-        grand_total = total_amount + premium_amount
         
-        extra_premium = extra_total * (tender_premium_percent / 100)
-        extra_grand_total = extra_total + extra_premium
+        # IMPORTANT: grand_total is sum of items WITHOUT premium
+        # Premium is added separately to get payable_amount
+        grand_total = total_amount
         
-        # Calculate deductions and final amounts
+        # Apply premium based on type: Above = add, Below = subtract
+        if premium_type == 'below':
+            payable_amount = grand_total - premium_amount
+            premium_amount = -premium_amount  # Make it negative for display
+        else:  # Default to 'above'
+            payable_amount = grand_total + premium_amount
+        
+        # IMPORTANT: Add extra items to get the total bill amount
+        # This is what should appear in First Page, Deviation, and Certificate III
+        total_bill_amount = payable_amount + extra_grand_total
+        
+        # Calculate deductions and final amounts (based on total including extra items)
         liquidated_damages = self._safe_float(self.title_data.get('Liquidated Damages', 0))
-        sd_amount = grand_total * 0.10  # Security Deposit 10%
-        it_amount = grand_total * 0.02  # Income Tax 2%
-        gst_amount = grand_total * 0.02  # GST 2%
-        lc_amount = grand_total * 0.01  # Labour Cess 1%
+        sd_amount = total_bill_amount * 0.10  # Security Deposit 10%
+        it_amount = total_bill_amount * 0.02  # Income Tax 2%
+        gst_amount = total_bill_amount * 0.02  # GST 2%
+        
+        # IMPORTANT: GST must always be even number - round up if odd
+        gst_amount_rounded = round(gst_amount)
+        if gst_amount_rounded % 2 != 0:  # If odd, add 1 to make it even
+            gst_amount_rounded += 1
+        gst_amount = float(gst_amount_rounded)
+        
+        lc_amount = total_bill_amount * 0.01  # Labour Cess 1%
         total_deductions = sd_amount + it_amount + gst_amount + lc_amount + liquidated_damages
         
         # Get last bill amount
         last_bill_amount = self._safe_float(self.title_data.get('Amount Paid Vide Last Bill', 
                                                                  self.title_data.get('amount_paid_last_bill', 0)))
-        net_payable = grand_total - last_bill_amount
+        net_payable = total_bill_amount - last_bill_amount
         
         # Calculate totals data structure
         totals = {
-            'grand_total': grand_total,
+            'grand_total': grand_total,  # Sum of items WITHOUT premium
             'work_order_amount': total_amount,
             'tender_premium_percent': tender_premium_percent / 100,
             'tender_premium_amount': premium_amount,
-            'final_total': grand_total,
+            'final_total': payable_amount,
             'extra_items_sum': extra_grand_total,
             'sd_amount': sd_amount,
             'it_amount': it_amount,
@@ -166,7 +294,7 @@ class HTMLGenerator(BaseGenerator):
             'total_deductions': total_deductions,
             'last_bill_amount': last_bill_amount,
             'net_payable': net_payable,
-            'payable': grand_total,  # For compatibility
+            'payable': payable_amount,  # Grand Total + Premium
             'excess_amount': 0,  # Will be calculated from deviation data
             'excess_premium': 0,
             'excess_total': 0,
@@ -177,13 +305,13 @@ class HTMLGenerator(BaseGenerator):
             'premium': {
                 'percent': tender_premium_percent / 100 if tender_premium_percent > 0 else 0,
                 'amount': premium_amount
-            },
-            'payable': grand_total,
-            'liquidated_damages': self._safe_float(self.title_data.get('Liquidated Damages', 0))
+            }
         }
         
         # Prepare items data structure for templates (using filtered items)
         items = []
+        extra_items_only = []  # Separate list for Extra Items template
+        
         for item in work_items_filtered:
             # Skip rows with all zeros (empty rows)
             qty_since = item.get('quantity_since', 0) or 0
@@ -193,8 +321,12 @@ class HTMLGenerator(BaseGenerator):
             amount_since = item.get('amount_since', 0) or 0
             description = str(item.get('description', '')).strip()
             
-            # Only add if there's actual data (non-zero values or description)
-            if qty_since != 0 or qty_upto != 0 or rate != 0 or amount_upto != 0 or amount_since != 0 or description:
+            # CRITICAL: Only add if quantity is non-zero OR it's a parent item (has description but no rate)
+            # This filters out zero-quantity items while keeping parent/header items
+            is_parent_item = (rate == 0 and description != '')
+            has_quantity = (qty_since != 0 or qty_upto != 0)
+            
+            if has_quantity or is_parent_item:
                 items.append({
                     'unit': item['unit'],
                     'quantity_since_last': qty_since,
@@ -207,6 +339,23 @@ class HTMLGenerator(BaseGenerator):
                     'remark': item['remark']
                 })
         
+        # Add separator row before extra items if there are any
+        if extra_items_filtered:
+            items.append({
+                'unit': '',
+                'quantity_since_last': 0,
+                'quantity_upto_date': 0,
+                'serial_no': '',
+                'description': 'EXTRA ITEM/S',
+                'rate': 0,
+                'amount': 0,
+                'amount_previous': 0,
+                'remark': '',
+                'is_separator': True,  # Flag to identify separator row
+                'bold': True,
+                'underline': True
+            })
+        
         # Add filtered extra items to the items list
         for item in extra_items_filtered:
             qty = item.get('quantity', 0) or 0
@@ -214,9 +363,10 @@ class HTMLGenerator(BaseGenerator):
             amount = item.get('amount', 0) or 0
             description = str(item.get('description', '')).strip()
             
-            # Only add if there's actual data
-            if qty != 0 or rate != 0 or amount != 0 or description:
-                items.append({
+            # CRITICAL: Only add if quantity is non-zero
+            # Extra items with zero quantity should not appear
+            if qty != 0:
+                extra_item_data = {
                     'unit': item['unit'],
                     'quantity_since_last': qty,
                     'quantity_upto_date': qty,
@@ -226,44 +376,167 @@ class HTMLGenerator(BaseGenerator):
                     'amount': amount,
                     'amount_previous': amount,
                     'remark': item['remark']
+                }
+                items.append(extra_item_data)
+                extra_items_only.append(extra_item_data)  # Add to extra items only list
+        
+        # Prepare deviation data (DO NOT use filtered items - show ALL items with non-zero bill qty)
+        deviation_items = []
+        
+        # IMPORTANT: Deviation compares Work Order quantities vs Bill Quantity quantities
+        # Use Bill Quantity data for actual executed quantities
+        if isinstance(self.bill_quantity_data, pd.DataFrame) and not self.bill_quantity_data.empty:
+            # Process bill quantity data for deviation - match row by row with work order
+            for index, row in self.bill_quantity_data.iterrows():
+                item_no = str(row.get('Item No.', row.get('Item', '')))
+                qty_bill = self._safe_float(row.get('Quantity', 0))
+                rate = self._safe_float(row.get('Rate', 0))
+                description = str(row.get('Description', '')).strip()
+                
+                # CRITICAL: Skip summary rows (Total, Add Tender Premium, Grand Total)
+                description_lower = description.lower()
+                is_summary_row = (
+                    description_lower == 'total' or
+                    'premium' in description_lower or
+                    'grand total' in description_lower
+                )
+                
+                if is_summary_row:
+                    continue  # Skip this row
+                
+                # Get corresponding Work Order quantity by matching row index
+                qty_wo = 0.0
+                if isinstance(self.work_order_data, pd.DataFrame) and not self.work_order_data.empty:
+                    if index < len(self.work_order_data):
+                        wo_row = self.work_order_data.iloc[index]
+                        qty_wo = self._safe_float(wo_row.get('Quantity', 0))
+                
+                # CRITICAL FIX: Include item if:
+                # 1. It has non-zero bill quantity OR non-zero work order quantity
+                # 2. OR it's a parent item (rate=0 but has description) - needed for hierarchical structure
+                is_parent_item = (rate == 0 and description != '')
+                has_quantity = (qty_bill > 0 or qty_wo > 0)
+                
+                if has_quantity or is_parent_item:
+                    amt_wo = qty_wo * rate
+                    amt_bill = qty_bill * rate
+                    
+                    # Deviation remarks are for excess/saving reasons, not BSR
+                    # BSR is only for First Page
+                    remark = ''
+                    
+                    deviation_items.append({
+                        'serial_no': self._safe_serial_no(row.get('Item No.', row.get('Item', ''))),
+                        'description': description,
+                        'unit': row.get('Unit', ''),
+                        'qty_wo': qty_wo,
+                        'rate': rate,
+                        'amt_wo': amt_wo,
+                        'qty_bill': qty_bill,
+                        'amt_bill': amt_bill,
+                        'excess_qty': max(0, qty_bill - qty_wo),
+                        'excess_amt': max(0, amt_bill - amt_wo),
+                        'saving_qty': max(0, qty_wo - qty_bill),
+                        'saving_amt': max(0, amt_wo - amt_bill),
+                        'remark': remark
+                    })
+        
+        # Add separator row before extra items in deviation if there are any
+        if extra_items_filtered:
+            deviation_items.append({
+                'serial_no': '',
+                'description': 'EXTRA ITEM/S',
+                'unit': '',
+                'qty_wo': 0,
+                'rate': 0,
+                'amt_wo': 0,
+                'qty_bill': 0,
+                'amt_bill': 0,
+                'excess_qty': 0,
+                'excess_amt': 0,
+                'saving_qty': 0,
+                'saving_amt': 0,
+                'remark': '',
+                'is_separator': True,
+                'bold': True,
+                'underline': True
+            })
+        
+        # Add extra items to deviation (they have qty_wo=0 since they're not in work order)
+        for item in extra_items_filtered:
+            qty = item.get('quantity', 0) or 0
+            rate = item.get('rate', 0) or 0
+            amount = item.get('amount', 0) or 0
+            description = str(item.get('description', '')).strip()
+            
+            # Only add if there's actual data
+            if qty != 0 or rate != 0 or amount != 0 or description:
+                deviation_items.append({
+                    'serial_no': item['item_no'],
+                    'description': description,
+                    'unit': item['unit'],
+                    'qty_wo': 0,  # Not in work order
+                    'rate': rate,
+                    'amt_wo': 0,  # Not in work order
+                    'qty_bill': qty,
+                    'amt_bill': amount,
+                    'excess_qty': qty,  # All quantity is excess since not in WO
+                    'excess_amt': amount,  # All amount is excess since not in WO
+                    'saving_qty': 0,
+                    'saving_amt': 0,
+                    'remark': ''  # Extra items remarks should be blank
                 })
         
-        # Prepare deviation data (using filtered items)
-        deviation_items = []
-        for item in work_items_filtered:
-            deviation_items.append({
-                'serial_no': item['item_no'],
-                'description': item['description'],
-                'unit': item['unit'],
-                'qty_wo': item['quantity_since'],
-                'rate': item['rate'],
-                'amt_wo': item['amount_since'],
-                'qty_bill': item['quantity_upto'],
-                'amt_bill': item['amount_upto'],
-                'excess_qty': max(0, item['quantity_upto'] - item['quantity_since']),
-                'excess_amt': max(0, item['amount_upto'] - item['amount_since']),
-                'saving_qty': max(0, item['quantity_since'] - item['quantity_upto']),
-                'saving_amt': max(0, item['amount_since'] - item['amount_upto']),
-                'remark': item['remark']
-            })
+        # Calculate deviation totals from deviation_items
+        total_wo_amt = sum(item['amt_wo'] for item in deviation_items if not item.get('is_separator'))
+        total_bill_amt = sum(item['amt_bill'] for item in deviation_items if not item.get('is_separator'))
+        total_excess_amt = sum(item['excess_amt'] for item in deviation_items if not item.get('is_separator'))
+        total_saving_amt = sum(item['saving_amt'] for item in deviation_items if not item.get('is_separator'))
+        
+        # Calculate premium for each column
+        premium_wo = total_wo_amt * (tender_premium_percent / 100)
+        premium_bill = total_bill_amt * (tender_premium_percent / 100)
+        premium_excess = total_excess_amt * (tender_premium_percent / 100)
+        premium_saving = total_saving_amt * (tender_premium_percent / 100)
+        
+        # Grand totals with premium
+        grand_total_wo = total_wo_amt + premium_wo
+        grand_total_bill = total_bill_amt + premium_bill
+        grand_total_excess = total_excess_amt + premium_excess
+        grand_total_saving = total_saving_amt + premium_saving
+        
+        # Net difference and percentage calculations
+        net_difference = grand_total_bill - grand_total_wo
+        is_saving = net_difference < 0
+        
+        # Overall percentage deviation (Bill vs WO)
+        percentage_deviation = (net_difference / grand_total_wo * 100) if grand_total_wo > 0 else 0
+        
+        # Excess percentage (Excess / WO)
+        excess_percentage = (grand_total_excess / grand_total_wo * 100) if grand_total_wo > 0 else 0
+        
+        # Saving percentage (Saving / WO)
+        saving_percentage = (grand_total_saving / grand_total_wo * 100) if grand_total_wo > 0 else 0
         
         # Prepare summary data
         summary = {
-            'work_order_total': total_amount,
-            'executed_total': total_amount,
-            'overall_excess': 0,
-            'overall_saving': 0,
-            'tender_premium_f': premium_amount,
-            'tender_premium_h': premium_amount,
-            'tender_premium_j': 0,
-            'tender_premium_l': 0,
-            'grand_total_f': grand_total,
-            'grand_total_h': grand_total,
-            'grand_total_j': 0,
-            'grand_total_l': 0,
-            'net_difference': 0,
-            'percentage_deviation': 0,
-            'is_saving': False,
+            'work_order_total': total_wo_amt,
+            'executed_total': total_bill_amt,
+            'overall_excess': total_excess_amt,
+            'overall_saving': total_saving_amt,
+            'tender_premium_f': premium_wo,
+            'tender_premium_h': premium_bill,
+            'tender_premium_j': premium_excess,
+            'tender_premium_l': premium_saving,
+            'grand_total_f': grand_total_wo,
+            'grand_total_h': grand_total_bill,
+            'grand_total_j': grand_total_excess,
+            'grand_total_l': grand_total_saving,
+            'net_difference': abs(net_difference),
+            'percentage_deviation': abs(percentage_deviation),
+            'excess_percentage': excess_percentage,
+            'saving_percentage': saving_percentage,
+            'is_saving': is_saving,
             'premium': {
                 'percent': tender_premium_percent / 100 if tender_premium_percent > 0 else 0,
                 'amount': premium_amount
@@ -275,16 +548,17 @@ class HTMLGenerator(BaseGenerator):
             'title_data': self.title_data,
             'work_items': work_items_filtered,  # Use filtered items
             'extra_items': extra_items_filtered,  # Use filtered items
+            'extra_items_only': extra_items_only,  # ONLY extra items for Extra Items template
             'totals': totals,
             'current_date': datetime.now().strftime('%d/%m/%Y'),
             'total_amount': total_amount,
             'tender_premium_percent': tender_premium_percent,
             'premium_amount': premium_amount,
-            'grand_total': grand_total,
+            'grand_total': payable_amount,
             'extra_total': extra_total,
             'extra_premium': extra_premium,
             'extra_grand_total': extra_grand_total,
-            'final_total': grand_total + extra_grand_total,
+            'final_total': payable_amount + extra_grand_total,
             'payable_words': self._number_to_words(int(net_payable)),
             'notes': ['Work completed as per schedule', 'All measurements verified', 'Quality as per specifications'],
             'items': items,
@@ -297,9 +571,9 @@ class HTMLGenerator(BaseGenerator):
             'date_completion': self.title_data.get('Date of Completion', ''),
             'actual_completion': self.title_data.get('Actual Date of Completion', ''),
             'work_order_amount': total_amount,
-            'bill_grand_total': grand_total,
+            'bill_grand_total': payable_amount,
             'extra_items_sum': extra_grand_total,
-            'delay_days': 0,
+            'delay_days': self._calculate_delay_days(),
             'header': [],
             'measurement_officer': self.title_data.get('Measurement Officer', 'Junior Engineer'),
             'measurement_date': self.title_data.get('Measurement Date', datetime.now().strftime('%d/%m/%Y')),
@@ -312,10 +586,12 @@ class HTMLGenerator(BaseGenerator):
             'authorising_officer_designation': self.title_data.get('Authorising Officer Designation', 'Executive Engineer'),
             'authorisation_date': self.title_data.get('Authorisation Date', '__/__/____'),
             'payable_amount': net_payable,
-            'amount_words': self._number_to_words(int(net_payable)),
+            'amount_words': self._number_to_words(int(payable_amount + extra_grand_total)),
             # Enhanced first 20 rows data for validation
             'first_20_rows_processed': self.title_data.get('_first_20_rows_processed', False),
-            'first_20_rows_count': self.title_data.get('_first_20_rows_count', 0)
+            'first_20_rows_count': self.title_data.get('_first_20_rows_count', 0),
+            # Source filename for reference
+            'source_filename': self.data.get('source_filename', 'Unknown')
         }
         
         # No title image data URI needed - using direct HTML title instead
@@ -349,16 +625,23 @@ class HTMLGenerator(BaseGenerator):
         documents = {}
         
         try:
+            # Check if this is a FINAL bill
+            bill_serial = self.title_data.get('Serial No. of this bill :', self.title_data.get('Serial No. of this bill', ''))
+            is_final_bill = 'final' in str(bill_serial).lower()
+            
             # Define document specifications for parallel processing
             document_specs = [
                 ('First Page Summary', 'first_page.html'),
-                ('Deviation Statement', 'deviation_statement.html'), 
-                ('BILL SCRUTINY SHEET', 'note_sheet.html'),
+                ('BILL SCRUTINY SHEET', 'note_sheet_new.html'),
                 ('Certificate II', 'certificate_ii.html'),
                 ('Certificate III', 'certificate_iii.html'),
             ]
             
-            # Only generate Extra Items document if there are extra items
+            # Only generate Deviation Statement for FINAL bills
+            if is_final_bill:
+                document_specs.insert(1, ('Deviation Statement', 'deviation_statement.html'))
+            
+            # Only generate Extra Items document if there are extra items - ADD AT END
             if self._has_extra_items():
                 document_specs.append(('Extra Items Statement', 'extra_items.html'))
             
@@ -385,9 +668,17 @@ class HTMLGenerator(BaseGenerator):
             print(f"Parallel template rendering failed, falling back to sequential generation: {e}")
             # Fallback to sequential generation if parallel processing fails
             try:
+                # Check if this is a FINAL bill
+                bill_serial = self.title_data.get('Serial No. of this bill :', self.title_data.get('Serial No. of this bill', ''))
+                is_final_bill = 'final' in str(bill_serial).lower()
+                
                 documents['First Page Summary'] = self._render_template('first_page.html')
-                documents['Deviation Statement'] = self._render_template('deviation_statement.html') 
-                documents['BILL SCRUTINY SHEET'] = self._render_template('note_sheet.html')
+                
+                # Only generate Deviation Statement for FINAL bills
+                if is_final_bill:
+                    documents['Deviation Statement'] = self._render_template('deviation_statement.html')
+                
+                documents['BILL SCRUTINY SHEET'] = self._render_template('note_sheet_new.html')
                 
                 # Only generate Extra Items document if there are extra items
                 if self._has_extra_items():
@@ -397,9 +688,17 @@ class HTMLGenerator(BaseGenerator):
                 documents['Certificate III'] = self._render_template('certificate_iii.html')
             except Exception as fallback_error:
                 print(f"Sequential template rendering also failed: {fallback_error}")
+                # Check if this is a FINAL bill
+                bill_serial = self.title_data.get('Serial No. of this bill :', self.title_data.get('Serial No. of this bill', ''))
+                is_final_bill = 'final' in str(bill_serial).lower()
+                
                 # Final fallback to programmatic generation
                 documents['First Page Summary'] = self._generate_first_page()
-                documents['Deviation Statement'] = self._generate_deviation_statement()
+                
+                # Only generate Deviation Statement for FINAL bills
+                if is_final_bill:
+                    documents['Deviation Statement'] = self._generate_deviation_statement()
+                
                 documents['BILL SCRUTINY SHEET'] = self._generate_final_bill_scrutiny()
                 
                 # Only generate Extra Items document if there are extra items
@@ -491,11 +790,14 @@ class HTMLGenerator(BaseGenerator):
         tender_premium_percent = self._safe_float(self.title_data.get('TENDER PREMIUM %', 
                                                                        self.title_data.get('Tender Premium %', 0)))
         
-        # Add work order items
+        # Add work order items - CRITICAL: Use Bill Quantity data for executed quantities
         total_amount = 0
         running_total = 0
         
-        for index, row in self.work_order_data.iterrows():
+        # Use Bill Quantity data if available, otherwise fallback to Work Order data
+        data_source = self.bill_quantity_data if isinstance(self.bill_quantity_data, pd.DataFrame) and not self.bill_quantity_data.empty else self.work_order_data
+        
+        for index, row in data_source.iterrows():
             description = str(row.get('Description', '')).strip()
             
             # Check if this is a summary row (Total, Add Tender Premium, Grand Total)
@@ -529,9 +831,27 @@ class HTMLGenerator(BaseGenerator):
                 amt_upto_display = f"{running_total:.2f}"
                 amt_since_display = f"{running_total:.2f}"
             else:
-                # Regular work item
-                qty_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
-                qty_upto = self._safe_float(row.get('Quantity Upto', qty_since))
+                # Regular work item - CRITICAL FIX: Get quantities from Bill Quantity sheet
+                # Find matching row in bill_quantity_data
+                bq_row = None
+                if isinstance(self.bill_quantity_data, pd.DataFrame) and not self.bill_quantity_data.empty:
+                    wo_item = row.get('Item No.', row.get('Item', ''))
+                    bq_item_col = 'Item No.' if 'Item No.' in self.bill_quantity_data.columns else 'Item'
+                    matching_rows = self.bill_quantity_data[
+                        self.bill_quantity_data[bq_item_col] == wo_item
+                    ]
+                    if isinstance(matching_rows, pd.DataFrame) and not matching_rows.empty:
+                        bq_row = matching_rows.iloc[0]
+                
+                # Use Bill Quantity data for executed quantities, fallback to Work Order if not found
+                if bq_row is not None:
+                    qty_since = self._safe_float(bq_row.get('Quantity Since', bq_row.get('Quantity', 0)))
+                    qty_upto = self._safe_float(bq_row.get('Quantity Upto', qty_since))
+                else:
+                    # Fallback to work order quantities if bill quantity not found
+                    qty_since = self._safe_float(row.get('Quantity Since', row.get('Quantity', 0)))
+                    qty_upto = self._safe_float(row.get('Quantity Upto', qty_since))
+                
                 rate = self._safe_float(row.get('Rate', 0))
                 amt_upto = qty_upto * rate
                 amt_since = qty_since * rate

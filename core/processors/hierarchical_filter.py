@@ -339,26 +339,85 @@ def generate_reports(work_data: Any) -> Dict[str, Any]:
     return reports
 
 
+def hierarchical_items_to_dataframe(items: List[HierarchicalItem]) -> pd.DataFrame:
+    """
+    Convert HierarchicalItem objects back to DataFrame
+    
+    Args:
+        items: List of HierarchicalItem objects
+        
+    Returns:
+        pd.DataFrame: DataFrame with hierarchical items flattened
+    """
+    rows = []
+    
+    def flatten_items(item_list, rows_list):
+        """Recursively flatten hierarchical items"""
+        for item in item_list:
+            rows_list.append({
+                'Item No.': item.code,
+                'Description': item.description,
+                'Unit': item.unit,
+                'Quantity': item.quantity,
+                'Rate': item.rate
+            })
+            if item.children:
+                flatten_items(item.children, rows_list)
+    
+    flatten_items(items, rows)
+    return pd.DataFrame(rows)
+
+
 def apply_hierarchical_filtering(work_order_data: pd.DataFrame, bill_quantity_data: pd.DataFrame) -> Dict[str, Any]:
     """
     Apply hierarchical filtering to work order and bill quantity data
+    
+    Filters out items where all descendants have zero quantities while maintaining
+    parent items if any child has non-zero quantity.
     
     Args:
         work_order_data: Work order data from Excel
         bill_quantity_data: Bill quantity data from Excel
         
     Returns:
-        Dict[str, Any]: Filtered data
+        Dict[str, Any]: Filtered data as DataFrames
     """
-    # Parse hierarchical structure from DataFrames
-    work_order_items = parse_hierarchical_items(work_order_data)
-    bill_quantity_items = parse_hierarchical_items(bill_quantity_data)
+    # If data is empty, return as-is
+    if work_order_data.empty and bill_quantity_data.empty:
+        return {
+            'filtered_work_order_data': work_order_data,
+            'filtered_bill_quantity_data': bill_quantity_data
+        }
     
-    # Apply filtering
-    filtered_work_order_items = filter_zero_hierarchy(work_order_items)
-    filtered_bill_quantity_items = filter_zero_hierarchy(bill_quantity_items)
-    
-    return {
-        'filtered_work_order_data': filtered_work_order_items,
-        'filtered_bill_quantity_data': filtered_bill_quantity_items
-    }
+    try:
+        # Parse to hierarchical structure
+        work_order_items = parse_hierarchical_items(work_order_data)
+        bill_quantity_items = parse_hierarchical_items(bill_quantity_data)
+        
+        # Apply filtering
+        filtered_work_order_items = filter_zero_hierarchy(work_order_items)
+        filtered_bill_quantity_items = filter_zero_hierarchy(bill_quantity_items)
+        
+        # Convert back to DataFrames
+        filtered_work_order_df = hierarchical_items_to_dataframe(filtered_work_order_items)
+        filtered_bill_quantity_df = hierarchical_items_to_dataframe(filtered_bill_quantity_items)
+        
+        # If filtering resulted in empty DataFrames, return original data
+        # This prevents issues when all items have zero quantities
+        if filtered_work_order_df.empty and not work_order_data.empty:
+            filtered_work_order_df = work_order_data
+        if filtered_bill_quantity_df.empty and not bill_quantity_data.empty:
+            filtered_bill_quantity_df = bill_quantity_data
+        
+        return {
+            'filtered_work_order_data': filtered_work_order_df,
+            'filtered_bill_quantity_data': filtered_bill_quantity_df
+        }
+    except Exception as e:
+        # If filtering fails, return original data to maintain compatibility
+        print(f"Warning: Hierarchical filtering failed: {e}")
+        print("Returning original data without filtering")
+        return {
+            'filtered_work_order_data': work_order_data,
+            'filtered_bill_quantity_data': bill_quantity_data
+        }

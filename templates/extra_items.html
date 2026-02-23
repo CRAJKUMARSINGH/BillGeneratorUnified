@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EXTRA ITEMS</title>
+    <title>EXTRA ITEMS SLIP</title>
     <style>
         @page { 
             size: A4 portrait; 
             margin: 10mm;
+            @top-left { content: none; }
+            @top-center { content: none; }
+            @top-right { content: none; }
+            @bottom-left { content: none; }
+            @bottom-center { content: none; }
+            @bottom-right { content: none; }
         }
         @media print {
             html, body {
@@ -88,9 +94,32 @@
             word-wrap: break-word;
             white-space: normal;
         }
-        .header { text-align: left; margin-bottom: 8px; }
-        .header h2 { font-size: 11pt; margin-bottom: 4px; }
-        .header p { margin: 1px 0; font-size: 8pt; }
+        th {
+            text-align: center !important;
+            font-weight: bold;
+        }
+        .header { 
+            text-align: left; 
+            margin-bottom: 8px; 
+        }
+        .header h2 { 
+            font-size: 14pt; 
+            margin-bottom: 6px; 
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #000000;
+            padding: 10px;
+        }
+        .header-item {
+            margin: 2px 0;
+            font-size: 9pt;
+        }
+        .header-item strong {
+            font-weight: bold;
+        }
+        .header-value {
+            font-weight: normal;
+        }
         .bold { font-weight: bold; }
         .underline { text-decoration: underline; }
         .center-align { text-align: center; }
@@ -99,10 +128,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>EXTRA ITEMS</h2>
-            <p>Name of Work: {{ data.name_of_work or 'N/A' }}</p>
-            <p>Name of Contractor or supplier: {{ data.name_of_firm or 'N/A' }}</p>
-            <p>Reference to work order or Agreement: {{ data.reference or 'N/A' }}</p>
+            <h2>EXTRA ITEMS SLIP</h2>
+            <div class="header-item">
+                <strong>Name of Work :-</strong> <span class="header-value">{{ data.title_data.get('Name of Work ;-', 'N/A') }}</span>
+            </div>
+            <div class="header-item">
+                <strong>Name of Contractor or supplier :</strong> <span class="header-value">{{ data.title_data.get('Name of Contractor or supplier :', 'N/A') }}</span>
+            </div>
+            <div class="header-item">
+                <strong>Serial No. of this bill :</strong> <span class="header-value">{{ data.title_data.get('Serial No. of this bill :', data.title_data.get('Serial No. of this bill', 'N/A')) }}</span>
+            </div>
+            <div class="header-item">
+                <strong>Agreement No.</strong> <span class="header-value">{{ data.title_data.get('Agreement No.', 'N/A') }}</span>
+            </div>
         </div>
         <table>
             <colgroup>
@@ -130,7 +168,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in data["items"] %}
+                {% for item in data.extra_items_only %}
                     <tr>
                         <td>{{ item.unit | default("") }}</td>
                         <td>{{ item.quantity_since_last if item.quantity_since_last|trim else "" }}</td>
@@ -145,52 +183,26 @@
                 {% endfor %}
                 <tr>
                     <td colspan="4"></td>
-                    <td>Grand Total Rs.</td>
+                    <td>Total Rs.</td>
                     <td></td>
-                    <td>{{ data.totals.grand_total | default("") }}</td>
-                    <td>{{ data.totals.grand_total | default("") }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="4"></td>
-                    <td>Tender Premium @ {{ "%.2f%%" % (data.totals.premium.percent * 100) if data.totals.premium.percent is not none else "" }}</td>
-                    <td>{{ "%.2f%%" % (data.totals.premium.percent * 100) if data.totals.premium.percent is not none else "" }}</td>
-                    <td>{{ data.totals.premium.amount | default("") }}</td>
-                    <td>{{ data.totals.premium.amount | default("") }}</td>
-                    <td></td>
-                </tr>               
-                <tr>
-                    <td colspan="9" style="text-align: left; padding-left: 10px;">
-                        Sum of Extra Items (including Tender Premium): 
-                        {% if data.totals.get('extra_items_sum') and data.totals.get('extra_items_sum') > 0 %}
-                            Rs. {{ data.totals.extra_items_sum }}
-                        {% else %}
-                            NIL
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4"></td>
-                    <td>Payable Amount Rs.</td>
-                    <td></td>
-                    <td>{{ data.totals.payable | default("") }}</td>
-                    <td>{{ data.totals.payable | default("") }}</td>
+                    <td>{{ "%.2f" | format(data.extra_total if data.extra_total else 0) }}</td>
+                    <td>{{ "%.2f" | format(data.extra_total if data.extra_total else 0) }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
-                    <td>Less Amount Paid vide Last Bill Rs.</td>
-                    <td></td>
-                    <td>{{ data.totals.last_bill_amount | round(2) if data.totals.last_bill_amount else "0.00" }}</td>
-                    <td>{{ data.totals.last_bill_amount | round(2) if data.totals.last_bill_amount else "0.00" }}</td>
+                    <td>Add Tender Premium @ {{ "%.2f%%" % (data.totals.premium.percent * 100) if data.totals.premium.percent is not none else "0.00%" }}</td>
+                    <td>{{ "%.2f%%" % (data.totals.premium.percent * 100) if data.totals.premium.percent is not none else "0.00%" }}</td>
+                    <td>{{ "%.2f" | format(data.extra_premium if data.extra_premium else 0) }}</td>
+                    <td>{{ "%.2f" | format(data.extra_premium if data.extra_premium else 0) }}</td>
                     <td></td>
                 </tr>
                 <tr style="background-color: #f0f0f0;">
                     <td colspan="4"></td>
-                    <td style="font-weight: bold;">Net Payable Amount Rs.</td>
+                    <td style="font-weight: bold;">Grand Total Rs.</td>
                     <td></td>
-                    <td style="font-weight: bold;">{{ data.totals.net_payable | default(data.totals.payable) | round(2) }}</td>
-                    <td style="font-weight: bold;">{{ data.totals.net_payable | default(data.totals.payable) | round(2) }}</td>
+                    <td style="font-weight: bold;">{{ "%.2f" | format(data.extra_grand_total if data.extra_grand_total else 0) }}</td>
+                    <td style="font-weight: bold;">{{ "%.2f" | format(data.extra_grand_total if data.extra_grand_total else 0) }}</td>
                     <td></td>
                 </tr>
             </tbody>
