@@ -103,9 +103,17 @@ if (auto_clean_env or (config and config.processing.auto_clean_cache)) and not s
     else:
         print("No cache files found to clean")
 
-# Custom CSS with Beautiful Green Header and Fluorescent Green Upload Buttons
+# Custom CSS with Beautiful Gradient Styling
 st.markdown("""
 <style>
+    /* Main app background gradient */
+    .main {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    .stApp {
+        background: linear-gradient(to bottom, #f0f4f8, #e8ecf1);
+    }
+    
     /* Hide Streamlit branding and default elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -138,15 +146,15 @@ st.markdown("""
         display: block;
     }
     
-    /* Beautiful Green Header */
+    /* Beautiful Gradient Header */
     .main-header {
-        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        background: linear-gradient(to right, #667eea, #764ba2, #f093fb);
         padding: 2.5rem 2rem;
         border-radius: 15px;
         color: white;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         animation: fadeIn 0.8s ease-in;
     }
     
@@ -163,6 +171,24 @@ st.markdown("""
         opacity: 0.95;
     }
     
+    /* Metric Cards with Gradient */
+    .metric-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Success Banner */
+    .success-banner {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+    
     /* Feature Cards */
     .feature-card {
         background: white;
@@ -170,7 +196,7 @@ st.markdown("""
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         margin: 1rem 0;
-        border-left: 4px solid #00b894;
+        border-left: 4px solid #667eea;
         transition: transform 0.2s, box-shadow 0.2s;
     }
     
@@ -179,13 +205,13 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     
-    /* Buttons */
+    /* Buttons with Gradient */
     .stButton>button {
         width: 100%;
         border-radius: 8px;
         height: 3rem;
         font-weight: 600;
-        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
         transition: all 0.3s;
@@ -193,13 +219,14 @@ st.markdown("""
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 184, 148, 0.4);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
     }
     
-    /* Fluorescent Green File Upload Button */
+    /* File Upload with Gradient */
     [data-testid="stFileUploader"] {
-        border: 2px dashed #00ff00 !important;
-        background-color: #e6ffe6 !important;
+        border: 2px dashed #667eea !important;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%) !important;
         border-radius: 10px !important;
         padding: 20px !important;
         text-align: center !important;
@@ -207,47 +234,51 @@ st.markdown("""
     }
     
     [data-testid="stFileUploader"]:hover {
-        border: 2px dashed #00cc00 !important;
-        background-color: #ccffcc !important;
-        box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
+        border: 2px dashed #764ba2 !important;
+        background: linear-gradient(135deg, #e8ecf1 0%, #d1d8e0 100%) !important;
+        box-shadow: 0 0 15px rgba(102, 126, 234, 0.3) !important;
     }
     
     [data-testid="stFileUploader"] div:first-child {
-        background: linear-gradient(135deg, #00ff00 0%, #00cc66 100%) !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
         border: none !important;
         border-radius: 8px !important;
         padding: 12px 24px !important;
         font-weight: bold !important;
         font-size: 16px !important;
-        box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3) !important;
+        box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3) !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stFileUploader"] div:first-child:hover {
-        background: linear-gradient(135deg, #00cc00 0%, #00994d 100%) !important;
+        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 12px rgba(0, 255, 0, 0.4) !important;
+        box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4) !important;
     }
     
     [data-testid="stFileUploader"] div:first-child:active {
         transform: translateY(0) !important;
-        box-shadow: 0 2px 4px rgba(0, 255, 0, 0.3) !important;
+        box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3) !important;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar Styling with Gradient */
     .css-1d391kg {
         background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
     }
     
-    /* Success/Info boxes */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    /* Success/Info boxes with Gradient */
     .stSuccess {
-        background-color: #d4edda;
-        border-left: 4px solid #00b894;
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-left: 4px solid #667eea;
     }
     
     .stInfo {
-        background-color: #d1ecf1;
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
         border-left: 4px solid #00cec9;
     }
     

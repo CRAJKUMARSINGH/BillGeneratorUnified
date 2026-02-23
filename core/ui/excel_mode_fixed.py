@@ -221,7 +221,7 @@ def show_excel_mode(config):
                             )
                     
                     if generate_word:
-                        st.markdown("#### Word Documents")
+                        st.markdown("#### 📝 Word Documents")
                         for doc_name, docx_bytes in word_documents.items():
                             st.download_button(
                                 label=f"📝 {doc_name}",
@@ -231,9 +231,81 @@ def show_excel_mode(config):
                                 key=f"docx_{doc_name}"
                             )
                     
+                    # Multi-format export section
+                    st.markdown("---")
+                    st.markdown("#### 📊 Data Export (CSV & JSON)")
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        # Export to CSV
+                        try:
+                            import pandas as pd
+                            # Create CSV from processed data
+                            items_data = []
+                            if 'items' in processed_data:
+                                for item in processed_data['items']:
+                                    items_data.append({
+                                        'Item No': item.get('item_no', ''),
+                                        'Description': item.get('description', ''),
+                                        'Quantity': item.get('quantity', 0),
+                                        'Rate': item.get('rate', 0),
+                                        'Unit': item.get('unit', ''),
+                                        'Amount': item.get('quantity', 0) * item.get('rate', 0)
+                                    })
+                            
+                            if items_data:
+                                df = pd.DataFrame(items_data)
+                                csv_data = df.to_csv(index=False)
+                                
+                                st.download_button(
+                                    label="📄 Download CSV",
+                                    data=csv_data,
+                                    file_name=f"{file_prefix}_bill_data.csv",
+                                    mime="text/csv",
+                                    key="csv_export",
+                                    use_container_width=True
+                                )
+                            else:
+                                st.info("No item data available for CSV export")
+                        except Exception as e:
+                            st.error(f"CSV export error: {str(e)}")
+                    
+                    with col2:
+                        # Export to JSON
+                        try:
+                            import json
+                            # Create JSON from processed data
+                            json_data = {
+                                'bill_info': {
+                                    'file_name': uploaded_file.name,
+                                    'generated_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                    'bill_serial': processed_data.get('bill_serial', ''),
+                                    'contractor_name': processed_data.get('contractor_name', ''),
+                                    'work_name': processed_data.get('work_name', '')
+                                },
+                                'totals': processed_data.get('totals', {}),
+                                'items': processed_data.get('items', []),
+                                'extra_items': processed_data.get('extra_items', [])
+                            }
+                            
+                            json_str = json.dumps(json_data, indent=2, ensure_ascii=False)
+                            
+                            st.download_button(
+                                label="📋 Download JSON",
+                                data=json_str,
+                                file_name=f"{file_prefix}_bill_data.json",
+                                mime="application/json",
+                                key="json_export",
+                                use_container_width=True
+                            )
+                        except Exception as e:
+                            st.error(f"JSON export error: {str(e)}")
+                    
                     # ZIP download
+                    st.markdown("---")
                     if (generate_pdf or generate_html or generate_word):
-                        st.markdown("#### Bulk Download")
+                        st.markdown("#### 📦 Bulk Download")
                         
                         # Create ZIP for browser download
                         zip_buffer = io.BytesIO()
@@ -247,6 +319,47 @@ def show_excel_mode(config):
                             if generate_word:
                                 for doc_name, docx_bytes in word_documents.items():
                                     zip_file.writestr(f"word/{doc_name}.docx", docx_bytes)
+                            
+                            # Add CSV and JSON to ZIP
+                            try:
+                                import pandas as pd
+                                import json
+                                
+                                # Add CSV
+                                items_data = []
+                                if 'items' in processed_data:
+                                    for item in processed_data['items']:
+                                        items_data.append({
+                                            'Item No': item.get('item_no', ''),
+                                            'Description': item.get('description', ''),
+                                            'Quantity': item.get('quantity', 0),
+                                            'Rate': item.get('rate', 0),
+                                            'Unit': item.get('unit', ''),
+                                            'Amount': item.get('quantity', 0) * item.get('rate', 0)
+                                        })
+                                
+                                if items_data:
+                                    df = pd.DataFrame(items_data)
+                                    csv_data = df.to_csv(index=False)
+                                    zip_file.writestr(f"data/{file_prefix}_bill_data.csv", csv_data)
+                                
+                                # Add JSON
+                                json_data = {
+                                    'bill_info': {
+                                        'file_name': uploaded_file.name,
+                                        'generated_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                        'bill_serial': processed_data.get('bill_serial', ''),
+                                        'contractor_name': processed_data.get('contractor_name', ''),
+                                        'work_name': processed_data.get('work_name', '')
+                                    },
+                                    'totals': processed_data.get('totals', {}),
+                                    'items': processed_data.get('items', []),
+                                    'extra_items': processed_data.get('extra_items', [])
+                                }
+                                json_str = json.dumps(json_data, indent=2, ensure_ascii=False)
+                                zip_file.writestr(f"data/{file_prefix}_bill_data.json", json_str)
+                            except Exception as e:
+                                print(f"Error adding data files to ZIP: {e}")
                         
                         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                         file_prefix = uploaded_file.name.split('.')[0]

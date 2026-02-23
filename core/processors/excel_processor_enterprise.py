@@ -47,6 +47,7 @@ DEFAULT_CHUNK_SIZE = 10000
 MAX_FILE_SIZE = 100 * 1024 * 1024  # 100 MB
 
 
+
 # ============================================================================
 # CUSTOM EXCEPTIONS
 # ============================================================================
@@ -112,6 +113,7 @@ class ProcessingResult:
     errors: List[str] = field(default_factory=list)
     warnings: List[str] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
+
 
 
 # ============================================================================
@@ -276,6 +278,7 @@ class ExcelValidator:
         except Exception as e:
             logger.error(f"Failed to detect sheets: {e}")
             raise ValidationError(f"Cannot read Excel file: {e}")
+
 
 
 # ============================================================================
@@ -513,7 +516,7 @@ def process_excel_file(
         file_path: Path to Excel file
         **kwargs: Additional arguments for ExcelProcessor
         
-        Returns:
+    Returns:
         ProcessingResult
     """
     processor = ExcelProcessor(**kwargs)
