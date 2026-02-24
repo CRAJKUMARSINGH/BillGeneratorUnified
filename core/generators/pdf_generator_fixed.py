@@ -69,7 +69,8 @@ class FixedPDFGenerator:
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 100%;
+        height: auto !important;
+        min-height: 100%;
         font-family: Arial, sans-serif;
         font-size: 10pt;
         line-height: 1.4;
@@ -103,6 +104,7 @@ class FixedPDFGenerator:
         white-space: normal !important;
         vertical-align: top !important;
         box-sizing: border-box !important;
+        overflow: visible !important;
     }}
     
     /* Table headers */
@@ -145,6 +147,13 @@ class FixedPDFGenerator:
         max-width: 100% !important;
         height: auto !important;
         page-break-inside: avoid !important;
+    }}
+    
+    /* CRITICAL: Allow content to flow across pages */
+    .container, div {{
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
     }}
     
     /* Print optimization */
