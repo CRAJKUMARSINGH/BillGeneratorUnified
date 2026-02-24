@@ -3,7 +3,7 @@ Document Generator - Main entry point for document generation
 """
 from typing import Dict, Any
 from core.generators.html_generator import HTMLGenerator
-from core.generators.pdf_generator import PDFGenerator
+from core.generators.pdf_generator_fixed import FixedPDFGenerator
 from core.generators.doc_generator import DOCGenerator
 
 class DocumentGenerator:
@@ -12,7 +12,7 @@ class DocumentGenerator:
     def __init__(self, data: Dict[str, Any]):
         self.data = data
         self.html_generator = HTMLGenerator(data)
-        self.pdf_generator = PDFGenerator(data)
+        self.pdf_generator = FixedPDFGenerator(margin_mm=10)
         self.doc_generator = DOCGenerator(data)
     
     def generate_all_documents(self) -> Dict[str, str]:
