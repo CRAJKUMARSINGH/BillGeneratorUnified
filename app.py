@@ -327,6 +327,7 @@ with st.sidebar:
     if config.features.is_enabled('batch_processing'):
         modes.append("📦 Batch Processing")
     modes.append("📥 Download Center")
+    modes.append("📖 User Manual")
     
     if config.features.is_enabled('analytics'):
         modes.append("📈 Analytics")
@@ -439,6 +440,31 @@ elif "📥 Download Center" in selected_mode:
 elif "📈 Analytics" in selected_mode:
     st.markdown("## 📈 Analytics Dashboard")
     st.info("Analytics dashboard coming soon!")
+
+elif "📖 User Manual" in selected_mode:
+    st.markdown("## 📖 User Manual")
+    
+    # Read and display user manual
+    try:
+        with open("USER_MANUAL.md", "r", encoding="utf-8") as f:
+            manual_content = f.read()
+        
+        # Display manual with nice formatting
+        st.markdown(manual_content, unsafe_allow_html=True)
+        
+        # Download button for manual
+        st.markdown("---")
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            st.download_button(
+                label="📥 Download User Manual (PDF)",
+                data=manual_content,
+                file_name="BillGenerator_User_Manual.md",
+                mime="text/markdown",
+                help="Download user manual as Markdown file"
+            )
+    except FileNotFoundError:
+        st.error("User manual file not found. Please contact support.")
 
 # Beautiful Footer with Credits
 st.markdown("---")
