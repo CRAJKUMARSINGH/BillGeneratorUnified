@@ -6,11 +6,11 @@
     <style>
         @page { 
             size: A4 portrait; 
-            margin: 8mm 10mm 20mm 10mm;
+            margin: 8mm 10mm 8mm 10mm;
             @top-left { content: none; }
             @top-center { content: none; }
             @top-right { content: none; }
-            @bottom-left { content: "Priyanka_Innovation_2025"; font-weight: bold; font-size: 9pt; }
+            @bottom-left { content: none; }
             @bottom-center { content: none; }
             @bottom-right { content: none; }
         }
@@ -235,7 +235,7 @@
         </tr>
     </table>
 
-    <div style="margin-top: 2px; padding: 6px; border: 1px solid #000000; font-size: 9pt; line-height: 1.0; margin-bottom: 0;">
+    <div style="margin-top: 2px; padding: 4px 6px; border: 1px solid #000000; font-size: 9pt; line-height: 1.0; margin-bottom: 0;">
         {% set work_completion_pct = ((data.totals.last_bill_amount + data.totals.payable + data.totals.extra_items_sum) / data.totals.work_order_amount * 100) if data.totals.work_order_amount else 0 %}
         {% set excess_pct = work_completion_pct - 100 %}
         {% set delay_days = data.delay_days if data.delay_days else 0 %}
@@ -269,7 +269,7 @@
         {% set point_num = point_num + 1 %}
         {% endif %}
         <p style="margin: 0; padding: 0;">{{ point_num }}. बिल समुचित निर्णय हेतु प्रस्तुत है।</p>
-        <p style="margin: 0; padding: 5px 0 0 0; text-align: right; padding-right: 50px;">प्रेमलता जैन, AAO</p>
+        <p style="margin: 0; padding: 0; text-align: right; padding-right: 50px;">प्रेमलता जैन, AAO</p>
     </div>
 </div>
 
