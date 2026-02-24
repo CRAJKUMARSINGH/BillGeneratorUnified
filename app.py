@@ -442,11 +442,29 @@ elif "📈 Analytics" in selected_mode:
     st.info("Analytics dashboard coming soon!")
 
 elif "📖 User Manual" in selected_mode:
-    st.markdown("## 📖 User Manual")
+    st.markdown("## 📖 User Manual / उपयोगकर्ता मैनुअल")
     
-    # Read and display user manual
+    # Language selector
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        language = st.radio(
+            "Select Language / भाषा चुनें",
+            ["🇬🇧 English", "🇮🇳 हिंदी"],
+            horizontal=True
+        )
+    
+    st.markdown("---")
+    
+    # Read and display user manual based on language
     try:
-        with open("USER_MANUAL.md", "r", encoding="utf-8") as f:
+        if "English" in language:
+            manual_file = "USER_MANUAL.md"
+            download_name = "BillGenerator_User_Manual_English.md"
+        else:
+            manual_file = "USER_MANUAL_HINDI.md"
+            download_name = "BillGenerator_User_Manual_Hindi.md"
+        
+        with open(manual_file, "r", encoding="utf-8") as f:
             manual_content = f.read()
         
         # Display manual with nice formatting
@@ -457,14 +475,14 @@ elif "📖 User Manual" in selected_mode:
         col1, col2, col3 = st.columns([1, 1, 1])
         with col2:
             st.download_button(
-                label="📥 Download User Manual (PDF)",
+                label="📥 Download Manual / मैनुअल डाउनलोड करें",
                 data=manual_content,
-                file_name="BillGenerator_User_Manual.md",
+                file_name=download_name,
                 mime="text/markdown",
-                help="Download user manual as Markdown file"
+                help="Download user manual / उपयोगकर्ता मैनुअल डाउनलोड करें"
             )
     except FileNotFoundError:
-        st.error("User manual file not found. Please contact support.")
+        st.error("User manual file not found. Please contact support. / उपयोगकर्ता मैनुअल फ़ाइल नहीं मिली। कृपया सहायता से संपर्क करें।")
 
 # Beautiful Footer with Credits
 st.markdown("---")
