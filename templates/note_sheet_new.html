@@ -250,7 +250,7 @@
         {% if delay_days and delay_days > 0 %}
         <p style="margin: 0; padding: 0;">3. कार्य में {{ delay_days }} दिन की देरी हुई है।</p>
         <p style="margin: 0; padding: 0;">4. टाइम एक्सटेंशन केस Superintending Engineer, PWD Electric Circle, Udaipur कार्यालय द्वारा अनुमोदित किया जाना है।</p>
-        <p style="margin: 0; padding: 0;">5. Agreement clause 2 के अनुसार liquidated damages की गणना रुपया है। वसूली योग्य LD हेतु विनिर्णय का स्पष्ट अंकन अपेक्षित है।</p>
+        <p style="margin: 0; padding: 0;">5. Agreement clause 2 के अनुसार liquidated damages की गणना रुपया {{ "{:,.0f}".format(data.liquidated_damages_amount if data.liquidated_damages_amount else 0) }} है। वसूली योग्य LD हेतु विनिर्णय का स्पष्ट अंकन अपेक्षित है।</p>
         {% set point_num = 6 %}
         {% else %}
         <p style="margin: 0; padding: 0;">3. कार्य समय पर पूर्ण हुआ है।</p>

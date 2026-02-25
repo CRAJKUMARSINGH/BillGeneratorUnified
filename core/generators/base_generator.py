@@ -163,6 +163,146 @@ class BaseGenerator:
             print(f"Error calculating delay days: {e}")
             return 0
     
+    def _calculate_liquidated_damages(self, work_order_amount: float, actual_progress: float, delay_days: int) -> int:
+        """
+        Calculate liquidated damages based on PWD formula with quarterly distribution
+        
+        Formula: LD = Penalty Rate × Unexecuted Work
+        Where: 
+            - Work is distributed quarterly: 12.5%, 25%, 25%, 37.5%
+            - Required Progress calculated based on elapsed time and quarterly distribution
+            - Unexecuted Work = Required Progress - Actual Progress
+            - Penalty Rate varies by quarter (progressive rates)
+        
+        Args:
+            work_order_amount: Total work order amount in rupees
+            actual_progress: Actual amount of work completed in rupees
+            delay_days: Number of days delayed (not used in quarterly method, kept for compatibility)
+            
+        Returns:
+            Liquidated damages amount in whole rupees (rounded)
+        """
+        try:
+            # Get project dates from title_data
+            scheduled_str = self.title_data.get('St. date of completion :', '')
+            actual_str = self.title_data.get('Date of actual completion of work :', '')
+            start_str = self.title_data.get('Date of written order to commence work :', 
+                                           self.title_data.get('St. date of Start :', ''))
+            
+            if not scheduled_str or not actual_str or not start_str:
+                return 0
+            
+            # Parse dates
+            from datetime import datetime
+            date_formats = ['%d/%m/%Y', '%Y-%m-%d', '%d-%m-%Y', '%m/%d/%Y']
+            
+            start_date = None
+            scheduled_date = None
+            actual_date = None
+            
+            for fmt in date_formats:
+                try:
+                    if not start_date:
+                        start_date = datetime.strptime(str(start_str).strip(), fmt)
+                    if not scheduled_date:
+                        scheduled_date = datetime.strptime(str(scheduled_str).strip(), fmt)
+                    if not actual_date:
+                        actual_date = datetime.strptime(str(actual_str).strip(), fmt)
+                    if start_date and scheduled_date and actual_date:
+                        break
+                except:
+                    continue
+            
+            if not (start_date and scheduled_date and actual_date):
+                return 0
+            
+            # Calculate total project duration and elapsed days
+            total_duration = (scheduled_date - start_date).days
+            elapsed_days = (actual_date - start_date).days
+            
+            if total_duration <= 0 or elapsed_days <= total_duration:
+                return 0  # No delay
+            
+            # Define quarterly distribution (PWD formula)
+            q1_percent = 0.125  # 12.5%
+            q2_percent = 0.25   # 25%
+            q3_percent = 0.25   # 25%
+            q4_percent = 0.375  # 37.5%
+            
+            # Calculate quarter boundaries
+            q1_end = int(total_duration * 0.25)
+            q2_end = int(total_duration * 0.50)
+            q3_end = int(total_duration * 0.75)
+            q4_end = total_duration
+            
+            # Calculate quarter lengths
+            q1_length = q1_end
+            q2_length = q2_end - q1_end
+            q3_length = q3_end - q2_end
+            q4_length = q4_end - q3_end
+            
+            # Calculate work distribution
+            q1_work = work_order_amount * q1_percent
+            q2_work = work_order_amount * q2_percent
+            q3_work = work_order_amount * q3_percent
+            q4_work = work_order_amount * q4_percent
+            
+            # Calculate daily progress rates for each quarter
+            q1_daily = q1_work / q1_length if q1_length > 0 else 0
+            q2_daily = q2_work / q2_length if q2_length > 0 else 0
+            q3_daily = q3_work / q3_length if q3_length > 0 else 0
+            q4_daily = q4_work / q4_length if q4_length > 0 else 0
+            
+            # Calculate required progress based on elapsed days
+            required_progress = 0
+            
+            if elapsed_days <= q1_end:
+                # In Q1
+                required_progress = elapsed_days * q1_daily
+                penalty_rate = 0.025  # 2.5% for Q1
+            elif elapsed_days <= q2_end:
+                # In Q2
+                days_in_q2 = elapsed_days - q1_end
+                required_progress = q1_work + (days_in_q2 * q2_daily)
+                penalty_rate = 0.05  # 5% for Q2
+            elif elapsed_days <= q3_end:
+                # In Q3
+                days_in_q3 = elapsed_days - q2_end
+                required_progress = q1_work + q2_work + (days_in_q3 * q3_daily)
+                penalty_rate = 0.075  # 7.5% for Q3
+            else:
+                # In Q4 or beyond
+                days_in_q4 = min(elapsed_days - q3_end, q4_length)
+                required_progress = q1_work + q2_work + q3_work + (days_in_q4 * q4_daily)
+                penalty_rate = 0.10  # 10% for Q4
+            
+            # Calculate unexecuted work
+            unexecuted_work = max(0, required_progress - actual_progress)
+            
+            # Special case: If work is 100% complete but delayed
+            # Presume entire delay occurred in Q4 (final quarter)
+            # LD = (Q4 Daily Progress Rate × Delay Days) × Q4 Penalty Rate (10%)
+            if unexecuted_work <= 0 and elapsed_days > total_duration:
+                # Work is complete but delayed beyond scheduled completion
+                delay_beyond_completion = elapsed_days - total_duration
+                
+                # Use Q4 daily rate and Q4 penalty rate (presume delay in Q4)
+                unexecuted_work = q4_daily * delay_beyond_completion
+                penalty_rate = 0.10  # Q4 penalty rate (10%)
+            elif unexecuted_work <= 0:
+                # Work complete and on time - no LD
+                return 0
+            
+            # Calculate liquidated damages
+            ld_amount = penalty_rate * unexecuted_work
+            
+            # Return as whole rupees (rounded)
+            return int(round(ld_amount))
+            
+        except Exception as e:
+            print(f"Error calculating liquidated damages: {e}")
+            return 0
+    
     def get_template(self, template_name: str):
         """Cache loaded templates"""
         if template_name not in self._template_cache:

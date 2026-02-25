@@ -574,6 +574,11 @@ class HTMLGenerator(BaseGenerator):
             'bill_grand_total': payable_amount,
             'extra_items_sum': extra_grand_total,
             'delay_days': self._calculate_delay_days(),
+            'liquidated_damages_amount': self._calculate_liquidated_damages(
+                work_order_amount=self._safe_float(self.title_data.get('Work Order Amount', total_amount)),
+                actual_progress=last_bill_amount + payable_amount + extra_grand_total,
+                delay_days=self._calculate_delay_days()
+            ),
             'header': [],
             'measurement_officer': self.title_data.get('Measurement Officer', 'Junior Engineer'),
             'measurement_date': self.title_data.get('Measurement Date', datetime.now().strftime('%d/%m/%Y')),
