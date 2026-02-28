@@ -40,30 +40,40 @@ def show_hybrid_mode(config):
         
         try:
             # Process Excel file
-            from core.processors.excel_processor_enterprise import ExcelProcessor
-            processor = ExcelProcessor(sanitize_strings=True, validate_schemas=False)
-            result = processor.process_file(uploaded_file)
+            from core.processors.excel_processor import ExcelProcessor
+            processor = ExcelProcessor()
+            processed_data = processor.process_excel(uploaded_file)
             
-            if not result.success:
-                st.error("❌ Failed to process Excel file")
-                for error in result.errors:
-                    st.error(f"Error: {error}")
-                return
+            # Extract sheets from processed data
+            result_data = {}
+            if 'work_order_data' in processed_data:
+                # Convert to DataFrame if needed
+                import pandas as pd
+                if isinstance(processed_data['work_order_data'], pd.DataFrame):
+                    result_data['Work Order'] = processed_data['work_order_data']
+                elif isinstance(processed_data['work_order_data'], list):
+                    result_data['Work Order'] = pd.DataFrame(processed_data['work_order_data'])
             
-            # Extract data
-            title_data = {}
-            if 'Title' in result.data:
-                title_df = result.data['Title']
-                for index, row in title_df.iterrows():
-                    if len(row) >= 2:
-                        key = str(row.iloc[0]).strip()
-                        value = row.iloc[1]
-                        if key:
-                            title_data[key] = value
+            if 'bill_quantity_data' in processed_data:
+                import pandas as pd
+                if isinstance(processed_data['bill_quantity_data'], pd.DataFrame):
+                    result_data['Bill Quantity'] = processed_data['bill_quantity_data']
+                elif isinstance(processed_data['bill_quantity_data'], list):
+                    result_data['Bill Quantity'] = pd.DataFrame(processed_data['bill_quantity_data'])
             
-            work_order_df = result.data.get('Work Order')
-            bill_quantity_df = result.data.get('Bill Quantity')
-            extra_items_df = result.data.get('Extra Items')
+            if 'extra_items_data' in processed_data:
+                import pandas as pd
+                if isinstance(processed_data['extra_items_data'], pd.DataFrame):
+                    result_data['Extra Items'] = processed_data['extra_items_data']
+                elif isinstance(processed_data['extra_items_data'], list):
+                    result_data['Extra Items'] = pd.DataFrame(processed_data['extra_items_data'])
+            
+            # Extract title data
+            title_data = processed_data.get('title_data', {})
+            
+            work_order_df = result_data.get('Work Order')
+            bill_quantity_df = result_data.get('Bill Quantity')
+            extra_items_df = result_data.get('Extra Items')
             
             # Store in session state
             if 'hybrid_data' not in st.session_state:

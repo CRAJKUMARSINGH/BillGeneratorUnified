@@ -65,15 +65,27 @@ def test_hybrid_workflow():
         item_no = row.get('Item No.', f"{idx+1:03d}")
         description = row.get('Description of Item', row.get('Description', ''))
         unit = row.get('Unit', 'NOS')
-        wo_quantity = float(row.get('Quantity', 0))
-        wo_rate = float(row.get('Rate', 0))
+        
+        # Handle empty or invalid numeric values
+        try:
+            wo_quantity = float(row.get('Quantity', 0) or 0)
+        except (ValueError, TypeError):
+            wo_quantity = 0.0
+        
+        try:
+            wo_rate = float(row.get('Rate', 0) or 0)
+        except (ValueError, TypeError):
+            wo_rate = 0.0
         
         # Get bill quantity if available
         bill_qty = wo_quantity
         if bill_quantity_df is not None and not bill_quantity_df.empty:
             if idx < len(bill_quantity_df):
                 bill_row = bill_quantity_df.iloc[idx]
-                bill_qty = float(bill_row.get('Quantity', wo_quantity))
+                try:
+                    bill_qty = float(bill_row.get('Quantity', wo_quantity) or wo_quantity)
+                except (ValueError, TypeError):
+                    bill_qty = wo_quantity
         
         items_list.append({
             'Item No': item_no,
