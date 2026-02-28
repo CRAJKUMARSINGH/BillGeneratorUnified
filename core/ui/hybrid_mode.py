@@ -484,15 +484,62 @@ def show_hybrid_mode(config):
                             # Prepare data for document generation
                             from core.generators.html_generator import HTMLGenerator
                             
-                            # Convert edited dataframe to dict format
-                            work_order_data = edited_df.to_dict('records')
-                            extra_items_data = st.session_state.hybrid_data.get('edited_extra_items', pd.DataFrame()).to_dict('records') if 'edited_extra_items' in st.session_state.hybrid_data else []
+                            # CRITICAL FIX: HTMLGenerator expects DataFrames, not lists
+                            # Filter to only include items with Bill Quantity > 0
+                            active_items_df = edited_df[edited_df['Bill Quantity'] > 0].copy()
+                            
+                            # Prepare work order data (convert hybrid format to standard format)
+                            work_order_list = []
+                            bill_quantity_list = []
+                            
+                            for idx, row in active_items_df.iterrows():
+                                # Standard format for work order
+                                work_order_list.append({
+                                    'Item No.': row['Item No'],
+                                    'Description': row['Description'],
+                                    'Unit': row['Unit'],
+                                    'Quantity': row['WO Quantity'],
+                                    'Rate': row['WO Rate'],
+                                    'Amount': row['WO Amount']
+                                })
+                                
+                                # Standard format for bill quantity
+                                bill_quantity_list.append({
+                                    'Item No.': row['Item No'],
+                                    'Description': row['Description'],
+                                    'Unit': row['Unit'],
+                                    'Quantity': row['Bill Quantity'],
+                                    'Rate': row['Bill Rate'],
+                                    'Amount': row['Bill Amount']
+                                })
+                            
+                            # Convert to DataFrames
+                            work_order_df = pd.DataFrame(work_order_list)
+                            bill_quantity_df = pd.DataFrame(bill_quantity_list)
+                            
+                            # Handle extra items
+                            extra_items_df = pd.DataFrame()
+                            if 'edited_extra_items' in st.session_state.hybrid_data:
+                                extra_df = st.session_state.hybrid_data['edited_extra_items']
+                                if not extra_df.empty:
+                                    # Convert to standard format
+                                    extra_list = []
+                                    for idx, row in extra_df.iterrows():
+                                        extra_list.append({
+                                            'Item No.': row['Item No'],
+                                            'Description': row['Description'],
+                                            'Unit': row['Unit'],
+                                            'Quantity': row['Quantity'],
+                                            'Rate': row['Rate'],
+                                            'Amount': row['Amount']
+                                        })
+                                    extra_items_df = pd.DataFrame(extra_list)
                             
                             data = {
                                 'title_data': title_data,
-                                'work_order_data': work_order_data,
-                                'bill_quantity_data': work_order_data,  # Use edited data
-                                'extra_items_data': extra_items_data,
+                                'work_order_data': work_order_df,
+                                'bill_quantity_data': bill_quantity_df,
+                                'extra_items_data': extra_items_df,
                                 'source_filename': uploaded_file.name,
                                 'hybrid_mode': True  # Flag to indicate hybrid mode
                             }
