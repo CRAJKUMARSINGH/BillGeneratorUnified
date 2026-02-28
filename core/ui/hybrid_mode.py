@@ -242,20 +242,86 @@ def show_hybrid_mode(config):
                     if len(display_df) == 0:
                         st.warning("⚠️ No items with bill quantity > 0. Enable 'Show All Work Order Items' to add items.")
                 
+                # Excel-style editor with enhanced configuration
+                st.markdown("### 📊 Excel-Style Spreadsheet Editor")
+                st.markdown("""
+                <div style='background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); 
+                            padding: 15px; 
+                            border-radius: 10px; 
+                            border-left: 5px solid #4caf50; 
+                            margin-bottom: 15px;'>
+                    <p style='color: #1b5e20; margin: 0; font-size: 1rem; font-weight: 600;'>
+                        💡 Excel-Like Editing:
+                    </p>
+                    <ul style='color: #2e7d32; margin: 5px 0 0 20px; font-size: 0.9rem;'>
+                        <li>Click any cell to edit (editable columns highlighted)</li>
+                        <li>Use Tab or Enter to navigate between cells</li>
+                        <li>Changes save automatically</li>
+                        <li>Add/delete rows using buttons at bottom</li>
+                    </ul>
+                </div>
+                """, unsafe_allow_html=True)
+                
                 edited_df = st.data_editor(
                     display_df,
                     use_container_width=True,
                     num_rows="dynamic",
+                    height=600,  # Taller for Excel-like feel
                     column_config={
-                        "Item No": st.column_config.TextColumn("Item No", width="small"),
-                        "Description": st.column_config.TextColumn("Description", width="large", help="Full description with sub-items"),
-                        "Unit": st.column_config.TextColumn("Unit", width="small"),
-                        "WO Quantity": st.column_config.NumberColumn("WO Qty", format="%.2f", disabled=True),
-                        "Bill Quantity": st.column_config.NumberColumn("Bill Qty", format="%.2f"),
-                        "WO Rate": st.column_config.NumberColumn("WO Rate (₹)", format="%.2f", disabled=True),
-                        "Bill Rate": st.column_config.NumberColumn("Bill Rate (₹)", format="%.2f", help="Edit this for part-rate payment"),
-                        "WO Amount": st.column_config.NumberColumn("WO Amount (₹)", format="%.2f", disabled=True),
-                        "Bill Amount": st.column_config.NumberColumn("Bill Amount (₹)", format="%.2f", disabled=True)
+                        "Item No": st.column_config.TextColumn(
+                            "Item No", 
+                            width="small",
+                            help="Item number from work order",
+                            disabled=True
+                        ),
+                        "Description": st.column_config.TextColumn(
+                            "Description", 
+                            width="large", 
+                            help="Full description with sub-items"
+                        ),
+                        "Unit": st.column_config.TextColumn(
+                            "Unit", 
+                            width="small",
+                            help="Unit of measurement"
+                        ),
+                        "WO Quantity": st.column_config.NumberColumn(
+                            "WO Qty", 
+                            format="%.2f", 
+                            disabled=True,
+                            help="Work Order Quantity (read-only)"
+                        ),
+                        "Bill Quantity": st.column_config.NumberColumn(
+                            "📝 Bill Qty", 
+                            format="%.2f",
+                            help="⬅️ EDIT: Bill quantity (can differ from WO)",
+                            min_value=0,
+                            step=0.01
+                        ),
+                        "WO Rate": st.column_config.NumberColumn(
+                            "WO Rate", 
+                            format="₹%.2f", 
+                            disabled=True,
+                            help="Work Order Rate (read-only)"
+                        ),
+                        "Bill Rate": st.column_config.NumberColumn(
+                            "📝 Bill Rate", 
+                            format="₹%.2f", 
+                            help="⬅️ EDIT: Bill rate for part-rate payment",
+                            min_value=0,
+                            step=0.01
+                        ),
+                        "WO Amount": st.column_config.NumberColumn(
+                            "WO Amount", 
+                            format="₹%.2f", 
+                            disabled=True,
+                            help="Work Order Amount (read-only)"
+                        ),
+                        "Bill Amount": st.column_config.NumberColumn(
+                            "Bill Amount", 
+                            format="₹%.2f", 
+                            disabled=True,
+                            help="Bill Amount (auto-calculated)"
+                        )
                     },
                     hide_index=True,
                     key="hybrid_editor"
