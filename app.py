@@ -322,7 +322,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Mode selection
-    modes = ["📊 Excel Upload", "💻 Online Entry"]
+    modes = ["📊 Excel Upload", "🔄 Hybrid: Upload + Edit", "💻 Online Entry"]
     
     if config.features.is_enabled('batch_processing'):
         modes.append("📦 Batch Processing")
@@ -409,6 +409,13 @@ if "📊 Excel Upload" in selected_mode:
         show_excel_mode(config)
     except ImportError:
         st.error("❌ Excel mode not available. Please check installation.")
+
+elif "🔄 Hybrid: Upload + Edit" in selected_mode:
+    try:
+        from core.ui.hybrid_mode import show_hybrid_mode
+        show_hybrid_mode(config)
+    except ImportError as e:
+        st.error(f"❌ Hybrid mode not available: {str(e)}")
 
 elif "💻 Online Entry" in selected_mode:
     try:
