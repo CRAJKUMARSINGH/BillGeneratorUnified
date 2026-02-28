@@ -96,9 +96,14 @@ def show_hybrid_mode(config):
             st.markdown("""
             <div style='background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 5px solid #ffc107; margin-bottom: 15px;'>
                 <p style='color: #856404; margin: 0;'>
-                    <strong>💡 Tip:</strong> Edit the "Bill Rate" column for items requiring part-rate payment. 
-                    Work Order Rate will be preserved for reference.
+                    <strong>💡 Tips:</strong>
                 </p>
+                <ul style='color: #856404; margin: 5px 0 0 20px;'>
+                    <li>Edit "Bill Quantity" to add quantities to items with zero qty</li>
+                    <li>Edit "Bill Rate" for part-rate payments</li>
+                    <li>Items with zero bill quantity will be excluded from documents</li>
+                    <li>Work Order data is preserved for reference</li>
+                </ul>
             </div>
             """, unsafe_allow_html=True)
             
@@ -129,11 +134,14 @@ def show_hybrid_mode(config):
                         wo_rate = float(row.get('Rate', 0))
                         
                         # Get bill quantity if available
-                        bill_qty = wo_quantity
+                        bill_qty = 0.0  # Default to 0 for items not in bill quantity sheet
                         if bill_quantity_df is not None and not bill_quantity_df.empty:
                             if idx < len(bill_quantity_df):
                                 bill_row = bill_quantity_df.iloc[idx]
-                                bill_qty = float(bill_row.get('Quantity', wo_quantity))
+                                bill_qty_value = bill_row.get('Quantity', 0)
+                                # Only use bill quantity if it's a valid number > 0
+                                if bill_qty_value and str(bill_qty_value) != 'nan':
+                                    bill_qty = float(bill_qty_value)
                         
                         items_list.append({
                             'Item No': item_no,
@@ -148,18 +156,26 @@ def show_hybrid_mode(config):
                         })
                     
                     st.session_state.hybrid_data['edited_items'] = pd.DataFrame(items_list)
+                    st.session_state.hybrid_data['show_all_items'] = True  # Default to showing all items
                 
                 # Display editable table
                 st.markdown("""
                 <div style='background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 10px;'>
                     <p style='color: #2e7d32; margin: 0; font-size: 0.9rem;'>
-                        <strong>💡 View Full Descriptions:</strong> Hover over description cells to see complete text with sub-items
+                        <strong>💡 Tips:</strong> 
+                        • Hover over description cells to see complete text with sub-items<br>
+                        • Set Bill Quantity > 0 to include items not in bill quantity sheet<br>
+                        • Edit Bill Rate for part-rate payments
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Option to show detailed view
-                show_detailed = st.checkbox("📋 Show Detailed Description View", value=False, help="Display full descriptions with sub-items in expandable format")
+                # Options
+                col1, col2 = st.columns(2)
+                with col1:
+                    show_detailed = st.checkbox("📋 Show Detailed Description View", value=False, help="Display full descriptions with sub-items in expandable format")
+                with col2:
+                    show_all_items = st.checkbox("📦 Show All Work Order Items", value=True, help="Show all items from work order, even if not in bill quantity sheet")
                 
                 if show_detailed:
                     st.markdown("#### 📋 Detailed Item Descriptions")
@@ -183,8 +199,17 @@ def show_hybrid_mode(config):
                             """)
                     st.markdown("---")
                 
+                # Filter items based on show_all_items checkbox
+                display_df = st.session_state.hybrid_data['edited_items'].copy()
+                
+                if not show_all_items:
+                    # Only show items with bill quantity > 0
+                    display_df = display_df[display_df['Bill Quantity'] > 0]
+                    if len(display_df) == 0:
+                        st.warning("⚠️ No items with bill quantity > 0. Enable 'Show All Work Order Items' to add items.")
+                
                 edited_df = st.data_editor(
-                    st.session_state.hybrid_data['edited_items'],
+                    display_df,
                     use_container_width=True,
                     num_rows="dynamic",
                     column_config={
@@ -206,15 +231,30 @@ def show_hybrid_mode(config):
                 edited_df['Bill Amount'] = edited_df['Bill Quantity'] * edited_df['Bill Rate']
                 edited_df['WO Amount'] = edited_df['WO Quantity'] * edited_df['WO Rate']
                 
-                # Update session state
-                st.session_state.hybrid_data['edited_items'] = edited_df
+                # Update session state - merge changes back to full dataframe
+                if not show_all_items:
+                    # Merge edited items back into full dataframe
+                    full_df = st.session_state.hybrid_data['edited_items'].copy()
+                    for idx in edited_df.index:
+                        full_df.loc[idx] = edited_df.loc[idx]
+                    st.session_state.hybrid_data['edited_items'] = full_df
+                else:
+                    st.session_state.hybrid_data['edited_items'] = edited_df
                 
                 # Show summary
                 st.markdown("### 📊 Summary")
+                
+                # Use full dataframe for summary
+                summary_df = st.session_state.hybrid_data['edited_items']
+                
+                # Count items by status
+                zero_qty_items = summary_df[summary_df['Bill Quantity'] == 0]
+                active_items = summary_df[summary_df['Bill Quantity'] > 0]
+                
                 col1, col2, col3, col4 = st.columns(4)
                 
-                wo_total = edited_df['WO Amount'].sum()
-                bill_total = edited_df['Bill Amount'].sum()
+                wo_total = summary_df['WO Amount'].sum()
+                bill_total = summary_df['Bill Amount'].sum()
                 difference = wo_total - bill_total
                 percentage = (bill_total / wo_total * 100) if wo_total > 0 else 0
                 
@@ -222,6 +262,55 @@ def show_hybrid_mode(config):
                 col2.metric("Bill Total", f"₹{bill_total:,.2f}")
                 col3.metric("Difference", f"₹{difference:,.2f}", delta=f"-{difference:,.2f}" if difference > 0 else f"+{abs(difference):,.2f}")
                 col4.metric("Bill %", f"{percentage:.1f}%")
+                
+                # Show item status
+                st.markdown("#### 📋 Item Status")
+                col1, col2, col3 = st.columns(3)
+                col1.metric("Total Items", len(summary_df))
+                col2.metric("Active Items", len(active_items), help="Items with Bill Quantity > 0")
+                col3.metric("Zero Qty Items", len(zero_qty_items), help="Items with Bill Quantity = 0 (can be activated)")
+                
+                # Show zero quantity items if any
+                if len(zero_qty_items) > 0:
+                    with st.expander(f"⚠️ {len(zero_qty_items)} Items with Zero Quantity (Click to view)"):
+                        st.markdown("""
+                        <div style='background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                            <p style='color: #856404; margin: 0; font-size: 0.9rem;'>
+                                These items have zero bill quantity. Edit the "Bill Quantity" column above to add them to the bill.
+                            </p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        zero_display = zero_qty_items[['Item No', 'Description', 'WO Quantity', 'WO Rate']].copy()
+                        zero_display['WO Amount'] = zero_qty_items['WO Amount']
+                        st.dataframe(zero_display, use_container_width=True, hide_index=True)
+                
+                # Show item status
+                st.markdown("#### 📋 Item Status")
+                col1, col2, col3 = st.columns(3)
+                col1.metric("Total Items", len(edited_df))
+                col2.metric("Active Items", len(active_items), help="Items with Bill Quantity > 0")
+                col3.metric("Zero Qty Items", len(zero_qty_items), help="Items with Bill Quantity = 0 (can be activated)")
+                
+                # Show zero quantity items if any
+                if len(zero_qty_items) > 0:
+                    with st.expander(f"⚠️ {len(zero_qty_items)} Items with Zero Quantity (Click to view)"):
+                        st.markdown("""
+                        <div style='background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                            <p style='color: #856404; margin: 0; font-size: 0.9rem;'>
+                                These items have zero bill quantity. Edit the "Bill Quantity" column above to add them to the bill.
+                            </p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        zero_display = zero_qty_items[['Item No', 'Description', 'WO Quantity', 'WO Rate']].copy()
+                        zero_display['WO Amount'] = zero_qty_items['WO Amount']
+                        st.dataframe(zero_display, use_container_width=True, hide_index=True)
+                
+                # Show item count
+                items_in_bill = len(summary_df[summary_df['Bill Quantity'] > 0])
+                total_items = len(summary_df)
+                st.info(f"📦 Items in Bill: {items_in_bill} / {total_items} work order items")
                 
                 # Handle Extra Items
                 st.markdown("---")
