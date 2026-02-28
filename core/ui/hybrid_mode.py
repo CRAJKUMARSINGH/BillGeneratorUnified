@@ -39,10 +39,34 @@ def show_hybrid_mode(config):
         st.success(f"✅ File uploaded: {uploaded_file.name}")
         
         try:
-            # Process Excel file
-            from core.processors.excel_processor import ExcelProcessor
-            processor = ExcelProcessor()
-            processed_data = processor.process_excel(uploaded_file)
+            # Process Excel file - handle both old and new deployments
+            try:
+                from core.processors.excel_processor import ExcelProcessor
+                processor = ExcelProcessor()
+                processed_data = processor.process_excel(uploaded_file)
+            except Exception as e:
+                # Fallback: Save uploaded file temporarily and process
+                import tempfile
+                import os
+                
+                # Create temporary file
+                suffix = os.path.splitext(uploaded_file.name)[1]
+                with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp_file:
+                    tmp_file.write(uploaded_file.getvalue())
+                    tmp_path = tmp_file.name
+                
+                try:
+                    processor = ExcelProcessor()
+                    # Read from temp file
+                    import io
+                    with open(tmp_path, 'rb') as f:
+                        processed_data = processor.process_excel(io.BytesIO(f.read()))
+                finally:
+                    # Clean up temp file
+                    try:
+                        os.unlink(tmp_path)
+                    except:
+                        pass
             
             # Extract sheets from processed data
             result_data = {}
