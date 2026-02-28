@@ -109,7 +109,21 @@ def show_hybrid_mode(config):
                     items_list = []
                     for idx, row in work_order_df.iterrows():
                         item_no = row.get('Item No.', f"{idx+1:03d}")
+                        
+                        # Get full description including sub-items
                         description = row.get('Description of Item', row.get('Description', ''))
+                        
+                        # Check for sub-item columns (common patterns)
+                        sub_item_cols = [col for col in work_order_df.columns if 'sub' in col.lower() or 'detail' in col.lower()]
+                        if sub_item_cols:
+                            sub_items = []
+                            for sub_col in sub_item_cols:
+                                sub_val = row.get(sub_col, '')
+                                if sub_val and str(sub_val).strip() and str(sub_val) != 'nan':
+                                    sub_items.append(str(sub_val).strip())
+                            if sub_items:
+                                description = f"{description}\n" + "\n".join([f"  • {item}" for item in sub_items])
+                        
                         unit = row.get('Unit', 'NOS')
                         wo_quantity = float(row.get('Quantity', 0))
                         wo_rate = float(row.get('Rate', 0))
@@ -136,13 +150,46 @@ def show_hybrid_mode(config):
                     st.session_state.hybrid_data['edited_items'] = pd.DataFrame(items_list)
                 
                 # Display editable table
+                st.markdown("""
+                <div style='background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 10px;'>
+                    <p style='color: #2e7d32; margin: 0; font-size: 0.9rem;'>
+                        <strong>💡 View Full Descriptions:</strong> Hover over description cells to see complete text with sub-items
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Option to show detailed view
+                show_detailed = st.checkbox("📋 Show Detailed Description View", value=False, help="Display full descriptions with sub-items in expandable format")
+                
+                if show_detailed:
+                    st.markdown("#### 📋 Detailed Item Descriptions")
+                    for idx, row in st.session_state.hybrid_data['edited_items'].iterrows():
+                        with st.expander(f"**{row['Item No']}** - {row['Description'][:50]}..."):
+                            st.markdown(f"""
+                            **Item No:** {row['Item No']}
+                            
+                            **Full Description:**
+                            ```
+                            {row['Description']}
+                            ```
+                            
+                            **Details:**
+                            - Unit: {row['Unit']}
+                            - WO Quantity: {row['WO Quantity']:.2f}
+                            - Bill Quantity: {row['Bill Quantity']:.2f}
+                            - WO Rate: ₹{row['WO Rate']:.2f}
+                            - Bill Rate: ₹{row['Bill Rate']:.2f}
+                            - Bill Amount: ₹{row['Bill Amount']:.2f}
+                            """)
+                    st.markdown("---")
+                
                 edited_df = st.data_editor(
                     st.session_state.hybrid_data['edited_items'],
                     use_container_width=True,
                     num_rows="dynamic",
                     column_config={
                         "Item No": st.column_config.TextColumn("Item No", width="small"),
-                        "Description": st.column_config.TextColumn("Description", width="large"),
+                        "Description": st.column_config.TextColumn("Description", width="large", help="Full description with sub-items"),
                         "Unit": st.column_config.TextColumn("Unit", width="small"),
                         "WO Quantity": st.column_config.NumberColumn("WO Qty", format="%.2f", disabled=True),
                         "Bill Quantity": st.column_config.NumberColumn("Bill Qty", format="%.2f"),
