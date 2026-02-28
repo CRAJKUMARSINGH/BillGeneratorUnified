@@ -121,6 +121,9 @@ def show_excel_mode(config):
                     
                     st.success(f"✅ Generated {len(html_documents)} HTML documents")
                     
+                    # Initialize saved_files list before any usage
+                    saved_files = []
+                    
                     # Step 3: Generate Word documents if requested
                     word_documents = {}
                     if generate_word:
@@ -142,7 +145,6 @@ def show_excel_mode(config):
                     
                     # Step 4: Convert to PDF if requested
                     pdf_documents = {}
-                    saved_files = []
                     
                     if generate_pdf:
                         from core.generators.pdf_generator_fixed import FixedPDFGenerator
