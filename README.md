@@ -1,5 +1,25 @@
 # BillGenerator Unified - Production Ready
 
+## ⚠️ CRITICAL: TEST INPUT FILES LOCATION
+
+**🔴 MANDATORY FOR ALL ENGINEERS:**
+
+All test Excel files are located in:
+```
+TEST_INPUT_FILES/
+```
+
+**Recommended test file:**
+```
+TEST_INPUT_FILES/FirstFINALvidExtra.xlsx
+```
+
+**❌ DO NOT use `ATTACHED_ASSETS/` for testing**
+
+📖 **Read:** `⚠️_CRITICAL_TEST_INPUT_LOCATION.md` for complete details
+
+---
+
 ## Overview
 
 Professional Bill Generation System for PWD (Public Works Department) contractors. Generates accurate, formatted bills with deviation statements, certificates, and scrutiny sheets from Excel input files.
