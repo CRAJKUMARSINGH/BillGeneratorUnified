@@ -418,11 +418,31 @@ elif "🔄 Hybrid: Upload + Edit" in selected_mode:
         st.error(f"❌ Hybrid mode not available: {str(e)}")
 
 elif "💻 Online Entry" in selected_mode:
-    try:
-        from core.ui.online_mode import show_online_mode
-        show_online_mode(config)
-    except ImportError:
-        st.info("💻 Online entry mode coming soon!")
+    # Feature flag for Excel-like grid (Phase 2)
+    use_excel_grid = st.sidebar.checkbox(
+        "🆕 Use Excel-Like Grid (Phase 2)",
+        value=True,
+        help="Enable new Excel-like grid interface with keyboard navigation"
+    )
+    
+    if use_excel_grid:
+        try:
+            from core.ui.online_mode_grid import show_online_mode_grid
+            show_online_mode_grid(config)
+        except ImportError as e:
+            st.error(f"❌ Excel-like grid mode not available: {str(e)}")
+            st.info("Falling back to form-based mode...")
+            try:
+                from core.ui.online_mode import show_online_mode
+                show_online_mode(config)
+            except ImportError:
+                st.info("💻 Online entry mode coming soon!")
+    else:
+        try:
+            from core.ui.online_mode import show_online_mode
+            show_online_mode(config)
+        except ImportError:
+            st.info("💻 Online entry mode coming soon!")
 
 elif "📦 Batch Processing" in selected_mode:
     # Use fixed batch processor with correct template flow
