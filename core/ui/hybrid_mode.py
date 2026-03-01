@@ -222,8 +222,18 @@ def show_hybrid_mode(config):
                                 description = f"{description}\n" + "\n".join([f"  • {item}" for item in sub_items])
                         
                         unit = row.get('Unit', 'NOS')
-                        wo_quantity = float(row.get('Quantity', 0))
-                        wo_rate = float(row.get('Rate', 0))
+                        
+                        # Safe float conversion with error handling
+                        try:
+                            wo_quantity = float(row.get('Quantity', 0))
+                        except (ValueError, TypeError):
+                            wo_quantity = 0.0
+                        
+                        try:
+                            wo_rate = float(row.get('Rate', 0))
+                        except (ValueError, TypeError):
+                            # Handle text values like "Above", "As per", etc.
+                            wo_rate = 0.0
                         
                         # Get bill quantity if available
                         bill_qty = 0.0  # Default to 0 for items not in bill quantity sheet
@@ -233,7 +243,10 @@ def show_hybrid_mode(config):
                                 bill_qty_value = bill_row.get('Quantity', 0)
                                 # Only use bill quantity if it's a valid number > 0
                                 if bill_qty_value and str(bill_qty_value) != 'nan':
-                                    bill_qty = float(bill_qty_value)
+                                    try:
+                                        bill_qty = float(bill_qty_value)
+                                    except (ValueError, TypeError):
+                                        bill_qty = 0.0
                         
                         items_list.append({
                             'Item No': item_no,

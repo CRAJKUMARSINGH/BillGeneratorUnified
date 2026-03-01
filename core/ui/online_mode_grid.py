@@ -345,13 +345,24 @@ def extract_data_from_excel(excel_file):
             if not wo_df.empty:
                 items_list = []
                 for idx, row in wo_df.iterrows():
+                    # Safe float conversion
+                    try:
+                        qty = float(row.get('Quantity', 0))
+                    except (ValueError, TypeError):
+                        qty = 0.0
+                    
+                    try:
+                        rate = float(row.get('Rate', 0))
+                    except (ValueError, TypeError):
+                        rate = 0.0
+                    
                     items_list.append({
                         'Item No': row.get('Item No.', f"{idx+1:03d}"),
                         'Description': row.get('Description', ''),
                         'Unit': row.get('Unit', 'NOS'),
-                        'Quantity': float(row.get('Quantity', 0)),
-                        'Rate': float(row.get('Rate', 0)),
-                        'Amount': float(row.get('Quantity', 0)) * float(row.get('Rate', 0))
+                        'Quantity': qty,
+                        'Rate': rate,
+                        'Amount': qty * rate
                     })
                 
                 result['items_df'] = pd.DataFrame(items_list)
