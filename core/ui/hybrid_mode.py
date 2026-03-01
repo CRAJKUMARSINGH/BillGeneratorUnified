@@ -616,13 +616,24 @@ def show_hybrid_mode(config):
                     if 'edited_extra_items' not in st.session_state.hybrid_data:
                         extra_list = []
                         for idx, row in extra_items_df.iterrows():
+                            # Safe float conversion for extra items
+                            try:
+                                extra_qty = float(row.get('Quantity', 0))
+                            except (ValueError, TypeError):
+                                extra_qty = 0.0
+                            
+                            try:
+                                extra_rate = float(row.get('Rate', 0))
+                            except (ValueError, TypeError):
+                                extra_rate = 0.0
+                            
                             extra_list.append({
                                 'Item No': row.get('Item No.', f"E{idx+1:03d}"),
                                 'Description': row.get('Description of Item', row.get('Description', '')),
                                 'Unit': row.get('Unit', 'NOS'),
-                                'Quantity': float(row.get('Quantity', 0)),
-                                'Rate': float(row.get('Rate', 0)),
-                                'Amount': float(row.get('Quantity', 0)) * float(row.get('Rate', 0))
+                                'Quantity': extra_qty,
+                                'Rate': extra_rate,
+                                'Amount': extra_qty * extra_rate
                             })
                         st.session_state.hybrid_data['edited_extra_items'] = pd.DataFrame(extra_list)
                     
