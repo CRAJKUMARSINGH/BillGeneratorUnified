@@ -7,9 +7,66 @@ import pandas as pd
 from datetime import datetime
 import io
 import zipfile
+import json
+
+# PHASE 1.2: Change Log / Audit Trail System
+class ChangeLogger:
+    """Track all modifications for audit trail"""
+    
+    @staticmethod
+    def initialize():
+        """Initialize change log in session state"""
+        if 'change_log' not in st.session_state:
+            st.session_state.change_log = []
+    
+    @staticmethod
+    def log_change(item_no, field, old_value, new_value, reason="Manual Edit"):
+        """Log a change with timestamp"""
+        change_entry = {
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'item_no': item_no,
+            'field': field,
+            'old_value': old_value,
+            'new_value': new_value,
+            'reason': reason,
+            'user': 'Admin'  # Can be extended for multi-user
+        }
+        st.session_state.change_log.append(change_entry)
+    
+    @staticmethod
+    def get_changes():
+        """Get all changes"""
+        return st.session_state.get('change_log', [])
+    
+    @staticmethod
+    def get_changes_for_item(item_no):
+        """Get changes for specific item"""
+        return [c for c in st.session_state.get('change_log', []) if c['item_no'] == item_no]
+    
+    @staticmethod
+    def export_to_dataframe():
+        """Export change log to DataFrame"""
+        changes = st.session_state.get('change_log', [])
+        if changes:
+            return pd.DataFrame(changes)
+        return pd.DataFrame(columns=['timestamp', 'item_no', 'field', 'old_value', 'new_value', 'reason', 'user'])
+    
+    @staticmethod
+    def export_to_json():
+        """Export change log to JSON"""
+        return json.dumps(st.session_state.get('change_log', []), indent=2)
+    
+    @staticmethod
+    def clear():
+        """Clear change log"""
+        st.session_state.change_log = []
 
 def show_hybrid_mode(config):
     """Show hybrid Excel upload + rate editor interface"""
+    
+    # PHASE 1.2: Initialize change logger
+    ChangeLogger.initialize()
+    
     st.markdown("## 🔄 Hybrid Mode: Excel Upload + Rate Editor")
     
     st.markdown("""
@@ -331,6 +388,42 @@ def show_hybrid_mode(config):
                 edited_df['Bill Amount'] = edited_df['Bill Quantity'] * edited_df['Bill Rate']
                 edited_df['WO Amount'] = edited_df['WO Quantity'] * edited_df['WO Rate']
                 
+                # PHASE 1.2: Track changes in change log
+                # Compare with previous state to detect changes
+                if 'edited_items' in st.session_state.hybrid_data:
+                    prev_df = st.session_state.hybrid_data['edited_items']
+                    
+                    # Check for quantity changes
+                    for idx in edited_df.index:
+                        if idx in prev_df.index:
+                            item_no = edited_df.loc[idx, 'Item No']
+                            
+                            # Check Bill Quantity change
+                            old_qty = prev_df.loc[idx, 'Bill Quantity']
+                            new_qty = edited_df.loc[idx, 'Bill Quantity']
+                            if old_qty != new_qty:
+                                reason = "Zero-Qty Activation" if old_qty == 0 else "Quantity Adjustment"
+                                ChangeLogger.log_change(
+                                    item_no=item_no,
+                                    field='Bill Quantity',
+                                    old_value=f"{old_qty:.2f}",
+                                    new_value=f"{new_qty:.2f}",
+                                    reason=reason
+                                )
+                            
+                            # Check Bill Rate change
+                            old_rate = prev_df.loc[idx, 'Bill Rate']
+                            new_rate = edited_df.loc[idx, 'Bill Rate']
+                            if old_rate != new_rate:
+                                reason = "Part Rate Payment" if new_rate < edited_df.loc[idx, 'WO Rate'] else "Rate Adjustment"
+                                ChangeLogger.log_change(
+                                    item_no=item_no,
+                                    field='Bill Rate',
+                                    old_value=f"₹{old_rate:.2f}",
+                                    new_value=f"₹{new_rate:.2f}",
+                                    reason=reason
+                                )
+                
                 # PHASE 1.1: Add Part-Rate tracking and display
                 # Track which items have part-rate (bill rate < WO rate)
                 edited_df['Is Part Rate'] = edited_df['Bill Rate'] < edited_df['WO Rate']
@@ -429,6 +522,75 @@ def show_hybrid_mode(config):
                 items_in_bill = len(summary_df[summary_df['Bill Quantity'] > 0])
                 total_items = len(summary_df)
                 st.info(f"📦 Items in Bill: {items_in_bill} / {total_items} work order items")
+                
+                # PHASE 1.2: Show Change Log / Audit Trail
+                st.markdown("---")
+                st.markdown("#### 📝 Change Log / Audit Trail")
+                
+                changes = ChangeLogger.get_changes()
+                
+                if len(changes) > 0:
+                    col1, col2 = st.columns([3, 1])
+                    
+                    with col1:
+                        st.info(f"📊 Total Changes Recorded: {len(changes)}")
+                    
+                    with col2:
+                        if st.button("🗑️ Clear Log", help="Clear all change history"):
+                            ChangeLogger.clear()
+                            st.rerun()
+                    
+                    # Show change log in expandable section
+                    with st.expander(f"📋 View All Changes ({len(changes)} entries)", expanded=False):
+                        st.markdown("""
+                        <div style='background: #fff3e0; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                            <p style='color: #e65100; margin: 0; font-size: 0.9rem;'>
+                                <strong>Audit Trail:</strong> All modifications are tracked with timestamp, original value, new value, and reason.
+                            </p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Display as DataFrame
+                        change_df = ChangeLogger.export_to_dataframe()
+                        st.dataframe(
+                            change_df,
+                            use_container_width=True,
+                            hide_index=True,
+                            column_config={
+                                "timestamp": st.column_config.TextColumn("Timestamp", width="medium"),
+                                "item_no": st.column_config.TextColumn("Item No", width="small"),
+                                "field": st.column_config.TextColumn("Field", width="small"),
+                                "old_value": st.column_config.TextColumn("Old Value", width="small"),
+                                "new_value": st.column_config.TextColumn("New Value", width="small"),
+                                "reason": st.column_config.TextColumn("Reason", width="medium"),
+                                "user": st.column_config.TextColumn("User", width="small")
+                            }
+                        )
+                        
+                        # Export options
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            # Export as CSV
+                            csv = change_df.to_csv(index=False)
+                            st.download_button(
+                                label="📥 Download as CSV",
+                                data=csv,
+                                file_name=f"change_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                                mime="text/csv"
+                            )
+                        
+                        with col2:
+                            # Export as JSON
+                            json_data = ChangeLogger.export_to_json()
+                            st.download_button(
+                                label="📥 Download as JSON",
+                                data=json_data,
+                                file_name=f"change_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                                mime="application/json"
+                            )
+                else:
+                    st.info("ℹ️ No changes recorded yet. Edit quantities or rates to start tracking changes.")
                 
                 # Handle Extra Items
                 st.markdown("---")
