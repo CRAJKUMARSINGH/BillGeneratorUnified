@@ -331,6 +331,24 @@ def show_hybrid_mode(config):
                 edited_df['Bill Amount'] = edited_df['Bill Quantity'] * edited_df['Bill Rate']
                 edited_df['WO Amount'] = edited_df['WO Quantity'] * edited_df['WO Rate']
                 
+                # PHASE 1.1: Add Part-Rate tracking and display
+                # Track which items have part-rate (bill rate < WO rate)
+                edited_df['Is Part Rate'] = edited_df['Bill Rate'] < edited_df['WO Rate']
+                
+                # Create display column for rate with (Part Rate) label
+                edited_df['Rate Display'] = edited_df.apply(
+                    lambda row: f"₹{row['Bill Rate']:.2f} (Part Rate)" 
+                    if row['Is Part Rate'] 
+                    else f"₹{row['Bill Rate']:.2f}",
+                    axis=1
+                )
+                
+                # Also update description to include (Part Rate) if not already there
+                for idx in edited_df[edited_df['Is Part Rate']].index:
+                    desc = edited_df.loc[idx, 'Description']
+                    if '(Part Rate)' not in desc:
+                        edited_df.loc[idx, 'Description'] = f"{desc} (Part Rate)"
+                
                 # Update session state - merge changes back to full dataframe
                 if not show_all_items:
                     # Merge edited items back into full dataframe
@@ -365,32 +383,32 @@ def show_hybrid_mode(config):
                 
                 # Show item status
                 st.markdown("#### 📋 Item Status")
-                col1, col2, col3 = st.columns(3)
+                col1, col2, col3, col4 = st.columns(4)
                 col1.metric("Total Items", len(summary_df))
                 col2.metric("Active Items", len(active_items), help="Items with Bill Quantity > 0")
                 col3.metric("Zero Qty Items", len(zero_qty_items), help="Items with Bill Quantity = 0 (can be activated)")
                 
-                # Show zero quantity items if any
-                if len(zero_qty_items) > 0:
-                    with st.expander(f"⚠️ {len(zero_qty_items)} Items with Zero Quantity (Click to view)"):
+                # PHASE 1.1: Show Part-Rate items count
+                part_rate_items = summary_df[summary_df.get('Is Part Rate', False) == True] if 'Is Part Rate' in summary_df.columns else pd.DataFrame()
+                col4.metric("Part-Rate Items", len(part_rate_items), help="Items with Bill Rate < WO Rate")
+                
+                # Show part-rate items if any
+                if len(part_rate_items) > 0:
+                    with st.expander(f"💰 {len(part_rate_items)} Part-Rate Items (Click to view)"):
                         st.markdown("""
-                        <div style='background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
-                            <p style='color: #856404; margin: 0; font-size: 0.9rem;'>
-                                These items have zero bill quantity. Edit the "Bill Quantity" column above to add them to the bill.
+                        <div style='background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                            <p style='color: #0d47a1; margin: 0; font-size: 0.9rem;'>
+                                <strong>Part-Rate Payment:</strong> These items have bill rate lower than work order rate.
                             </p>
                         </div>
                         """, unsafe_allow_html=True)
                         
-                        zero_display = zero_qty_items[['Item No', 'Description', 'WO Quantity', 'WO Rate']].copy()
-                        zero_display['WO Amount'] = zero_qty_items['WO Amount']
-                        st.dataframe(zero_display, use_container_width=True, hide_index=True)
-                
-                # Show item status
-                st.markdown("#### 📋 Item Status")
-                col1, col2, col3 = st.columns(3)
-                col1.metric("Total Items", len(edited_df))
-                col2.metric("Active Items", len(active_items), help="Items with Bill Quantity > 0")
-                col3.metric("Zero Qty Items", len(zero_qty_items), help="Items with Bill Quantity = 0 (can be activated)")
+                        part_rate_display = part_rate_items[['Item No', 'Description', 'WO Rate', 'Bill Rate', 'Rate Display']].copy()
+                        part_rate_display['Savings'] = (part_rate_items['WO Rate'] - part_rate_items['Bill Rate']) * part_rate_items['Bill Quantity']
+                        st.dataframe(part_rate_display, use_container_width=True, hide_index=True)
+                        
+                        total_savings = part_rate_display['Savings'].sum()
+                        st.success(f"💰 Total Savings from Part-Rate: ₹{total_savings:,.2f}")
                 
                 # Show zero quantity items if any
                 if len(zero_qty_items) > 0:
