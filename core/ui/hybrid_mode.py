@@ -8,6 +8,7 @@ from datetime import datetime
 import io
 import zipfile
 import json
+from core.utils.excel_exporter import ExcelExporter
 
 # PHASE 1.2: Change Log / Audit Trail System
 class ChangeLogger:
@@ -756,6 +757,72 @@ def show_hybrid_mode(config):
                             # Download section
                             st.markdown("---")
                             st.markdown("### 📥 Download Documents")
+                            
+                            # PHASE 1.3: Excel Export with Formatting
+                            st.markdown("#### 📊 Excel Export (Round-Trip)")
+                            st.markdown("""
+                            <div style='background: #e8f5e9; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>
+                                <p style='color: #2e7d32; margin: 0; font-size: 0.9rem;'>
+                                    <strong>💡 Excel Round-Trip:</strong> Download your edited data back to Excel with formatting preserved.
+                                    Includes change log sheet for audit trail.
+                                </p>
+                            </div>
+                            """, unsafe_allow_html=True)
+                            
+                            col1, col2 = st.columns(2)
+                            
+                            with col1:
+                                # Export edited data to new Excel file
+                                try:
+                                    excel_output = ExcelExporter.create_new_excel(
+                                        edited_df=edited_df,
+                                        title_data=title_data,
+                                        include_formatting=True
+                                    )
+                                    
+                                    # Add change log sheet if changes exist
+                                    changes = ChangeLogger.get_changes()
+                                    if len(changes) > 0:
+                                        change_df = ChangeLogger.export_to_dataframe()
+                                        excel_output = ExcelExporter.add_change_log_sheet(excel_output, change_df)
+                                    
+                                    st.download_button(
+                                        "📊 Download Edited Excel",
+                                        data=excel_output.getvalue(),
+                                        file_name=f"edited_bill_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+                                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        use_container_width=True,
+                                        help="Download edited data as Excel file with formatting and change log"
+                                    )
+                                except Exception as e:
+                                    st.error(f"Excel export error: {str(e)}")
+                            
+                            with col2:
+                                # Export with original file formatting (if available)
+                                if uploaded_file is not None:
+                                    try:
+                                        # Reset file pointer
+                                        uploaded_file.seek(0)
+                                        
+                                        excel_output_original = ExcelExporter.export_with_formatting(
+                                            original_file=uploaded_file,
+                                            edited_df=edited_df,
+                                            sheet_name='Bill Quantity',
+                                            preserve_formulas=True
+                                        )
+                                        
+                                        st.download_button(
+                                            "📊 Download with Original Formatting",
+                                            data=excel_output_original.getvalue(),
+                                            file_name=f"updated_{uploaded_file.name}",
+                                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                            use_container_width=True,
+                                            help="Update original Excel file preserving all formatting"
+                                        )
+                                    except Exception as e:
+                                        st.warning(f"Could not preserve original formatting: {str(e)}")
+                            
+                            st.markdown("---")
                             
                             # Create ZIP
                             zip_buffer = io.BytesIO()
