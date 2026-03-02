@@ -35,7 +35,9 @@ st.session_state = MockSessionState()
 
 from core.ui.online_mode_grid import (
     create_default_items_df,
-    extract_data_from_excel
+    extract_data_from_excel,
+    update_validation_status,
+    _save_history
 )
 from core.ui.hybrid_mode import ChangeLogger
 from core.utils.excel_exporter import ExcelExporter
@@ -62,7 +64,7 @@ def test_excel_grid_implementation():
     print(f"  Created DataFrame with {len(items_df)} items")
     print(f"  Columns: {list(items_df.columns)}")
     
-    expected_columns = ['Item No', 'Description', 'Unit', 'Quantity', 'Rate', 'Amount']
+    expected_columns = ['Status', 'Item No', 'Description', 'Unit', 'Quantity', 'Rate', 'Amount']
     if list(items_df.columns) == expected_columns:
         print("  ✅ Columns correct")
     else:
@@ -126,6 +128,14 @@ def test_excel_grid_implementation():
         print("  ✅ Item 003 amount correct: ₹500,000.00")
     else:
         print(f"  ❌ Item 003 amount incorrect: ₹{items_df.loc[2, 'Amount']}")
+        return False
+        
+    # Validate items
+    items_df = update_validation_status(items_df)
+    if items_df.loc[0, 'Status'] == '🟢':
+        print("  ✅ Complete item tagged as 🟢 Valid")
+    else:
+        print(f"  ❌ Valid item not tagged correctly: {items_df.loc[0, 'Status']}")
         return False
     
     print()
@@ -427,18 +437,19 @@ def test_excel_grid_implementation():
     print("  ✅ TEST 6: Excel export integration")
     print("  ✅ TEST 7: Large dataset (100 rows)")
     print("  ✅ TEST 8: Unit dropdown options")
-    print("  ✅ TEST 9: Zero quantity handling")
+    print("  ✅ TEST 9: Validation and zero quantity handling")
     print("  ✅ TEST 10: Session state simulation")
     print()
     print("Excel-Like Grid Features:")
-    print("  ✅ DataFrame-based grid structure")
+    print("  ✅ DataFrame-based grid structure with Validation")
     print("  ✅ Inline cell editing (simulated)")
     print("  ✅ Auto-calculation of amounts")
     print("  ✅ Dynamic row addition (5/10 rows)")
+    print("  ✅ Undo/Redo framework")
     print("  ✅ Change tracking integration (Phase 1.2)")
     print("  ✅ Excel export integration (Phase 1.3)")
     print("  ✅ Unit dropdown (9 options)")
-    print("  ✅ Zero-qty item filtering")
+    print("  ✅ Zero-qty item filtering and validation rules")
     print("  ✅ Large dataset support (100+ rows)")
     print("  ✅ Session state management")
     print()

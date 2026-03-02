@@ -9,6 +9,7 @@ import io
 import zipfile
 import json
 from core.utils.excel_exporter import ExcelExporter
+from core.utils.safe_conversions import safe_float, safe_quantity, safe_rate
 
 # PHASE 1.2: Change Log / Audit Trail System
 class ChangeLogger:
@@ -223,17 +224,9 @@ def show_hybrid_mode(config):
                         
                         unit = row.get('Unit', 'NOS')
                         
-                        # Safe float conversion with error handling
-                        try:
-                            wo_quantity = float(row.get('Quantity', 0))
-                        except (ValueError, TypeError):
-                            wo_quantity = 0.0
-                        
-                        try:
-                            wo_rate = float(row.get('Rate', 0))
-                        except (ValueError, TypeError):
-                            # Handle text values like "Above", "As per", etc.
-                            wo_rate = 0.0
+                        # Safe float conversion using utility functions
+                        wo_quantity = safe_quantity(row.get('Quantity', 0))
+                        wo_rate = safe_rate(row.get('Rate', 0))
                         
                         # Get bill quantity if available
                         bill_qty = 0.0  # Default to 0 for items not in bill quantity sheet
@@ -243,10 +236,7 @@ def show_hybrid_mode(config):
                                 bill_qty_value = bill_row.get('Quantity', 0)
                                 # Only use bill quantity if it's a valid number > 0
                                 if bill_qty_value and str(bill_qty_value) != 'nan':
-                                    try:
-                                        bill_qty = float(bill_qty_value)
-                                    except (ValueError, TypeError):
-                                        bill_qty = 0.0
+                                    bill_qty = safe_quantity(bill_qty_value)
                         
                         items_list.append({
                             'Item No': item_no,
@@ -617,15 +607,8 @@ def show_hybrid_mode(config):
                         extra_list = []
                         for idx, row in extra_items_df.iterrows():
                             # Safe float conversion for extra items
-                            try:
-                                extra_qty = float(row.get('Quantity', 0))
-                            except (ValueError, TypeError):
-                                extra_qty = 0.0
-                            
-                            try:
-                                extra_rate = float(row.get('Rate', 0))
-                            except (ValueError, TypeError):
-                                extra_rate = 0.0
+                            extra_qty = safe_quantity(row.get('Quantity', 0))
+                            extra_rate = safe_rate(row.get('Rate', 0))
                             
                             extra_list.append({
                                 'Item No': row.get('Item No.', f"E{idx+1:03d}"),
