@@ -5,7 +5,7 @@
   "features": {
     "excel_upload": true,
     "online_entry": true,
-    "batch_processing": false,
+    "batch_processing": true,
     "advanced_pdf": true,
     "custom_templates": false,
     "analytics": false,
