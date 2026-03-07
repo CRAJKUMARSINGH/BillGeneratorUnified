@@ -10,6 +10,14 @@ from pathlib import Path
 import streamlit as st
 import shutil
 
+# Page config MUST be first Streamlit command
+st.set_page_config(
+    page_title="BillGenerator Unified",
+    page_icon="📄",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # Add core to path
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -25,14 +33,6 @@ from core.config.config_loader import ConfigLoader
 
 # Get config from environment or use default
 config = ConfigLoader.load_from_env('BILL_CONFIG', 'config/v01.json')
-
-# Page config
-st.set_page_config(
-    page_title=config.app_name,
-    page_icon=config.ui.branding.icon,
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Automatic cache cleaning on startup (optional)
 # This can be controlled by configuration or environment variable
