@@ -103,220 +103,192 @@ if (auto_clean_env or (config and config.processing.auto_clean_cache)) and not s
     else:
         print("No cache files found to clean")
 
-# Custom CSS with Beautiful Gradient Styling
+# Custom CSS with 'Premium PWD Blue' Styling
 st.markdown("""
 <style>
-    /* Main app background gradient */
-    .main {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap');
+
+    /* Main app background */
     .stApp {
-        background: linear-gradient(to bottom, #f0f4f8, #e8ecf1);
+        background-color: #010409;
+        background-image: radial-gradient(at 0% 0%, hsla(228,100%,74%,0.05) 0px, transparent 50%), 
+                          radial-gradient(at 50% 0%, hsla(189,100%,56%,0.04) 0px, transparent 50%);
+    }
+
+    /* Primary Heading Typography */
+    h1, h2, h3, .font-heading {
+        font-family: 'Outfit', sans-serif !important;
     }
     
-    /* Hide Streamlit branding and default elements */
+    /* Body Typography */
+    .stMarkdown, p, span, div, label {
+        font-family: 'Inter', sans-serif !important;
+    }
+
+    /* Hide Streamlit brandings */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* Hide the default Streamlit header toolbar */
-    .stApp > header {display: none;}
-    
-    /* Hide file uploader details */
-    [data-testid="stFileUploaderDeleteBtn"] {display: none;}
-    
-    /* Hide timestamp in header */
-    time {display: none;}
-    
-    /* Hide footer file path */
-    .reportview-container .main footer {visibility: hidden;}
-    .reportview-container .main footer:after {
-        content:''; 
-        visibility: visible;
-        display: block;
-    }
-    
-    /* Hide Streamlit deploy button */
     .stDeployButton {display: none;}
     
-    /* Hide "Made with Streamlit" */
-    footer:after {
-        content:''; 
-        visibility: visible;
-        display: block;
+    /* Glassmorphism Card Style */
+    div[data-testid="stVerticalBlock"] > div.element-container {
+        /* Optional: Add spacing/glass effects here if needed for specific blocks */
     }
     
-    /* Beautiful Gradient Header */
+    /* Custom Header: Premium PWD Blue */
     .main-header {
-        background: linear-gradient(to right, #667eea, #764ba2, #f093fb);
-        padding: 2.5rem 2rem;
-        border-radius: 15px;
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        padding: 3rem 2rem;
+        border-radius: 24px;
         color: white;
         text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        animation: fadeIn 0.8s ease-in;
+        margin-bottom: 2.5rem;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .main-header::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at top right, rgba(251,191,36,0.1), transparent 70%);
+        pointer-events: none;
     }
     
     .main-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 2.8rem;
+        font-weight: 800;
         margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        letter-spacing: -0.025em;
+        background: linear-gradient(to bottom, #ffffff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     
     .main-header p {
         font-size: 1.1rem;
-        margin: 0.5rem 0 0 0;
-        opacity: 0.95;
+        margin: 0.75rem 0 0 0;
+        color: #94a3b8;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
     }
-    
-    /* Metric Cards with Gradient */
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    /* Success Banner */
-    .success-banner {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px 0;
-    }
-    
-    /* Feature Cards */
-    .feature-card {
-        background: white;
+
+    /* Premium Metric Style */
+    [data-testid="stMetric"] {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        margin: 1rem 0;
-        border-left: 4px solid #667eea;
-        transition: transform 0.2s, box-shadow 0.2s;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
-    .feature-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    
-    /* Buttons with Gradient */
+    /* Buttons with Gold Glow */
     .stButton>button {
         width: 100%;
-        border-radius: 8px;
-        height: 3rem;
-        font-weight: 600;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 14px;
+        height: 3.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
         color: white;
-        border: none;
-        transition: all 0.3s;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
     
     .stButton>button:hover {
+        border-color: #fbbf24;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        color: #fbbf24;
     }
     
-    /* File Upload with Gradient */
+    .stButton>button:active {
+        transform: translateY(0);
+    }
+    
+    /* File Uploader: Premium Glass */
     [data-testid="stFileUploader"] {
-        border: 2px dashed #667eea !important;
-        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%) !important;
-        border-radius: 10px !important;
-        padding: 20px !important;
-        text-align: center !important;
+        border: 2px dashed rgba(251, 191, 36, 0.3) !important;
+        background: rgba(49, 46, 129, 0.05) !important;
+        border-radius: 20px !important;
+        padding: 30px !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stFileUploader"]:hover {
-        border: 2px dashed #764ba2 !important;
-        background: linear-gradient(135deg, #e8ecf1 0%, #d1d8e0 100%) !important;
-        box-shadow: 0 0 15px rgba(102, 126, 234, 0.3) !important;
+        border-color: #fbbf24 !important;
+        background: rgba(49, 46, 129, 0.1) !important;
+        box-shadow: 0 0 25px rgba(251, 191, 36, 0.1) !important;
     }
     
-    [data-testid="stFileUploader"] div:first-child {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 8px !important;
-        padding: 12px 24px !important;
-        font-weight: bold !important;
-        font-size: 16px !important;
-        box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3) !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    [data-testid="stFileUploader"] div:first-child:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    [data-testid="stFileUploader"] div:first-child:active {
-        transform: translateY(0) !important;
-        box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3) !important;
-    }
-    
-    /* Sidebar Styling with Gradient */
-    .css-1d391kg {
-        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
-    }
-    
+    /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
+        background-color: #020617;
+        border-right: 1px solid rgba(255,255,255,0.05);
     }
     
-    /* Success/Info boxes with Gradient */
-    .stSuccess {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        border-left: 4px solid #667eea;
+    /* Input Fields */
+    .stTextInput>div>div>input, .stSelectbox select {
+        border-radius: 12px !important;
+        background-color: rgba(255,255,255,0.03) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        color: white !important;
     }
     
-    .stInfo {
-        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
-        border-left: 4px solid #00cec9;
+    .stTextInput>div>div>input:focus {
+        border-color: #fbbf24 !important;
+        box-shadow: 0 0 10px rgba(251, 191, 36, 0.2) !important;
     }
-    
-    /* Animations */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Metrics */
-    [data-testid="stMetricValue"] {
-        font-size: 2rem;
-        color: #00b894;
+
+    /* Feature Badges */
+    .feature-badge-enabled {
+        background: rgba(251, 191, 36, 0.1);
+        border: 1px solid rgba(251, 191, 36, 0.2);
+        color: #fbbf24;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
         font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    /* Tooltip */
+    .stTooltipIcon {
+        color: #fbbf24 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Beautiful Green Header
+# Premium Header
 st.markdown(f"""
 <div class="main-header">
     <h1>{config.ui.branding.icon} {config.ui.branding.title}</h1>
-    <p>✨ Professional Bill Generation System | Version {config.version} | Mode: {config.mode}</p>
+    <p>Premium PWD Suite • Version {config.version} • Engineering Rigor</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar with Green Theme
+# Sidebar with Premium Theme
 with st.sidebar:
     st.markdown(f"""
-    <div style='background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); 
+    <div style='background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); 
                 padding: 1.5rem; 
-                border-radius: 10px; 
+                border-radius: 16px; 
                 text-align: center; 
-                margin-bottom: 1rem;
-                box-shadow: 0 2px 8px rgba(0, 184, 148, 0.3);'>
-        <h2 style='color: white; margin: 0; font-size: 1.5rem;'>
+                margin-bottom: 2rem;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);'>
+        <h2 style='color: white; margin: 0; font-size: 1.4rem; font-family: "Outfit", sans-serif;'>
             {config.ui.branding.icon} {config.app_name}
         </h2>
+        <p style='color: #fbbf24; font-size: 0.7rem; margin: 0.5rem 0 0 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;'>
+            Enterprise Edition
+        </p>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -336,41 +308,31 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Cache cleaning feature
+    # Maintenance Section
     st.markdown("### 🧹 Maintenance")
     
-    # Get output manager
-    output_mgr = get_output_manager()
-    output_size = output_mgr.get_folder_size()
-    output_files = len(output_mgr.get_all_files())
-    
-    if output_size > 0:
-        st.info(f"📦 OUTPUT folder: {output_files} files ({output_mgr.format_size(output_size)})")
-    
     # Button to clean cache
-    if st.button("🧹 Clean Cache & Temp Files"):
-        with st.spinner("Cleaning cache and temporary files..."):
+    if st.button("🧹 Clean System Cache"):
+        with st.spinner("Cleaning..."):
             cleaned_dirs, cleaned_files = CacheCleaner.clean_cache(verbose=False)
             if cleaned_dirs or cleaned_files > 0:
-                success_message = f"✅ Cleaned {cleaned_dirs} directories, {cleaned_files} files"
-                st.success(success_message)
+                st.success(f"✅ Cleaned {cleaned_dirs} dirs, {cleaned_files} files")
             else:
-                st.info("ℹ️ No cache files found to clean")
-        st.info("💡 Cache has been cleaned. Next run will start with a fresh state.")
+                st.info("ℹ️ No cache files found")
     
     # Button to clean old output files
-    if st.button("🗑️ Clean Old Output Files"):
-        with st.spinner("Cleaning old output files..."):
+    if st.button("🗑️ Purge Old Outputs"):
+        with st.spinner("Purging..."):
             files_deleted, space_freed = output_mgr.clean_old_files(keep_latest=10)
             if files_deleted > 0:
-                st.success(f"✅ Deleted {files_deleted} old files ({output_mgr.format_size(space_freed)} freed)")
+                st.success(f"✅ Deleted {files_deleted} old files ({output_mgr.format_size(space_freed)})")
             else:
-                st.info("ℹ️ No old files to clean")
+                st.info("ℹ️ No old files to purge")
     
     st.markdown("---")
     
     # Feature status with beautiful styling
-    st.markdown("### ✨ Features")
+    st.markdown("### ✨ Feature Status")
     features_status = {
         "Excel Upload": config.features.excel_upload,
         "Online Entry": config.features.online_entry,
@@ -381,23 +343,15 @@ with st.sidebar:
     
     for feature, enabled in features_status.items():
         if enabled:
-            st.markdown(f"""
-            <div style='background: linear-gradient(90deg, #d4edda 0%, #c3e6cb 100%); 
-                        padding: 0.5rem 1rem; 
-                        border-radius: 8px; 
-                        margin: 0.3rem 0;
-                        border-left: 3px solid #00b894;'>
-                <span style='color: #155724; font-weight: 600;'>✅ {feature}</span>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"<div class='feature-badge-enabled'>✅ {feature}</div>", unsafe_allow_html=True)
         else:
             st.markdown(f"""
-            <div style='background: #f8f9fa; 
-                        padding: 0.5rem 1rem; 
+            <div style='background: rgba(255,255,255,0.02); 
+                        padding: 6px 12px; 
                         border-radius: 8px; 
                         margin: 0.3rem 0;
-                        border-left: 3px solid #dee2e6;'>
-                <span style='color: #6c757d;'>❌ {feature}</span>
+                        border-left: 3px solid rgba(255,255,255,0.1);'>
+                <span style='color: #64748b; font-size: 11px; font-weight: 600;'>❌ {feature}</span>
             </div>
             """, unsafe_allow_html=True)
 

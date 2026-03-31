@@ -112,9 +112,23 @@ def show_excel_mode(config):
                     processor = ExcelProcessor()
                     processed_data = processor.process_excel(uploaded_file)
                     
-                    st.success("✅ Excel processed successfully!")
+                    st.success("✅ Excel data extracted successfully!")
                     
-                    # Step 2: Generate HTML using templates
+                    # Step 2: Interactive Preview & Edit (New Feature)
+                    from core.ui.edit_preview import show_edit_preview
+                    
+                    # Store in session state for editing
+                    if 'last_processed_data' not in st.session_state or st.session_state.get('last_uploaded_file') != uploaded_file.name:
+                        st.session_state.last_processed_data = processed_data
+                        st.session_state.last_uploaded_file = uploaded_file.name
+                    
+                    # Show the editor
+                    st.session_state.last_processed_data = show_edit_preview(st.session_state.last_processed_data)
+                    
+                    # Use the (potentially edited) data for generation
+                    processed_data = st.session_state.last_processed_data
+
+                    # Step 3: Generate HTML using templates
                     from core.generators.document_generator import DocumentGenerator
                     doc_gen = DocumentGenerator(processed_data)
                     html_documents = doc_gen.generate_all_documents()
