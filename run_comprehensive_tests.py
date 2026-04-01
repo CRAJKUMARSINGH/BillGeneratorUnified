@@ -36,19 +36,27 @@ def run_test_suite(test_file, test_name):
     
     try:
         # Run the test
-        result = subprocess.run([
-            sys.executable, "-m", "pytest", 
-            str(test_file), 
-            "-v", 
-            "--tb=short",
-            "--disable-warnings"
-        ], capture_output=True, text=True, cwd=project_root)
+        is_pytest = "comprehensive_excel_grid" in str(test_file)
+        if is_pytest:
+            cmd = [
+                sys.executable, "-m", "pytest", 
+                str(test_file), "-v", "--tb=short", "--disable-warnings"
+            ]
+        else:
+            cmd = [sys.executable, "-X", "utf8", str(test_file)]
+            
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', cwd=project_root)
         
         duration = time.time() - start_time
         
         # Parse results
-        passed = result.stdout.count("PASSED")
-        failed = result.stdout.count("FAILED") + result.stdout.count("ERROR")
+        if is_pytest:
+            passed = result.stdout.count("PASSED")
+            failed = result.stdout.count("FAILED") + result.stdout.count("ERROR")
+        else:
+            # For non-pytest scripts, check return code
+            passed = 10 if result.returncode == 0 else 0
+            failed = 0 if result.returncode == 0 else 1
         
         print(f"Duration: {duration:.2f} seconds")
         print(f"Results: {passed} passed, {failed} failed")

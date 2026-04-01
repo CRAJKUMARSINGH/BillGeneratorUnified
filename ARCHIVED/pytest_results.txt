@@ -1,0 +1,125 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Rajkumar\BillGeneratorUnified
+plugins: cov-7.0.0
+collected 133 items / 6 errors
+
+=================================== ERRORS ====================================
+__________________ ERROR collecting test_all_ld_scenarios.py __________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_all_ld_scenarios.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_all_ld_scenarios.py:12: in <module>
+    from core.generators.html_generator import HTMLGenerator
+core\generators\__init__.py:9: in <module>
+    from .doc_generator import DOCGenerator
+core\generators\doc_generator.py:7: in <module>
+    from docx import Document
+.venv\Lib\site-packages\docx\__init__.py:11: in <module>
+    from docx.api import Document
+.venv\Lib\site-packages\docx\api.py:12: in <module>
+    from docx.package import Package
+.venv\Lib\site-packages\docx\package.py:9: in <module>
+    from docx.opc.package import OpcPackage
+.venv\Lib\site-packages\docx\opc\package.py:9: in <module>
+    from docx.opc.part import PartFactory
+.venv\Lib\site-packages\docx\opc\part.py:9: in <module>
+    from docx.opc.oxml import serialize_part_xml
+.venv\Lib\site-packages\docx\opc\oxml.py:14: in <module>
+    from lxml import etree
+E   ImportError: cannot import name 'etree' from 'lxml' (C:\Users\Rajkumar\BillGeneratorUnified\.venv\Lib\site-packages\lxml\__init__.py)
+______________________ ERROR collecting test_output.txt _______________________
+..\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1059: in read_text
+    return f.read()
+           ^^^^^^^^
+<frozen codecs>:322: in decode
+    ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+______________ ERROR collecting test_robustness_comprehensive.py ______________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_robustness_comprehensive.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_robustness_comprehensive.py:20: in <module>
+    import psutil
+.venv\Lib\site-packages\psutil\__init__.py:101: in <module>
+    from . import _pswindows as _psplatform
+.venv\Lib\site-packages\psutil\_pswindows.py:30: in <module>
+    from ._psutil_windows import ABOVE_NORMAL_PRIORITY_CLASS
+E   ModuleNotFoundError: No module named 'psutil._psutil_windows'
+___________ ERROR collecting tests/test_html_renderer_enterprise.py ___________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_html_renderer_enterprise.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_html_renderer_enterprise.py:13: in <module>
+    from core.generators.html_renderer_enterprise import (
+core\generators\__init__.py:9: in <module>
+    from .doc_generator import DOCGenerator
+core\generators\doc_generator.py:7: in <module>
+    from docx import Document
+.venv\Lib\site-packages\docx\__init__.py:11: in <module>
+    from docx.api import Document
+.venv\Lib\site-packages\docx\api.py:12: in <module>
+    from docx.package import Package
+.venv\Lib\site-packages\docx\package.py:9: in <module>
+    from docx.opc.package import OpcPackage
+.venv\Lib\site-packages\docx\opc\package.py:9: in <module>
+    from docx.opc.part import PartFactory
+.venv\Lib\site-packages\docx\opc\part.py:9: in <module>
+    from docx.opc.oxml import serialize_part_xml
+.venv\Lib\site-packages\docx\opc\oxml.py:14: in <module>
+    from lxml import etree
+E   ImportError: cannot import name 'etree' from 'lxml' (C:\Users\Rajkumar\BillGeneratorUnified\.venv\Lib\site-packages\lxml\__init__.py)
+____________ ERROR collecting tests/test_online_grid_properties.py ____________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_online_grid_properties.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_online_grid_properties.py:9: in <module>
+    from hypothesis import given, strategies as st
+E   ModuleNotFoundError: No module named 'hypothesis'
+_______________ ERROR collecting tests/test_robot_automated.py ________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_robot_automated.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_robot_automated.py:21: in <module>
+    from core.generators.html_renderer_enterprise import HTMLRenderer, DocumentType
+core\generators\__init__.py:9: in <module>
+    from .doc_generator import DOCGenerator
+core\generators\doc_generator.py:7: in <module>
+    from docx import Document
+.venv\Lib\site-packages\docx\__init__.py:11: in <module>
+    from docx.api import Document
+.venv\Lib\site-packages\docx\api.py:12: in <module>
+    from docx.package import Package
+.venv\Lib\site-packages\docx\package.py:9: in <module>
+    from docx.opc.package import OpcPackage
+.venv\Lib\site-packages\docx\opc\package.py:9: in <module>
+    from docx.opc.part import PartFactory
+.venv\Lib\site-packages\docx\opc\part.py:9: in <module>
+    from docx.opc.oxml import serialize_part_xml
+.venv\Lib\site-packages\docx\opc\oxml.py:14: in <module>
+    from lxml import etree
+E   ImportError: cannot import name 'etree' from 'lxml' (C:\Users\Rajkumar\BillGeneratorUnified\.venv\Lib\site-packages\lxml\__init__.py)
+=========================== short test summary info ===========================
+ERROR test_all_ld_scenarios.py
+ERROR test_output.txt - UnicodeDecodeError: 'utf-8' codec can't decode byte 0...
+ERROR test_robustness_comprehensive.py
+ERROR tests/test_html_renderer_enterprise.py
+ERROR tests/test_online_grid_properties.py
+ERROR tests/test_robot_automated.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 6 errors during collection !!!!!!!!!!!!!!!!!!!
+============================== 6 errors in 4.14s ==============================

@@ -1,0 +1,19 @@
+:80 {
+    # Serve static frontend
+    root * /usr/share/nginx/html
+    file_server
+
+    # Reverse proxy for API
+    handle_path /api/* {
+        reverse_proxy backend:8000
+    }
+
+    # Fallback to index.html for SPA routing
+    handle {
+        try_files {path} /index.html
+    }
+
+    log {
+        output stdout
+    }
+}

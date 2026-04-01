@@ -11,57 +11,7 @@ import json
 from core.utils.excel_exporter import ExcelExporter
 from core.utils.safe_conversions import safe_float, safe_quantity, safe_rate
 
-# PHASE 1.2: Change Log / Audit Trail System
-class ChangeLogger:
-    """Track all modifications for audit trail"""
-    
-    @staticmethod
-    def initialize():
-        """Initialize change log in session state"""
-        if 'change_log' not in st.session_state:
-            st.session_state.change_log = []
-    
-    @staticmethod
-    def log_change(item_no, field, old_value, new_value, reason="Manual Edit"):
-        """Log a change with timestamp"""
-        change_entry = {
-            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'item_no': item_no,
-            'field': field,
-            'old_value': old_value,
-            'new_value': new_value,
-            'reason': reason,
-            'user': 'Admin'  # Can be extended for multi-user
-        }
-        st.session_state.change_log.append(change_entry)
-    
-    @staticmethod
-    def get_changes():
-        """Get all changes"""
-        return st.session_state.get('change_log', [])
-    
-    @staticmethod
-    def get_changes_for_item(item_no):
-        """Get changes for specific item"""
-        return [c for c in st.session_state.get('change_log', []) if c['item_no'] == item_no]
-    
-    @staticmethod
-    def export_to_dataframe():
-        """Export change log to DataFrame"""
-        changes = st.session_state.get('change_log', [])
-        if changes:
-            return pd.DataFrame(changes)
-        return pd.DataFrame(columns=['timestamp', 'item_no', 'field', 'old_value', 'new_value', 'reason', 'user'])
-    
-    @staticmethod
-    def export_to_json():
-        """Export change log to JSON"""
-        return json.dumps(st.session_state.get('change_log', []), indent=2)
-    
-    @staticmethod
-    def clear():
-        """Clear change log"""
-        st.session_state.change_log = []
+from core.utils.ui_helpers import ChangeLogger
 
 def show_hybrid_mode(config):
     """Show hybrid Excel upload + rate editor interface"""

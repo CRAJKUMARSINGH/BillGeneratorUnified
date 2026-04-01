@@ -1,0 +1,329 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Rajkumar\BillGeneratorUnified
+plugins: cov-7.0.0
+collected 9 items / 21 errors
+
+=================================== ERRORS ====================================
+__________________ ERROR collecting full_processing_test.py ___________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\full_processing_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+full_processing_test.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+__________________ ERROR collecting test_all_ld_scenarios.py __________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_all_ld_scenarios.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_all_ld_scenarios.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+__________________ ERROR collecting test_batch_processing.py __________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_batch_processing.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_batch_processing.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+______________ ERROR collecting test_comprehensive_excel_grid.py ______________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_comprehensive_excel_grid.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_comprehensive_excel_grid.py:20: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+___________________ ERROR collecting test_full_workflow.py ____________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_full_workflow.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_full_workflow.py:15: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+________________ ERROR collecting test_hybrid_comprehensive.py ________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_hybrid_comprehensive.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_hybrid_comprehensive.py:13: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+__________________ ERROR collecting test_hybrid_workflow.py ___________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_hybrid_workflow.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_hybrid_workflow.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+________________ ERROR collecting test_online_mode_robotic.py _________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_online_mode_robotic.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_online_mode_robotic.py:12: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+______________________ ERROR collecting test_output.txt _______________________
+..\AppData\Local\Programs\Python\Python311\Lib\pathlib.py:1059: in read_text
+    return f.read()
+           ^^^^^^^^
+<frozen codecs>:322: in decode
+    ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+____________ ERROR collecting test_phase_1_1_part_rate_display.py _____________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_phase_1_1_part_rate_display.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_phase_1_1_part_rate_display.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+________________ ERROR collecting test_phase_1_2_change_log.py ________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_phase_1_2_change_log.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_phase_1_2_change_log.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+_______________ ERROR collecting test_phase_1_3_excel_export.py _______________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_phase_1_3_excel_export.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_phase_1_3_excel_export.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+______________ ERROR collecting test_phase_1_4_comprehensive.py _______________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_phase_1_4_comprehensive.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_phase_1_4_comprehensive.py:11: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+_____________ ERROR collecting test_phase_2_excel_grid_robotic.py _____________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_phase_2_excel_grid_robotic.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_phase_2_excel_grid_robotic.py:8: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+______________ ERROR collecting test_robustness_comprehensive.py ______________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\test_robustness_comprehensive.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_robustness_comprehensive.py:16: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+__________________ ERROR collecting test_run_input_files.py ___________________
+.venv\\Lib\\site-packages\\_pytest\\python.py:507: in importtestmodule\n    mod = import_path(\n.venv\\Lib\\site-packages\\_pytest\\pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n..\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\importlib\\__init__.py:126: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1204: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1176: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:690: in _load_unlocked\n    ???\n.venv\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\ast.py:50: in parse\n    return compile(source, filename, mode, flags,\nE     File "C:\\Users\\Rajkumar\\BillGeneratorUnified\\test_run_input_files.py", line 43\nE       print(f"  \u2713 Features enabled: {sum([\nE             ^\nE   SyntaxError: unterminated string literal (detected at line 43)
+__________ ERROR collecting tests/test_excel_processor_enterprise.py __________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_excel_processor_enterprise.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_excel_processor_enterprise.py:11: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+___________ ERROR collecting tests/test_html_renderer_enterprise.py ___________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_html_renderer_enterprise.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_html_renderer_enterprise.py:10: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+____________ ERROR collecting tests/test_online_grid_properties.py ____________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_online_grid_properties.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_online_grid_properties.py:6: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+_______________ ERROR collecting tests/test_online_grid_unit.py _______________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_online_grid_unit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_online_grid_unit.py:6: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+_______________ ERROR collecting tests/test_robot_automated.py ________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_robot_automated.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_robot_automated.py:20: in <module>
+    from core.processors.excel_processor_enterprise import ExcelProcessor
+core\processors\__init__.py:4: in <module>
+    from . import hierarchical_filter
+core\processors\hierarchical_filter.py:9: in <module>
+    import pandas as pd
+.venv\Lib\site-packages\pandas\__init__.py:31: in <module>
+    raise ImportError(
+E   ImportError: Unable to import required dependencies:
+E   numpy: Error importing numpy: you should not try to import numpy from
+E           its source directory; please exit the numpy source tree, and relaunch
+E           your python interpreter from there.
+=========================== short test summary info ===========================
+ERROR full_processing_test.py
+ERROR test_all_ld_scenarios.py
+ERROR test_batch_processing.py
+ERROR test_comprehensive_excel_grid.py
+ERROR test_full_workflow.py
+ERROR test_hybrid_comprehensive.py
+ERROR test_hybrid_workflow.py
+ERROR test_online_mode_robotic.py
+ERROR test_output.txt - UnicodeDecodeError: 'utf-8' codec can't decode byte 0...
+ERROR test_phase_1_1_part_rate_display.py
+ERROR test_phase_1_2_change_log.py
+ERROR test_phase_1_3_excel_export.py
+ERROR test_phase_1_4_comprehensive.py
+ERROR test_phase_2_excel_grid_robotic.py
+ERROR test_robustness_comprehensive.py
+ERROR test_run_input_files.py
+ERROR tests/test_excel_processor_enterprise.py
+ERROR tests/test_html_renderer_enterprise.py
+ERROR tests/test_online_grid_properties.py
+ERROR tests/test_online_grid_unit.py
+ERROR tests/test_robot_automated.py
+!!!!!!!!!!!!!!!!!! Interrupted: 21 errors during collection !!!!!!!!!!!!!!!!!!!
+============================= 21 errors in 2.46s ==============================

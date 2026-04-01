@@ -1,0 +1,3 @@
+﻿M	app.py
+A	core/ui/edit_preview.py
+M	core/ui/excel_mode_fixed.py

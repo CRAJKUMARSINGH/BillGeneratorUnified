@@ -7,7 +7,7 @@ import pandas as pd
 from datetime import datetime
 import io
 import zipfile
-from core.ui.hybrid_mode import ChangeLogger
+from core.utils.ui_helpers import ChangeLogger, update_validation_status
 from core.utils.excel_exporter import ExcelExporter
 from core.utils.safe_conversions import safe_quantity, safe_rate
 import time
@@ -452,36 +452,7 @@ def _generate_benchmark_data(num_rows):
     _save_history(df)
     st.rerun()
 
-def update_validation_status(df):
-    """Updates the 'Status' column based on row validity rules"""
-    if df is None or df.empty:
-        return df
-        
-    df = df.copy()
-    if 'Status' not in df.columns:
-        df.insert(0, 'Status', '⚪')
-        
-    for idx, row in df.iterrows():
-        qty = float(row.get('Quantity', 0))
-        rate = float(row.get('Rate', 0))
-        desc = str(row.get('Description', '')).strip()
-        
-        is_active = qty > 0 or rate > 0 or desc != ''
-        
-        if not is_active:
-            status = '⚪' # Empty / Ignored
-        elif desc and qty > 0 and rate > 0:
-            status = '🟢' # Fully valid
-        elif desc == '' and (qty > 0 or rate > 0):
-            status = '🔴 No Desc' # Error: has qty/rate but no description
-        elif desc != '' and (qty == 0 or rate == 0):
-            status = '🟠 Miss Q/R' # Partial: has description but missing qty or rate
-        else:
-            status = '🔴 Inv' # Catch-all invalid
-            
-        df.loc[idx, 'Status'] = status
-        
-    return df
+# update_validation_status imported from core.utils.ui_helpers
 
 
 def extract_data_from_excel(excel_file):

@@ -40,12 +40,13 @@ try:
     config = ConfigLoader.load_from_file('config/v01.json')
     print(f"  ✓ Config loaded: {config.app_name} v{config.version}")
     print(f"  ✓ Mode: {config.mode}")
-    print(f"  ✓ Features enabled: {sum([
+    enabled_count = sum([
         config.features.excel_upload,
         config.features.online_entry,
         config.features.batch_processing,
         config.features.advanced_pdf
-    ])}/4")
+    ])
+    print(f"  ✓ Features enabled: {enabled_count}/4")
 except Exception as e:
     print(f"  ❌ Config error: {e}")
     sys.exit(1)

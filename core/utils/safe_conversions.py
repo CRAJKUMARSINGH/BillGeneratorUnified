@@ -29,9 +29,11 @@ def safe_float(value, default=0.0):
     if value is None:
         return default
     
-    # If already a number, return it
+    # If already a number, return it (but check for NaN)
     if isinstance(value, (int, float)):
-        return float(value)
+        import math
+        f_val = float(value)
+        return f_val if not math.isnan(f_val) else default
     
     # Try to convert string to float
     try:

@@ -1,0 +1,32 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Rajkumar\BillGeneratorUnified
+plugins: hypothesis-6.151.10, cov-7.0.0
+collected 141 items / 2 errors
+
+=================================== ERRORS ====================================
+___________ ERROR collecting tests/test_html_renderer_enterprise.py ___________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_html_renderer_enterprise.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_html_renderer_enterprise.py:13: in <module>
+    from core.generators.html_renderer_enterprise import (
+E   ModuleNotFoundError: No module named 'core.generators.html_renderer_enterprise'
+_______________ ERROR collecting tests/test_robot_automated.py ________________
+ImportError while importing test module 'C:\Users\Rajkumar\BillGeneratorUnified\tests\test_robot_automated.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_robot_automated.py:21: in <module>
+    from core.generators.html_renderer_enterprise import HTMLRenderer, DocumentType
+E   ModuleNotFoundError: No module named 'core.generators.html_renderer_enterprise'
+=========================== short test summary info ===========================
+ERROR tests/test_html_renderer_enterprise.py
+ERROR tests/test_robot_automated.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!
+============================= 2 errors in 11.34s ==============================

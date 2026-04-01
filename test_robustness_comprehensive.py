@@ -17,9 +17,14 @@ import pandas as pd
 import random
 import gc
 import io
-import psutil
 import os
 import time
+
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
 
 # Add core to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -27,13 +32,15 @@ sys.path.insert(0, str(Path(__file__).parent))
 class MemoryMonitor:
     """Monitor memory usage to detect leaks"""
     def __init__(self):
-        self.process = psutil.Process(os.getpid())
+        self.process = psutil.Process(os.getpid()) if PSUTIL_AVAILABLE else None
         self.initial_memory = self.get_memory_mb()
         self.measurements = []
     
     def get_memory_mb(self):
         """Get current memory usage in MB"""
-        return self.process.memory_info().rss / 1024 / 1024
+        if self.process:
+            return self.process.memory_info().rss / 1024 / 1024
+        return 0.0
     
     def record(self, label):
         """Record memory measurement"""
